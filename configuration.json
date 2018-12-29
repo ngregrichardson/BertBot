@@ -1,0 +1,31 @@
+{
+  "botName": "BeʳᵗBot",
+  "teamNumber": "4750",
+  "discordServerId": "454652919669850113",
+  "trelloNotificationChannelId": "485059672806653952",
+  "trelloPollInterval": 10000,
+  "watchedTrelloBoardIds": [
+    "iO0BogOJ",
+    "wcKoHcRk",
+    "YO3jvnbF",
+    "QDESlFqo",
+    "qI0K1VAl",
+    "1Oz5LIpu",
+    "I0ohRldn",
+    "oxI4sJB2",
+    "EtjQPMdF"
+  ],
+  "enabledTrelloNotifications": [
+    "cardCreated"
+  ],
+  "trelloPrefix": "!",
+  "orderRequestBoardId": "qI0K1VAl",
+  "orderPlacedChecklistItemName": "Order Placed",
+  "orderPlacedListName": "Orders Placed",
+  "orderRequestedListName": "Orders Requested",
+  "restrictedCommandRoles": [
+    "admin",
+    "mentor",
+    "leader"
+  ]
+}

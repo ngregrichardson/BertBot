@@ -1,2 +1,2 @@
 # BertBot
-Nice try Brendan! 
+A bot for the Beʳᵗ Discord server
