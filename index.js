@@ -1,4 +1,4 @@
-/* CONFIG */
+/* Config */
 const fs = require('fs');
 const config = JSON.parse(fs.readFileSync('configuration.json'));
 /* Google Packages */
@@ -54,150 +54,166 @@ const events = new Trello({
     token: process.env.TTOKEN
   }
 });
-/* Gmail Reader */
-setInterval(function() {
-  imaps.connect(gConfig).then(function (connection) { // Connect to the email
-    return connection.openBox('ARCHIVE').then(function () { // Open the inbox
-      var searchCriteria = [ // Search the inbox for
-        ['FROM', process.env.GTO], // Emails from
-        'UNSEEN' // Unopened
-      ];
-      var fetchOptions = {
-        bodies: ['HEADER', 'TEXT'], // Get the headers and text
-        markSeen: true // Mark the email as read
-      };
-      return connection.search(searchCriteria, fetchOptions).then(function (results) { // When the search is done
-        var subjects = results.map(function (res) { // Get the subjects
-          return res.parts.filter(function (part) {
-            return part.which === 'HEADER';
-          })[0].body.subject[0];
-        });
-        for(var i = 0; i < subjects.length; i++) { // For each email
-          if(!subjects[i].includes('#')) return; // If it doesn't include a #
-          var id = subjects[i].substring(subjects[i].indexOf('#') + 1); // Get the ID
-          rapid.call('Trello', 'getCardChecklists', { // Get the checklist from the card
-            'apiKeys': process.env.KEY, // Auth
-            'accessToken': process.env.TTOKEN, // Auth
-            'cardIdOrShortlink': id // Card ID
-          }).on('success', (payload)=>{ // When it gets the checklist
-            if(payload == undefined) return;
-            for(var j = 0; j < payload[0].checkItems.length; j++) { // For each item in the checklist
-              if(payload[0].checkItems[j].name == config.orderPlacedChecklistItemName) { // If the item is called 'Order Placed'
-                rapid.call('Trello', 'updateCardCheckItem', { // Update the checklist item
-                  'apiKeys': process.env.KEY, // Auth
-                  'accessToken': process.env.TTOKEN, // Auth
-                  'cardIdOrShortlink': id, // Card ID
-                  'idCheckItem': payload[0].checkItems[j].id, // Checklist item ID
-                  'state': 'complete' // State to set to
-                }).on('success', (payload)=>{ // When it updates the checklist item
-                  rapid.call('Trello', 'getBoardLists', { // Get the id of the list to move to
-                    'apiKeys': process.env.KEY, // Auth
-                    'accessToken': process.env.TTOKEN, // Auth
-                    'boardId': config.orderRequestBoardId // Board ID
-                  }).on('success', (payload)=>{ // When it gets the list of lists
-                    var listId; // List ID
-                    for(var k = 0; k < payload.length; k++) { // For each list
-                      if(payload[k].name == config.orderPlacedListName) { // If it is the list
-                        listId = payload[k].id; // Get the id
-                        break; // Break out of the loop
-                      }
-                    }
-                    rapid.call('Trello', 'updateSingleCard', { // Update the card list
+
+/* Bot Setup */
+bot.on('ready', () => {
+  /* Trello Events Setup */
+  if(config.trelloNotificationsOn) {
+    let guild = bot.guilds.get(config.discordServerId)
+    let channel = bot.channels.get(config.trelloNotificationChannelId)
+    if (!guild) {
+      console.log(`Server with ID "${config.discordServerId}" not found! I can't function without a valid server and channel.\nPlease add the correct server ID to your conf file, or if the conf data is correct, ensure I have proper access.\nYou may need to add me to your server using this link:\n    https://discordapp.com/api/oauth2/authorize?client_id=${bot.user.id}&permissions=8&scope=bot`)
+      process.exit()
+    } else if (!channel) {
+      console.log(`Channel with ID "${config.trelloNotificationChannelId}" not found! I can't function without a valid channel.\nPlease add the correct channel ID to your conf file, or if the conf data is correct, ensure I have proper access.`)
+      process.exit()
+    } else if (!config.watchedTrelloBoardIds || config.watchedTrelloBoardIds.length < 1) {
+      console.log(`No board IDs provided! Please add at least one to your conf file. Check the readme if you need help finding a board ID.`)
+    }
+    conf.guild = guild
+    conf.channel = channel
+    if (!config.contentString) config.contentString = ""
+    if (!config.enabledTrelloNotifications) config.enabledTrelloNotifications = []
+    if (!config.userIDs) config.userIDs = {}
+    if (!conf.realNames) conf.realNames = true
+    if (!config.trelloPrefix) {
+      config.trelloPrefix = "!"
+      fs.writeFileSync('conf.json', JSON.stringify(conf, null, 4), (err, data) => console.log(`Updated conf file with default prefix ('!')`))
+    }
+    console.log(`== Bot logged in as @${bot.user.tag}. Ready for action! ==`)
+    events.start()
+  }
+
+  /* Gmail Reader */
+  if(config.orderRequestEmailSystemOn) {
+    setInterval(function() {
+      imaps.connect(gConfig).then(function (connection) { // Connect to the email
+        return connection.openBox('ARCHIVE').then(function () { // Open the inbox
+          var searchCriteria = [ // Search the inbox for
+            ['FROM', process.env.GTO], // Emails from
+            'UNSEEN' // Unopened
+          ];
+          var fetchOptions = {
+            bodies: ['HEADER', 'TEXT'], // Get the headers and text
+            markSeen: true // Mark the email as read
+          };
+          return connection.search(searchCriteria, fetchOptions).then(function (results) { // When the search is done
+            var subjects = results.map(function (res) { // Get the subjects
+              return res.parts.filter(function (part) {
+                return part.which === 'HEADER';
+              })[0].body.subject[0];
+            });
+            for(var i = 0; i < subjects.length; i++) { // For each email
+              if(!subjects[i].includes('#')) return; // If it doesn't include a #
+              var id = subjects[i].substring(subjects[i].indexOf('#') + 1); // Get the ID
+              rapid.call('Trello', 'getCardChecklists', { // Get the checklist from the card
+                'apiKeys': process.env.KEY, // Auth
+                'accessToken': process.env.TTOKEN, // Auth
+                'cardIdOrShortlink': id // Card ID
+              }).on('success', (payload)=>{ // When it gets the checklist
+                if(payload == undefined) return;
+                for(var j = 0; j < payload[0].checkItems.length; j++) { // For each item in the checklist
+                  if(payload[0].checkItems[j].name == config.orderPlacedChecklistItemName) { // If the item is called 'Order Placed'
+                    rapid.call('Trello', 'updateCardCheckItem', { // Update the checklist item
                       'apiKeys': process.env.KEY, // Auth
                       'accessToken': process.env.TTOKEN, // Auth
                       'cardIdOrShortlink': id, // Card ID
-                      'idList': listId // List ID
-                    }).on('success', (payload)=>{ // When it moves the card
-                      //console.log('Completed!'); // Confirmation
-                    }).on('error', (payload)=>{ // If it couldn't move the card
-                      console.log("Error moving card: " + payload); // Print the error
+                      'idCheckItem': payload[0].checkItems[j].id, // Checklist item ID
+                      'state': 'complete' // State to set to
+                    }).on('success', (payload)=>{ // When it updates the checklist item
+                      rapid.call('Trello', 'getBoardLists', { // Get the id of the list to move to
+                        'apiKeys': process.env.KEY, // Auth
+                        'accessToken': process.env.TTOKEN, // Auth
+                        'boardId': config.orderRequestBoardId // Board ID
+                      }).on('success', (payload)=>{ // When it gets the list of lists
+                        var listId; // List ID
+                        for(var k = 0; k < payload.length; k++) { // For each list
+                          if(payload[k].name == config.orderPlacedListName) { // If it is the list
+                            listId = payload[k].id; // Get the id
+                            break; // Break out of the loop
+                          }
+                        }
+                        rapid.call('Trello', 'updateSingleCard', { // Update the card list
+                          'apiKeys': process.env.KEY, // Auth
+                          'accessToken': process.env.TTOKEN, // Auth
+                          'cardIdOrShortlink': id, // Card ID
+                          'idList': listId // List ID
+                        }).on('success', (payload)=>{ // When it moves the card
+                          //console.log('Completed!'); // Confirmation
+                        }).on('error', (payload)=>{ // If it couldn't move the card
+                          console.log("Error moving card: " + payload); // Print the error
+                        });
+                      }).on('error', (payload)=>{
+                        console.log("Error getting list: " + payload); // Print the error
+                      });
+                    }).on('error', (payload)=>{ // If it couldn't update the checklist
+                      console.log("Error updating checklist: " + payload); // Print the error
                     });
-                  }).on('error', (payload)=>{
-                    console.log("Error getting list: " + payload); // Print the error
-                  });
-                }).on('error', (payload)=>{ // If it couldn't update the checklist
-                  console.log("Error updating checklist: " + payload); // Print the error
-                });
-                break; // Break from the loop
-              }
+                    break; // Break from the loop
+                  }
+                }
+              }).on('error', (payload)=>{ // If it couldn't retrieve the checklist
+                console.log("Error retrieving checklist: " + payload); // Print the error
+              });
             }
-          }).on('error', (payload)=>{ // If it couldn't retrieve the checklist
-            console.log("Error retrieving checklist: " + payload); // Print the error
           });
-        }
+        });
       });
-    });
-  });
-}, 30000);
+    }, 30000);
+  }
+});
+
 /* Swear Filter */
 bot.on('message', message => { // When a message is sent
-  // If the message is not in the spam chat, not in dms, and not from BertBot himself
-  if(message.channel.name !== 'spam' && message.author.id !== bot.user.id && message.channel.type !== 'dm') {
-    for (var i = 0; i < profanities.length; i++) { // Run through each profane word
-      for (var x = 0; x < message.content.split(" ").length; x++) { // Run through each word in the message, splitting at the spaces
-        if (message.content.toLowerCase().split(" ")[x] == profanities[i].toLowerCase()) { // If any of the words match
-          var time = new Date(); // Get the date and time
-          message.guild.owner.send('**' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + '** | **' + message.author.username + '** tried to say **'+ profanities[i] + '** in **' + message.channel.name + "** `" + message.content + "`"); // Send a message to the server owner
-          message.author.send("Your message in **" + message.channel.name + "** was deleted because it contained **" + profanities[i] + "**. If this is a mistake, contact your server moderator. Otherwise, you might want to retry sending your message like this: `" + message.content.replace(profanities[i], "****") + "`"); // Send a message to the author
-          message.delete(); // Delete the message
-          return; // Move on
+  if(config.swearFilterOn) {
+    // If the message is not in the spam chat, not in dms, and not from BertBot himself
+    if(!config.swearFilterWhitelistedChannelNames.includes(message.channel.name) && message.author.id !== bot.user.id && message.channel.type !== 'dm') {
+      for (var i = 0; i < profanities.length; i++) { // Run through each profane word
+        for (var x = 0; x < message.content.split(" ").length; x++) { // Run through each word in the message, splitting at the spaces
+          if (message.content.toLowerCase().split(" ")[x] == profanities[i].toLowerCase()) { // If any of the words match
+            var time = new Date(); // Get the date and time
+            message.guild.owner.send('**' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + '** | **' + message.author.username + '** tried to say **'+ profanities[i] + '** in **' + message.channel.name + "** `" + message.content + "`"); // Send a message to the server owner
+            message.author.send("Your message in **" + message.channel.name + "** was deleted because it contained **" + profanities[i] + "**. If this is a mistake, contact your server moderator. Otherwise, you might want to retry sending your message like this: `" + message.content.replace(profanities[i], "****") + "`"); // Send a message to the author
+            message.delete(); // Delete the message
+            return; // Move on
+          }
         }
       }
     }
   }
 });
-bot.on('messageReactionAdd', function(messageReaction, user) {
-  if(messageReaction._emoji.name == '👍') {
-    function setAuth(step) {
-      var creds = {
-        client_email: process.env.SAE,
-        private_key: process.env.GPK
-      };
-      //doc.useServiceAccountAuth(creds, step);
-    }
-  }
-});
-/* Bot Setup */
-bot.on('ready', () => {
-  /* Trello Events Setup */
-  let guild = bot.guilds.get(config.discordServerId)
-  let channel = bot.channels.get(config.trelloNotificationChannelId)
-  if (!guild) {
-    console.log(`Server with ID "${config.discordServerId}" not found! I can't function without a valid server and channel.\nPlease add the correct server ID to your conf file, or if the conf data is correct, ensure I have proper access.\nYou may need to add me to your server using this link:\n    https://discordapp.com/api/oauth2/authorize?client_id=${bot.user.id}&permissions=0&scope=bot`)
-    process.exit()
-  } else if (!channel) {
-    console.log(`Channel with ID "${config.trelloNotificationChannelId}" not found! I can't function without a valid channel.\nPlease add the correct channel ID to your conf file, or if the conf data is correct, ensure I have proper access.`)
-    process.exit()
-  } else if (!config.watchedTrelloBoardIds || config.watchedTrelloBoardIds.length < 1) {
-    console.log(`No board IDs provided! Please add at least one to your conf file. Check the readme if you need help finding a board ID.`)
-  }
-  conf.guild = guild
-  conf.channel = channel
-  if (!conf.contentString) conf.contentString = "" 
-  if (!config.enabledTrelloNotifications) config.enabledTrelloNotifications = []
-  if (!conf.userIDs) conf.userIDs = {}
-  if (!conf.realNames) conf.realNames = true
-  if (!config.trelloPrefix) {
-    config.trelloPrefix = "!"
-    fs.writeFileSync('conf.json', JSON.stringify(conf, null, 4), (err, data) => console.log(`Updated conf file with default prefix ('!')`))
-  }
-  console.log(`== Bot logged in as @${bot.user.tag}. Ready for action! ==`)
-  events.start()
-})
-function checkForLikes(message) {
-  for(var i = 0; i < message.reactions.length; i++) {
-    if(message.reactions[i].emoji.id == '490900369811963914') {
-      // TODO: Google sheets stuff here
-    }
-  }
-}
+
+
+/* In progress like tracker */
+
+// bot.on('messageReactionAdd', function(messageReaction, user) {
+//   if(messageReaction._emoji.name == '👍') {
+//     function setAuth(step) {
+//       var creds = {
+//         client_email: process.env.SAE,
+//         private_key: process.env.GPK
+//       };
+//       //doc.useServiceAccountAuth(creds, step);
+//     }
+//   }
+// });
+
+// function checkForLikes(message) {
+//   for(var i = 0; i < message.reactions.length; i++) {
+//     if(message.reactions[i].emoji.id == '490900369811963914') {
+//       // TODO: Google sheets stuff here
+//     }
+//   }
+// }
+
 /*
 ** ====================================
 ** Trello event handlers and functions.
 ** ====================================
 */
+
 // Fired when a card is created
-events.on('createCard', (event, board) => {    
+events.on('createCard', (event, board) => {
   if (!eventEnabled(`cardCreated`)) return
   let embed = getEmbedBase(event)
     .setTitle(`New card created under __${event.data.list.name}__!`)
@@ -357,17 +373,19 @@ events.on('updateList', (event, board) => {
   }
 })
 // Fired when an attachment is added to a card
-events.on('addAttachmentToCard', (event, board) => {  
-  if(event.data.list.name == config.orderRequestedListName) { // If the attachment is in the 'Orders Requested' list
-    if(event.data.attachment != undefined) { // If the attachment exists
-      sendEmail({ // Send an email
-        subject: 'New order form from ' + event.memberCreator.fullName + '! #' + event.data.card.id, // Create the subject line
-        html: '<a href="' + event.data.attachment.url + '" style="text-decoration:none;color:black;font-size:200%;">Here is the form!</a><br><p>Reply "Order Completed" to mark complete on the Trello</p>' // Create the email
-      }, function (err, res) { // Callback
-        if(err) { // If there is an error
-          console.log("Error sending email: " + err); // Print the error
-        }
-      });
+events.on('addAttachmentToCard', (event, board) => {
+  if(config.orderRequestEmailSystemOn) {
+    if(event.data.list.name == config.orderRequestedListName) { // If the attachment is in the 'Orders Requested' list
+      if(event.data.attachment != undefined) { // If the attachment exists
+        sendEmail({ // Send an email
+          subject: 'New order form from ' + event.memberCreator.fullName + '! #' + event.data.card.id, // Create the subject line
+          html: '<a href="' + event.data.attachment.url + '" style="text-decoration:none;color:black;font-size:200%;">Here is the form!</a><br><p>Reply "Order Completed" to mark complete on the Trello</p>' // Create the email
+        }, function (err, res) { // Callback
+          if(err) { // If there is an error
+            console.log("Error sending email: " + err); // Print the error
+          }
+        });
+      }
     }
   }
   if (!eventEnabled(`attachmentAddedToCard`)) return
@@ -418,6 +436,7 @@ events.on('updateCheckItemStateOnCard', (event, board) => {
     send(addDiscordUserData(embed, event.memberCreator))
   }
 })
+
 /*
 ** =======================
 ** Miscellaneous functions
@@ -428,17 +447,17 @@ events.on('maxId', (id) => {
   latestActivityId = id
   fs.writeFileSync('.latestActivityID', id)
 })
-const send = (embed, content = ``) => conf.channel.send(`${content} ${conf.contentString}`, {embed:embed}).catch(err => console.error(err))
-const eventEnabled = (type) => conf.enabledEvents.length > 0 ? conf.enabledEvents.includes(type) : true
+const send = (embed, content = ``) => conf.channel.send(`${content} ${config.contentString}`, {embed:embed}).catch(err => console.error(err))
+const eventEnabled = (type) => config.enabledEvents.length > 0 ? config.enabledEvents.includes(type) : true
 const logEventFire = (event) => console.log(`${new Date(event.date).toUTCString()} - ${event.type} fired`)
 const getEmbedBase = (event) => new Discord.RichEmbed()
 .setFooter(`${conf.guild.members.get(bot.user.id).displayName} • ${event.data.board.name} [${event.data.board.shortLink}]`, bot.user.displayAvatarURL)
 .setTimestamp(event.hasOwnProperty(`date`) ? event.date : Date.now())
 .setColor("#127ABD")
-// adds thumbanil and appends user mention to the end of the description, if possible
+// adds thumbanail and appends user mention to the end of the description, if possible
 const addDiscordUserData = (embed, member) => {
-  if (conf.userIDs[member.username]) {
-    let discordUser = conf.guild.members.get(conf.userIDs[member.username])
+  if (config.userIDs[member.username]) {
+    let discordUser = conf.guild.members.get(config.userIDs[member.username])
     if (discordUser) embed
       .setThumbnail(discordUser.user.displayAvatarURL)
       .setDescription(`${embed.description} / ${discordUser.toString()}`)
