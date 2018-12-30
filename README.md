@@ -52,7 +52,7 @@ Setting up BeʳᵗBot is simple. It is a self-hosted bot, so this setup will sho
 		- trelloNotificationChannelId - The ID of the channel you want notifications in
 		- trelloPollInterval - The amount of milliseconds between checks for new Trello updates (changing not recommended)
 		- watchedTrelloBoardIds - The board IDs of the Trello boards you want to get notifications from. These are found in the link of the Trello board
-		- enabledTrelloNotifications - The types of notifications you want (full list below)
+		- enabledTrelloNotifications - The types of notifications you want ([full list below](https://github.com/ngregrichardson/BertBot/blob/master/README.md#enabledtrellonotifications-list))
 		- trelloPrefix - Prefix for any Trello related commands (currently none)
 	- orderRequestEmailSystemOn - Whether or not you want the order request system enabled
 		- orderRequestBoardId - The Trello board ID of the *Order Request* board
