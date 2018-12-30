@@ -1,0 +1,1 @@
+const commando = require('discord.js-commando'); class undefined extends commando.Command { constructor(client) { super(client, { name: 'undefined', group: 'custom', memberName: 'undefined', description: 'undefined' }); } async run(message, args) { message.channel.send('undefined'); } } module.exports = undefined;

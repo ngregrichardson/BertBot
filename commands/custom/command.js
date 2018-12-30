@@ -4,7 +4,7 @@ const commando = require('discord.js-commando');
 const fs = require('fs');
 const config = JSON.parse(fs.readFileSync('configuration.json'));
 
-var file1 = "const commando = require('discord.js-commando'); class "";
+var file1 = "const commando = require('discord.js-commando'); class ";
 var file2 = " extends commando.Command { constructor(client) { super(client, { name: '";
 var file3 = "', group: 'custom', memberName: '";
 var file4 = "', description: '";
@@ -31,12 +31,12 @@ class Command extends commando.Command {
   }
 
   async run(message, { name, description, response }) {
-    var data = file1 + capitalize(name) + file2 + name + file3 + name + file4 + description + file5 + response + file6 + capitalize(name) + file7;
+    var data = file1 + name + file2 + name + file3 + name + file4 + description + file5 + response + file6 + name + file7;
     fs.writeFile(name + '.js', data, function(err, data) {
       if(err) {
         console.log(err);
       }
-      console.log("file written");
+      console.log(data);
     });
   }
 }

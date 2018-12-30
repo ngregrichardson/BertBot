@@ -1,4 +1,5 @@
 dependencies:
+  bufferutil: 4.0.1
   common-tags: 1.8.0
   dadjokes-wrapper: 0.1.4
   discord.js: 11.4.2
@@ -124,6 +125,13 @@ packages:
     dev: false
     resolution:
       integrity: sha1-+OcRMvf/5uAaXJaXpMbz5I1cyBk=
+  /bufferutil/4.0.1:
+    dependencies:
+      node-gyp-build: 3.7.0
+    dev: false
+    requiresBuild: true
+    resolution:
+      integrity: sha512-xowrxvpxojqkagPcWRQVXZl0YXhRhAtBEIq3VoER1NH5Mw1n1o0ojdspp+GS2J//2gCVyrzQDApQ4unGF+QOoA==
   /bytes/3.0.0:
     dev: false
     engines:
@@ -1055,6 +1063,11 @@ packages:
     dev: false
     resolution:
       integrity: sha512-sol30LUpz1jQFBjOKwbjxijiE3b6pjd74YwfD0fJOKPjF+fONKb2Yg8rYgS6+bK6VDl+/wfr4IYpC7jDzLUIfw==
+  /node-gyp-build/3.7.0:
+    dev: false
+    hasBin: true
+    resolution:
+      integrity: sha512-L/Eg02Epx6Si2NXmedx+Okg+4UHqmaf3TNcxd50SF9NQGcJaON3AtU++kax69XV7YWz4tUspqZSAsVofhFKG2w==
   /node-superfetch/0.1.9:
     dependencies:
       form-data: 2.3.3
@@ -1868,6 +1881,7 @@ registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
+  bufferutil: ^4.0.1
   common-tags: ^1.8.0
   dadjokes-wrapper: ^0.1.4
   discord.js: ^11.4.2

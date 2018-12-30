@@ -26,7 +26,7 @@ bot.registry.registerGroup('spam', 'Spam');
 bot.registry.registerGroup('custom', 'Custom');
 bot.registry.registerDefaults();
 bot.registry.registerCommandsIn(__dirname + "/commands");
-bot.login(process.env.TOKEN);
+bot.login('NTI4NzE5NDk2MDQ4MDE3NDQ4.DwrSwA.0mb5RutsyxkgUYXQR7xkEoM-VQo');
 /* Google Setup */
 //var doc = new GoogleSpreadsheet(process.env.GSHID);
 var sheet;
@@ -450,7 +450,7 @@ events.on('maxId', (id) => {
   fs.writeFileSync('.latestActivityID', id)
 })
 const send = (embed, content = ``) => conf.channel.send(`${content} ${config.contentString}`, {embed:embed}).catch(err => console.error(err))
-const eventEnabled = (type) => config.enabledEvents.length > 0 ? config.enabledEvents.includes(type) : true
+const eventEnabled = (type) => config.enabledTrelloNotifications.length > 0 ? config.enabledTrelloNotifications.includes(type) : true
 const logEventFire = (event) => console.log(`${new Date(event.date).toUTCString()} - ${event.type} fired`)
 const getEmbedBase = (event) => new Discord.RichEmbed()
 .setFooter(`${conf.guild.members.get(bot.user.id).displayName} • ${event.data.board.name} [${event.data.board.shortLink}]`, bot.user.displayAvatarURL)
