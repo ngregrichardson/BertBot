@@ -1,4 +1,9 @@
 const commando = require('discord.js-commando');
+
+/* Config */
+const fs = require('fs');
+const config = JSON.parse(fs.readFileSync('configuration.json'));
+
 class Poll extends commando.Command {
   constructor(client) {
     super(client, {
@@ -18,7 +23,7 @@ class Poll extends commando.Command {
     });
   }
   hasPermission(message) {
-    return message.member.roles.some(r => ["admin", "mentor", "leader"].includes(r.name));
+    return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
   }
   async run(message, args) {
     message.channel.send('**' + args.question + '**').then(function(message) {

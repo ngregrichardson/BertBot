@@ -16,16 +16,7 @@ var sendEmail = require('gmail-send')({
   pass: process.env.GP,
   to: process.env.GTO
 });
-var gConfig = {
-  imap: {
-    user: process.env.GFROM,
-    password: process.env.GP,
-    host: 'imap.gmail.com',
-    port: 993,
-    tls: true,
-    authTimeout: 3000
-  }
-};
+var gConfig;
 /* Discord Setup */
 const bot = new commando.Client();
 bot.registry.registerGroup('random', 'Random');
@@ -86,6 +77,16 @@ bot.on('ready', () => {
 
   /* Gmail Reader */
   if(config.orderRequestEmailSystemOn) {
+    gConfig = {
+      imap: {
+        user: process.env.GFROM,
+        password: process.env.GP,
+        host: 'imap.gmail.com',
+        port: 993,
+        tls: true,
+        authTimeout: 3000
+      }
+    };
     setInterval(function() {
       imaps.connect(gConfig).then(function (connection) { // Connect to the email
         return connection.openBox('ARCHIVE').then(function () { // Open the inbox
