@@ -97,12 +97,7 @@ function capitalize(string) {
 }
 
 function refresh() {
-  fs.writeFile('watch.json', JSON.stringify(watchOverride, null, 2), function(err) {
-    if(err) {
-     console.log(err); 
-    }
-  });
-  fs.writeFile('watch.json', JSON.stringify(watchDefault, null, 2), function(err) {
+  fs.writeFile('commandAdded.json', '1', function(err) {
     if(err) {
      console.log(err); 
     }
