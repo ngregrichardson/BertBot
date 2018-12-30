@@ -1,6 +1,11 @@
 const DadJokes = require('dadjokes-wrapper');
 const dj = new DadJokes();
 const commando = require('discord.js-commando');
+
+/* Config */
+const fs = require('fs');
+const config = JSON.parse(fs.readFileSync('configuration.json'));
+
 class Blaise extends commando.Command {
   constructor(client) {
     super(client, {
@@ -21,7 +26,7 @@ class Blaise extends commando.Command {
     });
   }
   async run(message, { term }) {
-    if(message.channel.name == 'spam') {
+    if(config.blaiseWhitelistedChannelNames.includes(message.channel.name) || config.blaiseWhitelistedChannelNames.includes("allowAll")) {
       if(term) {
         dj.searchJoke({'term': term}).then(function(res) {
           if(res) {
