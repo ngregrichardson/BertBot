@@ -14,27 +14,27 @@ BeʳᵗBot was created for FRC team 4750 to use in their Discord server. The bot
 - Once the order has been placed by the mentor, they can simply reply and it will move the card from the *Orders Requested* to *Orders Placed* list and check off the ckeclist item for *Order Placed*.
 # Commands
 ### Kickoff
-- Displays the amount of time until kickoff
+- Displays the amount of time until kickoff  
 Use: `!kickoff`
 ### Poll
-- Creates a yes/no/maybe poll in the channel 
+- Creates a yes/no/maybe poll in the channel  
 Use: `!poll [question]`
 ### Strawpoll
-- Creates a strawpoll and sends the link in the channel
-Use: `!strawpoll ["title"] ["option 1"] ["option 2"] ["option 3"]...`
+- Creates a strawpoll and sends the link in the channel  
+Use: `!strawpoll ["title"] ["option 1"] ["option 2"]...`
 - Use quotation marks around the title and each option
 ### Blaise
-- Sends a random dad joke in the channel
+- Sends a random dad joke in the channel  
 Use: `!blaise`
 ### PID
-- Calculates totally definitely correct PID values in the channel
+- Calculates totally definitely correct PID values in the channel  
 Use: `!pid`
 ### Winner
-- Accurately predicts the winners of the upcoming FRC season
+- Accurately predicts the winners of the upcoming FRC season  
 Use: `!winner`
 ### Spam
 - *not currently useable unless you have a channel and role named spam*
-- Adds or removes a user from the spam chat
+- Adds or removes a user from the spam chat  
 Use: `!spam [add/remove] #[DiscordTag]`
 # Setup
 Setting up BeʳᵗBot is simple. It is a self-hosted bot, so this setup will show you how to create the bot and how to set it up on Glitch. Let's get started!
@@ -63,14 +63,14 @@ Setting up BeʳᵗBot is simple. It is a self-hosted bot, so this setup will sho
 	- userIDs - The Trello name linked to the Discord ID of the person for use in Trello notifications
 	- contentString - For use in Trello notifications, leave blank
 5. Alright! now we're done the tedious part! The next thing we have to set up is out *.env* file. This is where all of our tokens and passwords will be kept. Copy and paste this in *.env* to get started, and I will explain what everything means below.
-> TOKEN=
-> KEY=
-> TTOKEN=
-> GP=
-> GFROM=
-> GTO=
-> R1=
-> R2=
+> TOKEN=  
+> KEY=  
+> TTOKEN=  
+> GP=  
+> GFROM=  
+> GTO=  
+> R1=  
+> R2=  
 
 - TOKEN - The token of your Discord bot (from step 2)
 - KEY - [A Trello API key](https://developers.trello.com/docs/api-introduction)
