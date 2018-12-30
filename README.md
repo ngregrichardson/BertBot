@@ -39,8 +39,11 @@ Use: `!spam [add/remove] #[DiscordTag]`
 # Setup
 Setting up BeʳᵗBot is simple. It is a self-hosted bot, so this setup will show you how to create the bot and how to set it up on Glitch. Let's get started!
  1. Let's create a Discord application [here](https://discordapp.com/developers/applications/). The name and app icon can be anything you want.
+ ![Step 1](https://i.imgur.com/022TUwH.jpg)
  2. Go to the **Bot** tab on the left and hit *Add Bot* and then *Yes, do it!*. Again, the name and app icon can be anything you want. These will be what the bot user's name and avatar will be. The token that is generated will be needed later, so copy it or keep the tab open (but don't give it out!).
+ ![Step 2](https://i.imgur.com/vE1RAbK.jpg)
  3. Next, lets set up the bot on [Glitch](https://glitch.com). Create an account and then create a new *hello-express* project. In the top left, click on the name of your project (you can rename it if you want) and select *Advanced Options*. Then, after hitting *Grant access*, click *Import from GitHub* and paste in `ngregrichardson/BertBot`. This will import the project into Glitch.
+ ![Step 3](https://i.imgur.com/w6CfsDL.jpg)
  4. Next we can configure the bot to your needs. In *configuration.json*, there are a list of variables that you need to look over. You can decide which you need to change based on the following descriptions:
 	- botName - The name of your bot as you set in the Discord application
 	- teamNumber - The team number of your FRC team
@@ -62,6 +65,7 @@ Setting up BeʳᵗBot is simple. It is a self-hosted bot, so this setup will sho
 	- restrictedCommandRoles - The names of the roles that are able to use restricted commands
 	- userIDs - The Trello name linked to the Discord ID of the person for use in Trello notifications
 	- contentString - For use in Trello notifications, leave blank
+![Step 4](https://i.imgur.com/pcGw6fQ.jpg)
 5. Alright! now we're done the tedious part! The next thing we have to set up is out *.env* file. This is where all of our tokens and passwords will be kept. Copy and paste this in *.env* to get started, and I will explain what everything means below.
 > TOKEN=  
 > KEY=  
@@ -81,6 +85,7 @@ Setting up BeʳᵗBot is simple. It is a self-hosted bot, so this setup will sho
 - R1 - [Rapid API project name](https://dashboard.rapidapi.com) (create a Rapid API account and create an app)
 - R2 - [Rapid API API key](https://dashboard.rapidapi.com) (create a Rapid API account and create an app)
 6. Alright! You're finally ready to add the bot to your server. Go ahead back to your Discord application and go to the **OAuth2** tab. Here, scroll down to *scopes* and select *bot*.  Then scroll down some more and select *Administrator*. Now you can follow the generated link and follow it to add the bot to your server!
+![Step 6](https://i.imgur.com/ZdImqIO.jpg)
 
 ## enabledTrelloNotifications List
 - createCard - Triggered when a card is created
