@@ -1,6 +1,11 @@
 const commando = require('discord.js-commando');
 const { stripIndents } = require('common-tags');
 const request = require('node-superfetch');
+
+/* Config */
+const fs = require('fs');
+const config = JSON.parse(fs.readFileSync('configuration.json'));
+
 module.exports = class Strawpoll extends commando.Command {
   constructor(client) {
     super(client, {
@@ -27,7 +32,7 @@ module.exports = class Strawpoll extends commando.Command {
     });
   }
   hasPermission(message) {
-    return message.member.roles.some(r => ["admin", "mentor", "leader"].includes(r.name));
+    return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
   }
   async run(message, { title, options }) {
     if (options.length < 2) {

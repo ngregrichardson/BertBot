@@ -1,11 +1,16 @@
 const commando = require('discord.js-commando');
+
+/* Config */
+const fs = require('fs');
+const config = JSON.parse(fs.readFileSync('configuration.json'));
+
 class Spam extends commando.Command {
   constructor(client) {
     super(client, {
       name: 'spam',
       group: 'spam',
       memberName: 'spam',
-      description: 'Adds/removes you to the spam chat. **L**',
+      description: 'Adds/removes you to the spam chat. **R**',
       args: [
         {
           key: 'function',
@@ -21,7 +26,7 @@ class Spam extends commando.Command {
     });
   }
   hasPermission(message) {
-    return message.member.roles.some(r => ["admin", "leader"].includes(r.name));
+    return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
   }
   async run(message, args) {
     let func;

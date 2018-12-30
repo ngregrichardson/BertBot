@@ -1,4 +1,9 @@
 const commando = require('discord.js-commando');
+
+/* Config */
+const fs = require('fs');
+const config = JSON.parse(fs.readFileSync('configuration.json'));
+
 class Kickoff extends commando.Command {
   constructor(client) {
     super(client, {
