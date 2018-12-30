@@ -23,6 +23,7 @@ bot.registry.registerGroup('random', 'Random');
 bot.registry.registerGroup('info', 'Info');
 bot.registry.registerGroup('polls', 'Polls');
 bot.registry.registerGroup('spam', 'Spam');
+bot.registry.registerGroup('custom', 'Custom');
 bot.registry.registerDefaults();
 bot.registry.registerCommandsIn(__dirname + "/commands");
 bot.login(process.env.TOKEN);
