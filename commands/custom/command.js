@@ -20,8 +20,18 @@ class Command extends commando.Command {
       memberName: 'command',
       description: 'Creates a custom command **R**',
       args: [{
-        key: 'question',
-        prompt: 'What would you like the poll to be about?',
+        key: 'name',
+        prompt: 'Name of the command',
+        type: 'string'
+      },
+      {
+        key: 'description',
+        prompt: 'Description of the command',
+        type: 'string'
+      },
+      {
+        key: 'response',
+        prompt: 'The response the bot will give',
         type: 'string'
       }]
     });
@@ -31,12 +41,12 @@ class Command extends commando.Command {
   }
 
   async run(message, { name, description, response }) {
-    var data = file1 + name + file2 + name + file3 + name + file4 + description + file5 + response + file6 + name + file7;
-    fs.writeFile(name + '.js', data, function(err, data) {
+    var data = file1 + capitalize(name) + file2 + name + file3 + name + file4 + description + file5 + response + file6 + capitalize(name) + file7;
+    fs.writeFile('commands/custom/' + name + '.js', data, function(err, data) {
       if(err) {
         console.log(err);
       }
-      console.log(data);
+      console.log(name + ".js written");
     });
   }
 }
