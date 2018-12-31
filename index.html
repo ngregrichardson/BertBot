@@ -77,6 +77,7 @@
     </form>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
+      var config = $.getJSON('https://discreet-quokka.glitch.me/app/configuration.json');
       var botName = $("input[name='botName']");
       var teamNumber = $("input[name='teamNumber']");
       var discordServerId = $("input[name='discordServerId']");
@@ -111,7 +112,7 @@
       var restrictedCommandRoles = $("input[name='restrictedCommandRoles']");
 
       $(function() {
-
+        console.log(config);
       });
 
       function toggleTrelloNotifications() {
