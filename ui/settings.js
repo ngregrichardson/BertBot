@@ -37,14 +37,15 @@ $(function() {
 
 function toggleTrelloNotifications() {
   trelloNotifications.toggle();
+  console.log("ran");
 }
 
 function toggleOrderRequestSystem() {
-  
+  orderRequestSystem.toggle();
 }
 
 function toggleSwearFilter() {
-  
+  swearFilter.toggle();
 }
 
 function save() {

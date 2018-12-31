@@ -12,7 +12,7 @@
       <input type="number" name="teamNumber" value="4750"><br>
       Discord Server ID:
       <input type="text" name="discordServerId" value="475047504750475019"><br>
-      <input type="checkbox" name="trelloNotificationsOn" value="trelloNotifications">
+      <input type="checkbox" name="trelloNotificationsOn" value="trelloNotifications" onchange="toggleTrelloNotifications()">
       Enable Trello Notifications?<br>
       <div id="trelloNotifications">
         Trello Notification Channel ID:
@@ -51,8 +51,8 @@
         <input type="checkbox" name="updateCheckItemStateOnCard" value="updateCheckItemStateOnCard">
         Checklist Item Updated<br>
       </div>
-      <input type="checkbox" name="orderRequestEmailSystemOn" value="orderRequestEmailSystemOn">
-      Order Request System Enabled?
+      <input type="checkbox" name="orderRequestEmailSystemOn" value="orderRequestEmailSystemOn" onchange="toggleOrderRequestSystem()">
+      Enable Order Request System?<br>
       <div id="orderRequestSystem">
         Order Request Board ID:
         <input type="text" name="orderRequestBoardId" value=""><br>
@@ -63,8 +63,8 @@
         Order Requested List Name:
         <input type="text" name="orderRequestedListName" value="Orders Requested">
       </div>
-      <input type="checkbox" name="swearFilterOn" value="swearFilterOn">
-      Swear Filter Enabled?
+      <input type="checkbox" name="swearFilterOn" value="swearFilterOn" onchange="toggleSwearFilter()">
+      Enable Swear Filter?<br>
       <div id="swearFilter">
         Swear Filter Whitelisted Channel Names (separated by commas):
         <input type="text" name="swearFilterWhitelistedChannelNames" value="">
@@ -76,6 +76,60 @@
       <input type="submit" value="Save" onclick="save();">
     </form>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="ui/settings.js"></script>
+    <script>
+      var botName = $("input[name='botName']");
+      var teamNumber = $("input[name='teamNumber']");
+      var discordServerId = $("input[name='discordServerId']");
+      var trelloNotificationsOn = $("input[name='trelloNotificationsOn']");
+      var trelloNotifications = $("#trelloNotifications");
+      var trelloNotificationChannelId = $("input[name='trelloNotificationChannelId']");
+      var trelloPollInterval = $("input[name='trelloPollInterval']");
+      var watchedTrelloBoardIds = $("input[name='watchedTrelloBoardIds']");
+      var createCard = $("input[name='createCard']");
+      var updateCard = $("input[name='updateCard']");
+      var deleteCard = $("input[name='deleteCard']");
+      var commentCard = $("input[name='commentCard']");
+      var addMemberToCard = $("input[name='addMemberToCard']");
+      var removeMemberFromCard = $("input[name='removeMemberFromCard']");
+      var createList = $("input[name='createList']");
+      var updateList = $("input[name='updateList']");
+      var addAttachmentToCard = $("input[name='addAttachmentToCard']");
+      var deleteAttachmentFromCard =$("input[name='deleteAttachmentFromCard']");
+      var addChecklistToCard = $("input[name='addChecklistToCard']");
+      var removeChecklistFromCard = $("input[name='removeChecklistFromCard']");
+      var updateCheckItemStateOnCard = $("input[name='updateCheckItemStateOnCard']");
+      var trelloPrefix = $("input[name='trelloPrefix']");
+      var orderRequestEmailSystemOn = $("input[name='orderRequestEmailSystemOn']");
+      var orderRequestSystem = $("#orderRequestSystem");
+      var orderPlacedChecklistItemName = $("input[name='orderPlacedChecklistItemName']");
+      var orderPlacedListName = $("input[name='orderPlacedListName']");
+      var orderRequestedListName = $("input[name='orderRequestedListName']");
+      var swearFilterOn = $("input[name='swearFilterOn']");
+      var swearFilter = $("#swearFilter");
+      var swearFilterWhitelistedChannelNames = $("input[name='swearFilterWhitelistedChannelNames']");
+      var blaiseWhitelistedChannelNames = $("input[name='blaiseWhitelistedChannelNames']");
+      var restrictedCommandRoles = $("input[name='restrictedCommandRoles']");
+
+      $(function() {
+
+      });
+
+      function toggleTrelloNotifications() {
+        trelloNotifications.toggle();
+        console.log("ran");
+      }
+
+      function toggleOrderRequestSystem() {
+        orderRequestSystem.toggle();
+      }
+
+      function toggleSwearFilter() {
+        swearFilter.toggle();
+      }
+
+      function save() {
+
+      }
+    </script>
   </body>
 </html>
