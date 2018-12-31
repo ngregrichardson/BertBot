@@ -480,3 +480,9 @@ app.on('listening',function(){
 setInterval(() => {
   http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
 }, 280000);
+
+app.use(express.static('public'));
+
+app.get('/', function(request, response) {
+  response.sendFile(__dirname + '/ui/index.html');
+});
