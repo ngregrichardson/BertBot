@@ -11,7 +11,44 @@
       Team Number:
       <input type="number" name="teamNumber" value="4750"><br>
       Discord Server ID:
-      <input type="test" name="teamNumber" value="4750"><br>
+      <input type="text" name="discordServerId" value="475047504750475019"><br>
+      <input type="checkbox" name="trelloNotificationsOn" value="trelloNotifications">
+      Enable Trello Notifications?<br>
+      <div id="trelloNotifications">
+        Trello Notification Channel ID:
+        <input type="text" name="trelloNotificationChannelId" value="475047504750475019"><br>
+        Trello Poll Interval (usually leave as default):
+        <input type="number" name="TrelloPolleInterval" value="10000"><br>
+        Watched Trello Board IDs (separated with a space):
+        <input type="text" name="watchedTrelloBoardIds" value=""><br>
+        Enabled Trello Notifications:<br>
+        <input type="checkbox" name="createCard" value="createCard">
+        Card Created
+        <input type="checkbox" name="updateCard" value="updateCard">
+        Card Updated
+        <input type="checkbox" name="deleteCard " value="deleteCard ">
+        Card Deleted
+        <input type="checkbox" name="commentCard" value="commentCard">
+        Card Commented On
+        <input type="checkbox" name="addMemberToCard " value="addMemberToCard ">
+        Member Added To Card
+        <input type="checkbox" name="removeMemberFromCard " value="removeMemberFromCard ">
+        Member Removed From Card
+        <input type="checkbox" name="createList" value="createList">
+        List Created
+        <input type="checkbox" name="updateList" value="updateList">
+        List Updated
+        <input type="checkbox" name="addAttachmentToCard" value="addAttachmentToCard">
+        Attachment Added To Card
+        <input type="checkbox" name="deleteAttachmentFromCard" value="deleteAttachmentFromCard">
+        Attachment Deleted From Card
+        <input type="checkbox" name="addChecklistToCard" value="addChecklistToCard">
+        Checklist Added To Card
+        <input type="checkbox" name="removeChecklistFromCard" value="removeChecklistFromCard">
+        Checklist Removed From Card
+        <input type="checkbox" name="updateCheckItemStateOnCard" value="updateCheckItemStateOnCard">
+        Checklist Item Updated
+      </div>
     </form>
   </body>
 </html>
