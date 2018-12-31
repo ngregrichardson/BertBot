@@ -5,7 +5,7 @@
     <link rel="icon" href="https://cdn.glitch.com/f9cafe91-b67e-4c85-8251-94ac56e8e212%2FBertBotFavicon.png?1546271700829" type="image/x-icon">
   </head>
   <body>
-    <form action="submit.js">
+    <form>
       Bot Name:
       <input type="text" name="botName" value="BeʳᵗBot"><br>
       Team Number:
@@ -73,7 +73,9 @@
       <input type="text" name="blaiseWhitelistedChannelNames" value="allowAll"><br>
       Restricted Command Roles (separated by commas):
       <input type="text" name="restrictedCommandRoles" value="admin,mentor,leader"><br>
-      <input type="submit"
+      <input type="submit" value="Save" onclick="save();">
     </form>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="ui/settings.js"></script>
   </body>
 </html>
