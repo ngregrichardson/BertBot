@@ -3,46 +3,6 @@ const commando = require('discord.js-commando');
 /* Config */
 const fs = require('fs');
 const config = JSON.parse(fs.readFileSync('configuration.json'));
-const watch = JSON.parse(fs.readFileSync('watch.json'));
-
-let watchDefault = {
-  "install": {
-    "include": [
-      "^package\\.json$",
-      "^\\.env$"
-    ]
-  },
-  "restart": {
-    "exclude": [
-      "^public/",
-      "^dist/"
-    ],
-    "include": [
-      "\\.js$",
-      "\\.json"
-    ]
-  },
-  "throttle": 900000
-};
-let watchOverride = {
-  "install": {
-    "include": [
-      "^package\\.json$",
-      "^\\.env$"
-    ]
-  },
-  "restart": {
-    "exclude": [
-      "^public/",
-      "^dist/"
-    ],
-    "include": [
-      "\\.js$",
-      "\\.json"
-    ]
-  },
-  "throttle": 90000
-};
 
 var file1 = "const commando = require('discord.js-commando'); class ";
 var file2 = " extends commando.Command { constructor(client) { super(client, { name: '";
@@ -81,7 +41,11 @@ class Command extends commando.Command {
   }
 
   async run(message, { name, description, response }) {
+    console.log(name);
+    console.log(description);
+    console.log(response);
     var data = file1 + capitalize(name) + file2 + name + file3 + name + file4 + description + file5 + response + file6 + capitalize(name) + file7;
+    console.log(data);
     fs.writeFile('commands/custom/' + name + '.js', data, function(err) {
       if(err) {
         console.log(err);
@@ -93,13 +57,9 @@ class Command extends commando.Command {
 module.exports = Command;
 
 function capitalize(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1)
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function refresh() {
-  fs.writeFile('commandAdded.json', '1', function(err) {
-    if(err) {
-     console.log(err); 
-    }
-  });
+  process.exit(1);
 }
