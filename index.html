@@ -26,6 +26,8 @@
         Enabled Trello Notifications:<br>
         <input type="checkbox" name="cardCreated" value="cardCreated">
         Card Created
+        <input type="checkbox" name="cardDescriptionChanged" value="cardDescriptionChanged">
+        Card Due Date Changed
         <input type="checkbox" name="cardDueDateChanged" value="cardDueDateChanged">
         Card Due Date Changed
         <input type="checkbox" name="cardPositionChanged" value="cardPositionChanged">
@@ -56,8 +58,20 @@
         Comment Added<br>
         <input type="checkbox" name="commentEdited" value="commentEdited">
         Comment Edited
+        <input type="checkbox" name="listCreated" value="listCreated">
+        List Created
+        <input type="checkbox" name="listNameChanged" value="listNameChanged">
+        List Name Changed
+        <input type="checkbox" name="listPositionChanged" value="listPositionChanged">
+        List Position Changed
+        <input type="checkbox" name="listUnarchived" value="listUnarchived">
+        List Unarchived<br>
+        <input type="checkbox" name="listArchived" value="listArchived">
+        List Archived
         <input type="checkbox" name="checklistItemMarkedComplete" value="checklistItemMarkedComplete">
-        Checklist Item Completed<br>
+        Checklist Item Completed
+        <input type="checkbox" name="checklistItemMarkedIncomplete" value="checklistItemMarkedIncomplete">
+        Checklist Item Incompleted        
       </div>
       <input type="checkbox" name="orderRequestEmailSystemOn" value="orderRequestEmailSystemOn" onchange="toggleOrderRequestSystem()">
       Enable Order Request System?<br>
