@@ -22,8 +22,7 @@ class Command extends commando.Command {
       args: [{
         key: 'action',
         prompt: 'Add or remove command',
-        type: 'string',
-        default: ''
+        type: 'string'
       },
       {
         key: 'name',
@@ -33,12 +32,14 @@ class Command extends commando.Command {
       {
         key: 'description',
         prompt: 'Description of the command',
-        type: 'string'
+        type: 'string',
+        default: ''
       },
       {
         key: 'response',
         prompt: 'The response the bot will give',
-        type: 'string'
+        type: 'string',
+        default: ''
       }]
     });
   }
@@ -56,7 +57,14 @@ class Command extends commando.Command {
         refresh();
     });
     }else if(action == 'remove') {
-      
+      fs.unlink('commands/custom/' + name + '.js', function(err) {
+        if(err) {
+         console.log(err);
+        }
+        refresh();
+      });
+    }else {
+      message.channel.send('You must specify `add` or `remove` for this command.');
     }
   }
 }
