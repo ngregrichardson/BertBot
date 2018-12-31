@@ -21,34 +21,49 @@
         <input type="number" name="TrelloPolleInterval" value="10000"><br>
         Watched Trello Board IDs (separated with a space):
         <input type="text" name="watchedTrelloBoardIds" value=""><br>
+        Trello Prefix:
+        <input type="text" name="trelloPrefix" value="!"><br>
         Enabled Trello Notifications:<br>
         <input type="checkbox" name="createCard" value="createCard">
         Card Created
-        <input type="checkbox" name="updateCard" value="updateCard">
-        Card Updated
-        <input type="checkbox" name="deleteCard " value="deleteCard ">
-        Card Deleted
-        <input type="checkbox" name="commentCard" value="commentCard">
-        Card Commented On
         <input type="checkbox" name="addMemberToCard " value="addMemberToCard ">
-        Member Added To Card
-        <input type="checkbox" name="removeMemberFromCard " value="removeMemberFromCard ">
-        Member Removed From Card
+        Card Member Added
         <input type="checkbox" name="createList" value="createList">
         List Created
         <input type="checkbox" name="updateList" value="updateList">
-        List Updated
-        <input type="checkbox" name="addAttachmentToCard" value="addAttachmentToCard">
-        Attachment Added To Card
-        <input type="checkbox" name="deleteAttachmentFromCard" value="deleteAttachmentFromCard">
-        Attachment Deleted From Card
+        List Updated<br>
+        <input type="checkbox" name="updateCard" value="updateCard">
+        Card Updated
+        <input type="checkbox" name="removeMemberFromCard " value="removeMemberFromCard ">
+        Card Member Removed
         <input type="checkbox" name="addChecklistToCard" value="addChecklistToCard">
-        Checklist Added To Card
+        Card Checklist Added<br>
+        <input type="checkbox" name="deleteCard " value="deleteCard ">
+        Card Deleted
+        <input type="checkbox" name="addAttachmentToCard" value="addAttachmentToCard">
+        Card Attachment Added
         <input type="checkbox" name="removeChecklistFromCard" value="removeChecklistFromCard">
-        Checklist Removed From Card
+        Card Checklist Removed<br>
+        <input type="checkbox" name="commentCard" value="commentCard">
+        Card Commented
+        <input type="checkbox" name="deleteAttachmentFromCard" value="deleteAttachmentFromCard">
+        Card Attachment Deleted
         <input type="checkbox" name="updateCheckItemStateOnCard" value="updateCheckItemStateOnCard">
-        Checklist Item Updated
+        Checklist Item Updated<br>
       </div>
+      <input type="checkbox" name="orderRequestEmailSystemOn" value="orderRequestEmailSystemOn">
+      Order Request System Enabled?
+      <div id="orderRequestSystem">
+        Order Request Board ID:
+        <input type="text" name="orderRequestBoardId" value=""><br>
+        Order Placed Checklist Item Name:
+        <input type="text" name="orderPlacedChecklistItemName" value="Order Placed"><br>
+        Order Placed List Name:
+        <input type="text" name="orderPlacedListName" value="Orders Placed"><br>
+        Order Requested List Name:
+        <input type="text" name="orderRequestedListName" value="Orders Requested">
+      </div>
+      <input type="checkbox" name
     </form>
   </body>
 </html>
