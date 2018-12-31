@@ -19,7 +19,7 @@
         <input type="text" name="trelloNotificationChannelId" value="475047504750475019"><br>
         Trello Poll Interval (usually leave as default):
         <input type="number" name="TrelloPolleInterval" value="10000"><br>
-        Watched Trello Board IDs (separated with a space):
+        Watched Trello Board IDs (separated by commas):
         <input type="text" name="watchedTrelloBoardIds" value=""><br>
         Trello Prefix:
         <input type="text" name="trelloPrefix" value="!"><br>
@@ -63,7 +63,17 @@
         Order Requested List Name:
         <input type="text" name="orderRequestedListName" value="Orders Requested">
       </div>
-      <input type="checkbox" name
+      <input type="checkbox" name="swearFilterOn" value="swearFilterOn">
+      Swear Filter Enabled?
+      <div id="swearFilter">
+        Swear Filter Whitelisted Channel Names (separated by commas):
+        <input type="text" name="swearFilterWhitelistedChannelNames" value="">
+      </div>
+      Blaise Whitelisted Channel Names (separated by commas):
+      <input type="text" name="blaiseWhitelistedChannelNames" value="allowAll"><br>
+      Restricted Command Roles (separated by commas):
+      <input type="text" name="restrictedCommandRoles" value="admin,mentor,leader"><br>
+      <input type="submit"
     </form>
   </body>
 </html>
