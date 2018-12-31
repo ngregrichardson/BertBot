@@ -1,6 +1,7 @@
 /* Config */
 const fs = require('fs');
 const config = JSON.parse(fs.readFileSync('configuration.json'));
+const ui = require('./server.js');
 /* Google Packages */
 const GoogleSpreadsheet = require('googleapis');
 /* Discord Packages */
@@ -467,16 +468,20 @@ const addDiscordUserData = (embed, member) => {
   return embed
 }
 /* Ping */
+
+//  cs(glitch): if I understand your question, you want to render the web page linked in server.js when someone loads https://discreet-quokka.glitch.me/, correct?
+
+// yes exactly
+
+//  cs: ok you can accomplish that by requiring server.js anywhere in this file, but you won't be able to both app.get() below 
+//    *and* serving the static file from server.js at the same route
+//  cs: *but* you don't need both. if you serve your static html file at "/" your keepalive ping will keep working
+//  cs:  so you can get rid of all of the app stuff below oncve you include server.js. Howeber the path to the static file is incorrect in there, 
+//    so that won't work until that's fixed. (notes over there) ha, nm, already fixed.
+//  cs:   ok good luck!
+
+//I think im on the same page, thank you!!
 const http = require('http');
-const express = require('express');
-const app = express();
-app.get("/", (request, response) => {
-  response.sendStatus(200);
-});
-app.listen(process.env.PORT);
-app.on('listening',function(){
-    console.log('Server is already running');
-});
 setInterval(() => {
   http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
 }, 280000);
