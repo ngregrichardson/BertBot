@@ -20,6 +20,12 @@ class Command extends commando.Command {
       memberName: 'command',
       description: 'Creates a custom command **R**',
       args: [{
+        key: 'action',
+        prompt: 'Add or remove command',
+        type: 'string',
+        default: ''
+      },
+      {
         key: 'name',
         prompt: 'Name of the command',
         type: 'string'
@@ -40,18 +46,18 @@ class Command extends commando.Command {
     return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
   }
 
-  async run(message, { name, description, response }) {
-    console.log(name);
-    console.log(description);
-    console.log(response);
-    var data = file1 + capitalize(name) + file2 + name + file3 + name + file4 + description + file5 + response + file6 + capitalize(name) + file7;
-    console.log(data);
-    fs.writeFile('commands/custom/' + name + '.js', data, function(err) {
-      if(err) {
-       console.log(err); 
-      }
-      refresh();
+  async run(message, { action, name, description, response }) {
+    if(action == 'add') {
+      var data = file1 + capitalize(name) + file2 + name + file3 + name + file4 + description + file5 + response + file6 + capitalize(name) + file7;
+      fs.writeFile('commands/custom/' + name + '.js', data, function(err) {
+        if(err) {
+         console.log(err); 
+        }
+        refresh();
     });
+    }else if(action == 'remove') {
+      
+    }
   }
 }
 module.exports = Command;
