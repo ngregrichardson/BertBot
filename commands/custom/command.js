@@ -48,10 +48,10 @@ class Command extends commando.Command {
     console.log(data);
     fs.writeFile('commands/custom/' + name + '.js', data, function(err) {
       if(err) {
-        console.log(err);
+       console.log(err); 
       }
+      refresh();
     });
-    refresh();
   }
 }
 module.exports = Command;
@@ -61,5 +61,5 @@ function capitalize(string) {
 }
 
 function refresh() {
-  process.exit(1);
+  process.exit();
 }
