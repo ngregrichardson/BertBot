@@ -14,7 +14,7 @@
       <input type="text" name="discordServerId" value="475047504750475019"><br>
       <input type="checkbox" name="trelloNotificationsOn" value="trelloNotifications" onchange="toggleTrelloNotifications()">
       Enable Trello Notifications?<br>
-      <div id="trelloNotifications">
+      <div id="trelloNotifications" style="display: none;">
         Trello Notification Channel ID:
         <input type="text" name="trelloNotificationChannelId" value="475047504750475019"><br>
         Trello Poll Interval (usually leave as default):
@@ -75,7 +75,7 @@
       </div>
       <input type="checkbox" name="orderRequestEmailSystemOn" value="orderRequestEmailSystemOn" onchange="toggleOrderRequestSystem()">
       Enable Order Request System?<br>
-      <div id="orderRequestSystem">
+      <div id="orderRequestSystem" style="display: none">
         Order Request Board ID:
         <input type="text" name="orderRequestBoardId" value=""><br>
         Order Placed Checklist Item Name:
@@ -87,7 +87,7 @@
       </div>
       <input type="checkbox" name="swearFilterOn" value="swearFilterOn" onchange="toggleSwearFilter()">
       Enable Swear Filter?<br>
-      <div id="swearFilter">
+      <div id="swearFilter" style="display: none;">
         Swear Filter Whitelisted Channel Names (separated by commas):
         <input type="text" name="swearFilterWhitelistedChannelNames" value="">
       </div>

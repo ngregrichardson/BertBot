@@ -43,6 +43,8 @@ var swearFilterWhitelistedChannelNames = $("input[name='swearFilterWhitelistedCh
 var blaiseWhitelistedChannelNames = $("input[name='blaiseWhitelistedChannelNames']");
 var restrictedCommandRoles = $("input[name='restrictedCommandRoles']");
 
+const fs = require('fs');
+
 $(function() {
   var json = config.responseJSON;
   botName.val(json.botName);
@@ -81,7 +83,7 @@ $(function() {
 
   trelloPrefix.val(json.trelloPrefix);
   orderRequestEmailSystemOn.val(json.orderRequestEmailSystemOn);
-  if(json.orderRequestEmailSystem == false) orderRequestSystem.hide(); else orderRequestSystem.show();
+  if(json.orderRequestEmailSystemOn == false) orderRequestSystem.hide(); else orderRequestSystem.show();
   orderPlacedChecklistItemName.val(json.orderPlacedChecklistItemName);
   orderPlacedListName.val(json.orderPlacedListName);
   orderRequestedListName.val(json.orderRequestedListName);
@@ -105,5 +107,5 @@ function toggleSwearFilter() {
 }
 
 function save() {
-
+  
 }

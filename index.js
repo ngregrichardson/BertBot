@@ -27,7 +27,7 @@ bot.registry.registerGroup('spam', 'Spam');
 bot.registry.registerGroup('custom', 'Custom');
 bot.registry.registerDefaults();
 bot.registry.registerCommandsIn(__dirname + "/commands");
-bot.login('NTI4NzE5NDk2MDQ4MDE3NDQ4.DwrSwA.0mb5RutsyxkgUYXQR7xkEoM-VQo');
+bot.login(process.env.TOKEN);
 /* Google Setup */
 //var doc = new GoogleSpreadsheet(process.env.GSHID);
 var sheet;
