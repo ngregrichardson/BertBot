@@ -148,7 +148,8 @@ function save() {
 
 function format() {
   console.log("ran");
-  return '{ "botName": ' + botName.val() + ', "teamNumber": ' + teamNumber.val() + ', "discordServerId": ' + discordServerId.val() + ', "trelloNotificationsOn": ' + getCheckboxValue(trelloNotificationsOn) + ', "trelloNotificationChannelId": ' + isEnabled(trelloNotificationsOn, trelloNotificationChannelId.val()) + ', "trelloPollInterval": ' + isEnabled(trelloNotificationsOn, trelloPollInterval.val()) + ', "watchedTrelloBoardIds": ' + isEnabled(trelloNotificationsOn, formatArray(watchedTrelloBoardIds)) + ', "enabledTrelloNotifications": ' + enabledTrelloNotifications() + ', "trelloPrefix": ' + isEnabled(trelloNotificationsOn, trelloPrefix.val()) + ', "orderRequestEmailSystemOn": ' + getCheckboxValue(orderRequestEmailSystemOn) + ', "orderRequestBoardId": ' + isEnabled(orderRequestEmailSystemOn, orderRequestBoardId.val()) + ', "orderPlacedChecklistItemName": ' + isEnabled(orderRequestEmailSystemOn, orderPlacedChecklistItemName.val()) + ', "orderPlacedListName": ' + isEnabled(orderRequestEmailSystemOn, orderPlacedListName.val()) + ', "orderRequestedListName": ' + isEnabled(orderRequestEmailSystemOn, orderRequestedListName.val()) + ', "swearFilterOn": ' + getCheckboxValue(swearFilterOn) + ', "swearFilterWhitelistedChannelNames": ' + isEnabled(swearFilterOn, formatArray(swearFilterWhitelistedChannelNames)) + ', "blaiseWhitelistedChannelNames": ' + formatArray(blaiseWhitelistedChannelNames) + ', "restrictedCommandRoles": ' + formatArray(restrictedCommandRoles) + ', "userIDs": {}, "contentString": "" }';
+  var data = { botName: botName.val(), teamNumber: teamNumber.val(), discordServerId: discordServerId.val(), trelloNotificationsOn: getCheckboxValue(trelloNotificationsOn), trelloNotificationChannelId: isEnabled(trelloNotificationsOn, trelloNotificationChannelId.val()), trelloPollInterval: isEnabled(trelloNotificationsOn, trelloPollInterval.val()), watchedTrelloBoardIds: isEnabled(trelloNotificationsOn, formatArray(watchedTrelloBoardIds)), enabledTrelloNotifications: enabledTrelloNotifications(), trelloPrefix: isEnabled(trelloNotificationsOn, trelloPrefix.val()), orderRequestEmailSystemOn: getCheckboxValue(orderRequestEmailSystemOn), orderRequestBoardId: isEnabled(orderRequestEmailSystemOn, orderRequestBoardId.val()), orderPlacedChecklistItemName: isEnabled(orderRequestEmailSystemOn, orderPlacedChecklistItemName.val()), orderPlacedListName: isEnabled(orderRequestEmailSystemOn, orderPlacedListName.val()), orderRequestedListName: isEnabled(orderRequestEmailSystemOn, orderRequestedListName.val()), swearFilterOn: getCheckboxValue(swearFilterOn), swearFilterWhitelistedChannelNames: isEnabled(swearFilterOn, formatArray(swearFilterWhitelistedChannelNames)), blaiseWhitelistedChannelNames: formatArray(blaiseWhitelistedChannelNames), restrictedCommandRoles: formatArray(restrictedCommandRoles), userIDs: {}, contentString: '' };
+  return JSON.stringify(data);
 }
 
 function getCheckboxValue(checkbox) {
@@ -163,7 +164,7 @@ function isEnabled(parent, value) {
   if(getCheckboxValue(parent)) {
     return value;
   }else {
-   return ""; 
+   return ''; 
   }
 }
 
@@ -172,7 +173,7 @@ function formatArray(value) {
   for(var val in array) {
     val.trim();
   }
-  return array;
+  return JSON.stringify(array);
 }
 
 function enabledTrelloNotifications() {
@@ -202,8 +203,8 @@ function enabledTrelloNotifications() {
     if(listArchived.prop('checked')) array.push(listArchived.attr('name').toString());
     if(checklistItemMarkedComplete.prop('checked')) array.push(checklistItemMarkedComplete.attr('name').toString());
     if(checklistItemMarkedIncomplete.prop('checked')) array.push(checklistItemMarkedIncomplete.attr('name').toString());
-    return array;
+    return JSON.stringify(array);
   }else {
-    return new Array();
+    return '';
   }
 }
