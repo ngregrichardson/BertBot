@@ -34,6 +34,7 @@ var checklistItemMarkedIncomplete = $("input[name='checklistItemMarkedIcomplete'
 var trelloPrefix = $("input[name='trelloPrefix']");
 var orderRequestEmailSystemOn = $("input[name='orderRequestEmailSystemOn']");
 var orderRequestSystem = $("#orderRequestSystem");
+var orderRequestBoardId = $("#orderRequestBoardId");
 var orderPlacedChecklistItemName = $("input[name='orderPlacedChecklistItemName']");
 var orderPlacedListName = $("input[name='orderPlacedListName']");
 var orderRequestedListName = $("input[name='orderRequestedListName']");
@@ -82,6 +83,7 @@ $(function() {
   trelloPrefix.val(json.trelloPrefix);
   orderRequestEmailSystemOn.val(json.orderRequestEmailSystemOn);
   if(json.orderRequestEmailSystemOn == false) orderRequestSystem.hide(); else orderRequestSystem.show();
+  orderRequestBoardId.val(json.orderRequestBoardId);
   orderPlacedChecklistItemName.val(json.orderPlacedChecklistItemName);
   orderPlacedListName.val(json.orderPlacedListName);
   orderRequestedListName.val(json.orderRequestedListName);
@@ -151,32 +153,19 @@ function format() {
   "trelloNotificationsOn": getCheckboxValue(trelloNotificationsOn),
     "trelloNotificationChannelId": isEnabled(trelloNotificationsOn, trelloNotificationChannelId.val()),
     "trelloPollInterval": isEnabled(trelloNotificationsOn, trelloPollInterval.val()),
-    "watchedTrelloBoardIds": [
-      "iO0BogOJ"
-    ],
-    "enabledTrelloNotifications": [
-      "cardCreated"
-    ],
-    "trelloPrefix": "!",
+    "watchedTrelloBoardIds": isEnabled(trelloNotificationsOn, formatArray(watchedTrelloBoardIds)),
+    "enabledTrelloNotifications": "",
+    "trelloPrefix": isEnabled(trelloNotificationsOn, trelloPrefix.val()),
   "orderRequestEmailSystemOn": getCheckboxValue(orderRequestEmailSystemOn),
-    "orderRequestBoardId": "qI0K1VAl",
-    "orderPlacedChecklistItemName": "Order Placed",
-    "orderPlacedListName": "Orders Placed",
-    "orderRequestedListName": "Orders Requested",
+    "orderRequestBoardId": isEnabled(orderRequestEmailSystemOn, orderRequestBoardId.val()),
+    "orderPlacedChecklistItemName": isEnabled(orderRequestEmailSystemOn, orderPlacedChecklistItemName.val()),
+    "orderPlacedListName": isEnabled(orderRequestEmailSystemOn, orderPlacedListName.val()),
+    "orderRequestedListName": isEnabled(orderRequestEmailSystemOn, orderRequestedListName.val()),
   "swearFilterOn": getCheckboxValue(swearFilterOn),
-    "swearFilterWhitelistedChannelNames": [
-      "spam"
-    ],
-  "blaiseWhitelistedChannelNames": [
-    "allowAll"
-  ],
-  "restrictedCommandRoles": [
-    "admin",
-    "mentor",
-    "leader"
-  ],
+    "swearFilterWhitelistedChannelNames": isEnabled(swearFilterOn, formatArray(swearFilterWhitelistedChannelNames)),
+  "blaiseWhitelistedChannelNames": formatArray(blaiseWhitelistedChannelNames),
+  "restrictedCommandRoles": formatArray(restrictedCommandRoles),
   "userIDs": {
-    "Noah": "475047504750475019"
   },
   "contentString": ""
   };
@@ -199,5 +188,37 @@ function isEnabled(parent, value) {
 }
 
 function formatArray(value) {
-  return value.split(',');
+  var array = value.split(',');
+  for(var val in array) {
+    val.trim();
+  }
+  return array;
+}
+
+function enabledTrelloNotifications() {
+  if(
+  if(cardCreated.prop('checked'))
+  if(cardDescriptionChanged.prop('checked', true);
+  if(cardDueDateChanged.prop('checked', true);
+  if(cardPositionChanged.prop('checked', true);
+  if(cardListChanged.prop('checked', true);
+  if(cardNameChanged.prop('checked', true);
+  if(emberAddedToCard.prop('checked', true);
+  if(memberRemovedFromCard.prop('checked', true);
+  if(hecklistAddedToCard.prop('checked', true);
+  if(checklistRemovedFromCard.prop('checked', true);
+  if(cardDeleted.prop('checked', true);
+  if(cardUnarchived.prop('checked', true);
+  if(cardArchived.prop('checked', true);
+  if(attachmentAddedToCard.prop('checked', true);
+  if(attachmentRemovedFromCard.prop('checked', true);
+  if(commentAdded.prop('checked', true);
+  if(commentEdited.prop('checked', true);
+  if(listCreated.prop('checked', true);
+  if(listNameChanged.prop('checked', true);
+  if(listPositionChanged.prop('checked', true);
+  if(listUnarchived.prop('checked', true);
+  if(listArchived.prop('checked', true);
+  if(checklistItemMarkedComplete.prop('checked', true);
+  if(checklistItemMarkedIncomplete.prop('checked', true);
 }
