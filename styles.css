@@ -1,0 +1,16 @@
+body {
+  background-color: #454545;
+  color: white;
+  font-family: 'Lato', sans-serif;
+}
+
+input {
+  background: transparent;
+  border: none;
+  border-bottom: solid 2px white;
+  color: white;
+}
+
+input:hover {
+  border-bottom: solid 2px #b4b4b4;
+}
