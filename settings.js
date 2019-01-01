@@ -45,15 +45,15 @@ var restrictedCommandRoles = $("input[name='restrictedCommandRoles']");
 
 $(function() {
   var json = config.responseJSON;
-  console.log(json);
   botName.val(json.botName);
   teamNumber.val(json.teamNumber);
   discordServerId.val(json.discordServerId);
   trelloNotificationsOn.val(json.trelloNotificationsOn);
-  trelloNotifications = $("#trelloNotifications");
+  if(json.trelloNotificationsOn == false) trelloNotifications.hide(); else trelloNotifications.show();
   trelloNotificationChannelId.val(json.trelloNotificationChannelId);
   trelloPollInterval.val(json.trelloPollInterval);
   watchedTrelloBoardIds.val(json.watchedTrelloBoardIds);
+  
   if(json.enabledTrelloNotifications.includes("cardCreated")) cardCreated.prop('checked', true);
   if(json.enabledTrelloNotifications.includes("cardDescriptionChanged")) cardDescriptionChanged.prop('checked', true);
   if(json.enabledTrelloNotifications.includes("cardDueDateChanged")) cardDueDateChanged.prop('checked', true);
@@ -81,12 +81,12 @@ $(function() {
 
   trelloPrefix.val(json.trelloPrefix);
   orderRequestEmailSystemOn.val(json.orderRequestEmailSystemOn);
-  orderRequestSystem = $("#orderRequestSystem");
+  if(json.orderRequestEmailSystem == false) orderRequestSystem.hide(); else orderRequestSystem.show();
   orderPlacedChecklistItemName.val(json.orderPlacedChecklistItemName);
   orderPlacedListName.val(json.orderPlacedListName);
   orderRequestedListName.val(json.orderRequestedListName);
   swearFilterOn.val(json.swearFilterOn);
-  swearFilter = $("#swearFilter");
+  if(json.swearFilterOn == false) swearFilter.hide(); else swearFilter.show();
   swearFilterWhitelistedChannelNames.val(json.swearFilterWhitelistedChannelNames);
   blaiseWhitelistedChannelNames.val(json.blaiseWhitelistedChannelNames);
   restrictedCommandRoles.val(json.restrictedCommandRoles);
