@@ -2,7 +2,10 @@
 const express = require('express');
 const app = express();
 const fs = require('fs');
+var bodyParser = require('body-parser');
 
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 app.use(express.static('public'));
 
 app.get('/', function(request, response) {
@@ -24,23 +27,16 @@ app.get('/styles', function(request, response) {
 app.post("/save", function (request, response) {
   console.log(request.body);
   
+  if(request.body.trelloNotificationsOn == undefined) {
+   console.log("none"); 
+  }
+  
   // fs.writeFile('configuration.json', data, function(err) {
   //   if(err) {
   //    console.log(err); 
   //   }
   //   response.redirect("/");
   // });
-  // try {
-  //   var posts = datastore.get("posts");
-  //   // We get the contents of the submitted form and append it to the posts array
-  //   posts.push(request.body); // the form data is in request.body because we're using the body-parser library to help make dealing with requests easier
-  //   // We store the updated posts array back in our database posts entry
-  //   datastore.set("posts", posts);
-  //   // And then we redirect the view back to the homepage
-  //   response.redirect("/");
-  // } catch (err) {
-  //   console.log(err);
-  // }
 });
 
 const listener = app.listen(process.env.PORT, function() {

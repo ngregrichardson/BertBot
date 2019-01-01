@@ -17,13 +17,13 @@
       <input type="number" name="teamNumber" value="4750"><br>
       Discord Server ID:
       <input type="text" name="discordServerId" value="475047504750475019"><br>
-      <input type="checkbox" name="trelloNotificationsOn" value="trelloNotifications" onchange="toggleTrelloNotifications()">
+      <input type="checkbox" name="trelloNotificationsOn" value="true" onchange="toggleTrelloNotifications()">
       Enable Trello Notifications?<br>
       <div id="trelloNotifications" style="display: none;">
         Trello Notification Channel ID:
         <input type="text" name="trelloNotificationChannelId" value="475047504750475019"><br>
         Trello Poll Interval (usually leave as default):
-        <input type="number" name="TrelloPolleInterval" value="10000"><br>
+        <input type="number" name="TrelloPollInterval" value="10000"><br>
         Watched Trello Board IDs (separated by commas):
         <input type="text" name="watchedTrelloBoardIds" value=""><br>
         Trello Prefix:
@@ -31,63 +31,63 @@
         Enabled Trello Notifications:<br>
         <table>
         <tr>
-        <td><input type="checkbox" name="cardCreated" value="cardCreated">
+        <td><input type="checkbox" name="cardCreated" value="true">
         Card Created</td>
-        <td><input type="checkbox" name="cardDescriptionChanged" value="cardDescriptionChanged">
+        <td><input type="checkbox" name="cardDescriptionChanged" value="true">
         Card Due Date Changed</td>
-        <td><input type="checkbox" name="cardDueDateChanged" value="cardDueDateChanged">
+        <td><input type="checkbox" name="cardDueDateChanged" value="true">
         Card Due Date Changed</td>
-        <td><input type="checkbox" name="cardPositionChanged" value="cardPositionChanged">
+        <td><input type="checkbox" name="cardPositionChanged" value="true">
         Card Position Changed</td>
         </tr><tr>
-        <td><input type="checkbox" name="cardListChanged" value="cardListChanged">
+        <td><input type="checkbox" name="cardListChanged" value="true">
         Card List Changed</td>
-        <td><input type="checkbox" name="cardNameChanged" value="cardNameChanged">
+        <td><input type="checkbox" name="cardNameChanged" value="true">
         Card Name Changed</td>
-        <td><input type="checkbox" name="memberAddedToCard" value="memberAddedToCard">
+        <td><input type="checkbox" name="memberAddedToCard" value="true">
         Card Member Added</td>
-        <td><input type="checkbox" name="removeMemberFromCard" value="removeMemberFromCard">
+        <td><input type="checkbox" name="removeMemberFromCard" value="true">
         Card Member Removed</td>
         </tr><tr>
-        <td><input type="checkbox" name="checklistAddedToCard" value="checklistAddedToCard">
+        <td><input type="checkbox" name="checklistAddedToCard" value="true">
         Card Checklist Added</td>
-        <td><input type="checkbox" name="checklistRemovedFromCard" value="checklistRemovedFromCard">
+        <td><input type="checkbox" name="checklistRemovedFromCard" value="true">
         Card Checklist Removed</td>
-        <td><input type="checkbox" name="deleteCard" value="deleteCard">
+        <td><input type="checkbox" name="deleteCard" value="true">
         Card Deleted</td>
-        <td><input type="checkbox" name="cardUnarchived" value="cardUnarchived">
+        <td><input type="checkbox" name="cardUnarchived" value="true">
         Card Unarchived</td>
         </tr><tr>
-        <td><input type="checkbox" name="cardArchived" value="cardArchived">
+        <td><input type="checkbox" name="cardArchived" value="true">
         Card Archived</td>
-        <td><input type="checkbox" name="attachmentAddedToCard" value="attachmentAddedToCard">
+        <td><input type="checkbox" name="attachmentAddedToCard" value="true">
         Card Attachment Added</td>
-        <td><input type="checkbox" name="attachmentDeletedFromCard" value="attachmentDeletedFromCard">
+        <td><input type="checkbox" name="attachmentDeletedFromCard" value="true">
         Card Attachment Deleted</td>
-        <td><input type="checkbox" name="commentAdded" value="commentAdded">
+        <td><input type="checkbox" name="commentAdded" value="true">
         Comment Added</td>
         </tr><tr>
-        <td><input type="checkbox" name="commentEdited" value="commentEdited">
+        <td><input type="checkbox" name="commentEdited" value="true">
         Comment Edited</td>
-        <td><input type="checkbox" name="listCreated" value="listCreated">
+        <td><input type="checkbox" name="listCreated" value="true">
         List Created</td>
-        <td><input type="checkbox" name="listNameChanged" value="listNameChanged">
+        <td><input type="checkbox" name="listNameChanged" value="true">
         List Name Changed</td>
-        <td><input type="checkbox" name="listPositionChanged" value="listPositionChanged">
+        <td><input type="checkbox" name="listPositionChanged" value="true">
         List Position Changed</td>
         </tr><tr>
-        <td><input type="checkbox" name="listUnarchived" value="listUnarchived">
+        <td><input type="checkbox" name="listUnarchived" value="true">
         List Unarchived</td>
-        <td><input type="checkbox" name="listArchived" value="listArchived">
+        <td><input type="checkbox" name="listArchived" value="true">
         List Archived</td>
-        <td><input type="checkbox" name="checklistItemMarkedComplete" value="checklistItemMarkedComplete">
+        <td><input type="checkbox" name="checklistItemMarkedComplete" value="true">
         Checklist Item Completed</td>
-        <td><input type="checkbox" name="checklistItemMarkedIncomplete" value="checklistItemMarkedIncomplete">
+        <td><input type="checkbox" name="checklistItemMarkedIncomplete" value="true">
         Checklist Item Incompleted</td>
         </tr>
         </table>
       </div>
-      <input type="checkbox" name="orderRequestEmailSystemOn" value="orderRequestEmailSystemOn" onchange="toggleOrderRequestSystem()">
+      <input type="checkbox" name="orderRequestEmailSystemOn" value="true" onchange="toggleOrderRequestSystem()">
       Enable Order Request System?<br>
       <div id="orderRequestSystem" style="display: none">
         Order Request Board ID:
