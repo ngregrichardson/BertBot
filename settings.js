@@ -147,7 +147,8 @@ function save() {
 }
 
 function format() {
-  return JSON.stringify({
+  var data = { "botName": botName.val() }
+  /*return JSON.stringify({
     "botName": makeString(botName.val()),
     "teamNumber": makeString(teamNumber.val()),
     "discordServerId": discordServerId.val(),
@@ -169,7 +170,7 @@ function format() {
     "userIDs": {
     },
     "contentString": ""
-    });
+    }); */
 }
 
 function getCheckboxValue(checkbox) {
