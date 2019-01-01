@@ -94,6 +94,9 @@ $(function() {
 
 function toggleTrelloNotifications() {
   trelloNotifications.toggle();
+  if(getCheckboxValue(trelloNotificationsOn)) {
+    trelloNotifications.find('*').attr
+  }
 }
 
 function toggleOrderRequestSystem() {
@@ -105,5 +108,54 @@ function toggleSwearFilter() {
 }
 
 function save() {
-  $()
+  $.post("/save", format, function(data, status) {
+    console.log(status);
+  });
+}
+
+function format() {
+  var data = {
+  "botName": botName.val(),
+  "teamNumber": teamNumber.val(),
+  "discordServerId": discordServerId.val(),
+  "trelloNotificationsOn": getCheckboxValue(trelloNotificationsOn),
+    "trelloNotificationChannelId": "529060705589002262",
+    "trelloPollInterval": 10000,
+    "watchedTrelloBoardIds": [
+      "iO0BogOJ"
+    ],
+    "enabledTrelloNotifications": [
+      "cardCreated"
+    ],
+    "trelloPrefix": "!",
+  "orderRequestEmailSystemOn": false,
+    "orderRequestBoardId": "qI0K1VAl",
+    "orderPlacedChecklistItemName": "Order Placed",
+    "orderPlacedListName": "Orders Placed",
+    "orderRequestedListName": "Orders Requested",
+  "swearFilterOn": false,
+    "swearFilterWhitelistedChannelNames": [
+      "spam"
+    ],
+  "blaiseWhitelistedChannelNames": [
+    "allowAll"
+  ],
+  "restrictedCommandRoles": [
+    "admin",
+    "mentor",
+    "leader"
+  ],
+  "userIDs": {
+    "Noah": "475047504750475019"
+  },
+  "contentString": ""
+  };
+}
+
+function getCheckboxValue(checkbox) {
+  if(checkbox.prop('checked')) {
+    return true;   
+  }else {
+     return false;
+  }
 }
