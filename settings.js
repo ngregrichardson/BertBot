@@ -140,36 +140,36 @@ function toggleSwearFilter() {
 }
 
 function save() {
+  console.log("ran");
   $.post("/save", format(), function(data, status) {
-    console.log(status);
+    console.log(data);
   });
 }
 
 function format() {
-  var data = {
-  "botName": botName.val(),
-  "teamNumber": teamNumber.val(),
-  "discordServerId": discordServerId.val(),
-  "trelloNotificationsOn": getCheckboxValue(trelloNotificationsOn),
-    "trelloNotificationChannelId": isEnabled(trelloNotificationsOn, trelloNotificationChannelId.val()),
-    "trelloPollInterval": isEnabled(trelloNotificationsOn, trelloPollInterval.val()),
-    "watchedTrelloBoardIds": isEnabled(trelloNotificationsOn, formatArray(watchedTrelloBoardIds)),
-    "enabledTrelloNotifications": enabledTrelloNotifications(),
-    "trelloPrefix": isEnabled(trelloNotificationsOn, trelloPrefix.val()),
-  "orderRequestEmailSystemOn": getCheckboxValue(orderRequestEmailSystemOn),
-    "orderRequestBoardId": isEnabled(orderRequestEmailSystemOn, orderRequestBoardId.val()),
-    "orderPlacedChecklistItemName": isEnabled(orderRequestEmailSystemOn, orderPlacedChecklistItemName.val()),
-    "orderPlacedListName": isEnabled(orderRequestEmailSystemOn, orderPlacedListName.val()),
-    "orderRequestedListName": isEnabled(orderRequestEmailSystemOn, orderRequestedListName.val()),
-  "swearFilterOn": getCheckboxValue(swearFilterOn),
-    "swearFilterWhitelistedChannelNames": isEnabled(swearFilterOn, formatArray(swearFilterWhitelistedChannelNames)),
-  "blaiseWhitelistedChannelNames": formatArray(blaiseWhitelistedChannelNames),
-  "restrictedCommandRoles": formatArray(restrictedCommandRoles),
-  "userIDs": {
-  },
-  "contentString": ""
-  };
-  return data;
+  return {
+    "botName": botName.val(),
+    "teamNumber": teamNumber.val(),
+    "discordServerId": discordServerId.val(),
+    "trelloNotificationsOn": getCheckboxValue(trelloNotificationsOn),
+      "trelloNotificationChannelId": isEnabled(trelloNotificationsOn, trelloNotificationChannelId.val()),
+      "trelloPollInterval": isEnabled(trelloNotificationsOn, trelloPollInterval.val()),
+      "watchedTrelloBoardIds": isEnabled(trelloNotificationsOn, formatArray(watchedTrelloBoardIds)),
+      "enabledTrelloNotifications": enabledTrelloNotifications(),
+      "trelloPrefix": isEnabled(trelloNotificationsOn, trelloPrefix.val()),
+    "orderRequestEmailSystemOn": getCheckboxValue(orderRequestEmailSystemOn),
+      "orderRequestBoardId": isEnabled(orderRequestEmailSystemOn, orderRequestBoardId.val()),
+      "orderPlacedChecklistItemName": isEnabled(orderRequestEmailSystemOn, orderPlacedChecklistItemName.val()),
+      "orderPlacedListName": isEnabled(orderRequestEmailSystemOn, orderPlacedListName.val()),
+      "orderRequestedListName": isEnabled(orderRequestEmailSystemOn, orderRequestedListName.val()),
+    "swearFilterOn": getCheckboxValue(swearFilterOn),
+      "swearFilterWhitelistedChannelNames": isEnabled(swearFilterOn, formatArray(swearFilterWhitelistedChannelNames)),
+    "blaiseWhitelistedChannelNames": formatArray(blaiseWhitelistedChannelNames),
+    "restrictedCommandRoles": formatArray(restrictedCommandRoles),
+    "userIDs": {
+    },
+    "contentString": ""
+    };
 }
 
 function getCheckboxValue(checkbox) {
