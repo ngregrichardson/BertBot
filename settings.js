@@ -90,21 +90,51 @@ $(function() {
   swearFilterWhitelistedChannelNames.val(json.swearFilterWhitelistedChannelNames);
   blaiseWhitelistedChannelNames.val(json.blaiseWhitelistedChannelNames);
   restrictedCommandRoles.val(json.restrictedCommandRoles);
+  
+  if(getCheckboxValue(trelloNotificationsOn)) {
+    trelloNotifications.find('*').attr('disabled', false);
+  }else {
+    trelloNotifications.find('*').attr('disabled', true);
+  }
+  
+  if(getCheckboxValue(orderRequestEmailSystemOn)) {
+    orderRequestSystem.find('*').attr('disabled', false);
+  }else {
+    orderRequestSystem.find('*').attr('disabled', true);
+  }
+  
+  if(getCheckboxValue(swearFilterOn)) {
+    swearFilter.find('*').attr('disabled', false);
+  }else {
+    swearFilter.find('*').attr('disabled', true);
+  }
 });
 
 function toggleTrelloNotifications() {
   trelloNotifications.toggle();
   if(getCheckboxValue(trelloNotificationsOn)) {
-    trelloNotifications.find('*').attr
+    trelloNotifications.find('*').attr('disabled', false);
+  }else {
+    trelloNotifications.find('*').attr('disabled', true);
   }
 }
 
 function toggleOrderRequestSystem() {
   orderRequestSystem.toggle();
+  if(getCheckboxValue(orderRequestEmailSystemOn)) {
+    orderRequestSystem.find('*').attr('disabled', false);
+  }else {
+    orderRequestSystem.find('*').attr('disabled', true);
+  }
 }
 
 function toggleSwearFilter() {
   swearFilter.toggle();
+  if(getCheckboxValue(swearFilterOn)) {
+    swearFilter.find('*').attr('disabled', false);
+  }else {
+    swearFilter.find('*').attr('disabled', true);
+  }
 }
 
 function save() {
@@ -119,8 +149,8 @@ function format() {
   "teamNumber": teamNumber.val(),
   "discordServerId": discordServerId.val(),
   "trelloNotificationsOn": getCheckboxValue(trelloNotificationsOn),
-    "trelloNotificationChannelId": "529060705589002262",
-    "trelloPollInterval": 10000,
+    "trelloNotificationChannelId": isEnabled(trelloNotificationsOn, trelloNotificationChannelId.val()),
+    "trelloPollInterval": isEnabled(trelloNotificationsOn, trelloPollInterval.val()),
     "watchedTrelloBoardIds": [
       "iO0BogOJ"
     ],
@@ -128,12 +158,12 @@ function format() {
       "cardCreated"
     ],
     "trelloPrefix": "!",
-  "orderRequestEmailSystemOn": false,
+  "orderRequestEmailSystemOn": getCheckboxValue(orderRequestEmailSystemOn),
     "orderRequestBoardId": "qI0K1VAl",
     "orderPlacedChecklistItemName": "Order Placed",
     "orderPlacedListName": "Orders Placed",
     "orderRequestedListName": "Orders Requested",
-  "swearFilterOn": false,
+  "swearFilterOn": getCheckboxValue(swearFilterOn),
     "swearFilterWhitelistedChannelNames": [
       "spam"
     ],
@@ -158,4 +188,16 @@ function getCheckboxValue(checkbox) {
   }else {
      return false;
   }
+}
+
+function isEnabled(parent, value) {
+  if(getCheckboxValue(parent)) {
+    return value;
+  }else {
+   return null; 
+  }
+}
+
+function formatArray(value) {
+  return value.split(',');
 }
