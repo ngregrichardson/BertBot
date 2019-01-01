@@ -1,4 +1,4 @@
-var config = $.getJSON('/config')
+var config = $.getJSON('/config');
 var botName = $("input[name='botName']");
 var teamNumber = $("input[name='teamNumber']");
 var discordServerId = $("input[name='discordServerId']");
@@ -148,12 +148,12 @@ function save() {
 
 function format() {
   return {
-    "botName": botName.val(),
-    "teamNumber": teamNumber.val(),
-    "discordServerId": discordServerId.val(),
+    "botName": botName.val().toString(),
+    "teamNumber": teamNumber.val().toString(),
+    "discordServerId": discordServerId.val().parseInt(),
     "trelloNotificationsOn": getCheckboxValue(trelloNotificationsOn),
-      "trelloNotificationChannelId": isEnabled(trelloNotificationsOn, trelloNotificationChannelId.val()),
-      "trelloPollInterval": isEnabled(trelloNotificationsOn, trelloPollInterval.val()),
+      "trelloNotificationChannelId": isEnabled(trelloNotificationsOn, trelloNotificationChannelId.val()).parseInt(),
+      "trelloPollInterval": isEnabled(trelloNotificationsOn, trelloPollInterval.val()).parseInt(),
       "watchedTrelloBoardIds": isEnabled(trelloNotificationsOn, formatArray(watchedTrelloBoardIds)),
       "enabledTrelloNotifications": enabledTrelloNotifications(),
       "trelloPrefix": isEnabled(trelloNotificationsOn, trelloPrefix.val()),
@@ -189,7 +189,7 @@ function isEnabled(parent, value) {
 }
 
 function formatArray(value) {
-  var array = value.split(',');
+  var array = value.toString().split(',');
   for(var val in array) {
     val.trim();
   }
@@ -199,7 +199,7 @@ function formatArray(value) {
 function enabledTrelloNotifications() {
   var array = new Array();
   if(getCheckboxValue(trelloNotificationsOn)) {
-    if(cardCreated.prop('checked')) array.push(cardCreated.attr('name'));
+    if(cardCreated.prop('checked')) array.push(cardCreated.attr('name').toString());
     if(cardDescriptionChanged.prop('checked')) array.push(cardDescriptionChanged.attr('name'));
     if(cardDueDateChanged.prop('checked')) array.push(cardDueDateChanged.attr('name'));
     if(cardPositionChanged.prop('checked')) array.push(cardPositionChanged.attr('name'));
