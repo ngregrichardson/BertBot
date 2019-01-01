@@ -43,8 +43,6 @@ var swearFilterWhitelistedChannelNames = $("input[name='swearFilterWhitelistedCh
 var blaiseWhitelistedChannelNames = $("input[name='blaiseWhitelistedChannelNames']");
 var restrictedCommandRoles = $("input[name='restrictedCommandRoles']");
 
-const fs = require('fs');
-
 $(function() {
   var json = config.responseJSON;
   botName.val(json.botName);
