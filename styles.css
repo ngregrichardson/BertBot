@@ -4,6 +4,14 @@ body {
   font-family: 'Lato', sans-serif;
 }
 
+::selection {
+ background: red; 
+}
+
+form {
+ text-align: center; 
+}
+
 input {
   background: transparent;
   border: none;
@@ -13,4 +21,9 @@ input {
 
 input:hover {
   border-bottom: solid 2px #b4b4b4;
+}
+
+table {
+ margin: auto;
+ text-align: left;
 }
