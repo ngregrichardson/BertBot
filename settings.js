@@ -140,7 +140,7 @@ function toggleSwearFilter() {
 }
 
 function save() {
-  $.post("/save", format, function(data, status) {
+  $.post("/save", format(), function(data, status) {
     console.log(status);
   });
 }
@@ -154,7 +154,7 @@ function format() {
     "trelloNotificationChannelId": isEnabled(trelloNotificationsOn, trelloNotificationChannelId.val()),
     "trelloPollInterval": isEnabled(trelloNotificationsOn, trelloPollInterval.val()),
     "watchedTrelloBoardIds": isEnabled(trelloNotificationsOn, formatArray(watchedTrelloBoardIds)),
-    "enabledTrelloNotifications": "",
+    "enabledTrelloNotifications": enabledTrelloNotifications(),
     "trelloPrefix": isEnabled(trelloNotificationsOn, trelloPrefix.val()),
   "orderRequestEmailSystemOn": getCheckboxValue(orderRequestEmailSystemOn),
     "orderRequestBoardId": isEnabled(orderRequestEmailSystemOn, orderRequestBoardId.val()),
@@ -169,6 +169,7 @@ function format() {
   },
   "contentString": ""
   };
+  return data;
 }
 
 function getCheckboxValue(checkbox) {
@@ -215,12 +216,15 @@ function enabledTrelloNotifications() {
     if(attachmentRemovedFromCard.prop('checked')) array.push(attachmentRemovedFromCard.attr('name'));
     if(commentAdded.prop('checked')) array.push(commentAdded.attr('name'));
     if(commentEdited.prop('checked')) array.push(commentEdited.attr('name'));
-    if(listCreated.prop('checked'))
-    if(listNameChanged.prop('checked'))
-    if(listPositionChanged.prop('checked'))
-    if(listUnarchived.prop('checked'))
-    if(listArchived.prop('checked'))
-    if(checklistItemMarkedComplete.prop('checked'))
-    if(checklistItemMarkedIncomplete.prop('checked'))
+    if(listCreated.prop('checked')) array.push(listCreated.attr('name'));
+    if(listNameChanged.prop('checked')) array.push(listNameChanged.attr('name'));
+    if(listPositionChanged.prop('checked')) array.push(listPositionChanged.attr('name'));
+    if(listUnarchived.prop('checked')) array.push(listUnarchived.attr('name'));
+    if(listArchived.prop('checked')) array.push(listArchived.attr('name'));
+    if(checklistItemMarkedComplete.prop('checked')) array.push(checklistItemMarkedComplete.attr('name'));
+    if(checklistItemMarkedIncomplete.prop('checked')) array.push(checklistItemMarkedIncomplete.attr('name'));
+    return array;
+  }else {
+    return undefined;
   }
 }

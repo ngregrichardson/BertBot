@@ -10,7 +10,7 @@
     <h1>
       BeʳᵗBot Configuration
     </h1>
-    <form action="/save" method="post">
+    <form>
       Bot Name:
       <input type="text" name="botName" value="BeʳᵗBot"><br>
       Team Number:
@@ -109,7 +109,7 @@
       <input type="text" name="blaiseWhitelistedChannelNames" value="allowAll"><br>
       Restricted Command Roles (separated by commas):
       <input type="text" name="restrictedCommandRoles" value="admin,mentor,leader"><br>
-      <input type="submit" value="Save">
+      <input type="submit" value="Save" onclick="save()">
     </form>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>
     <script src="/settings" type="text/javascript"></script>

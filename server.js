@@ -25,18 +25,12 @@ app.get('/styles', function(request, response) {
 });
 
 app.post("/save", function (request, response) {
-  console.log(request.body);
-  
-  if(request.body.trelloNotificationsOn == undefined) {
-   console.log("none"); 
-  }
-  
-  // fs.writeFile('configuration.json', data, function(err) {
-  //   if(err) {
-  //    console.log(err); 
-  //   }
-  //   response.redirect("/");
-  // });
+  fs.writeFile('configuration.json', request.body, function(err) {
+    if(err) {
+     console.log(err); 
+    }
+    response.redirect("/");
+  });
 });
 
 const listener = app.listen(process.env.PORT, function() {
