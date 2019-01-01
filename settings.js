@@ -184,7 +184,7 @@ function isEnabled(parent, value) {
   if(getCheckboxValue(parent)) {
     return value;
   }else {
-   return null; 
+   return ""; 
   }
 }
 
@@ -193,7 +193,7 @@ function makeString(value) {
 }
 
 function formatArray(value) {
-  var array = value.toString().split(',');
+  var array = makeString(value).split(',');
   for(var val in array) {
     val.trim();
   }
@@ -223,12 +223,12 @@ function enabledTrelloNotifications() {
     if(listCreated.prop('checked')) array.push(listCreated.attr('name').toString());
     if(listNameChanged.prop('checked')) array.push(listNameChanged.attr('name').toString());
     if(listPositionChanged.prop('checked')) array.push(listPositionChanged.attr('name').toString());
-    if(listUnarchived.prop('checked')) array.push(listUnarchived.attr('name'));
-    if(listArchived.prop('checked')) array.push(listArchived.attr('name'));
-    if(checklistItemMarkedComplete.prop('checked')) array.push(checklistItemMarkedComplete.attr('name'));
-    if(checklistItemMarkedIncomplete.prop('checked')) array.push(checklistItemMarkedIncomplete.attr('name'));
+    if(listUnarchived.prop('checked')) array.push(listUnarchived.attr('name').toString());
+    if(listArchived.prop('checked')) array.push(listArchived.attr('name').toString());
+    if(checklistItemMarkedComplete.prop('checked')) array.push(checklistItemMarkedComplete.attr('name').toString());
+    if(checklistItemMarkedIncomplete.prop('checked')) array.push(checklistItemMarkedIncomplete.attr('name').toString());
     return array;
   }else {
-    return undefined;
+    return "";
   }
 }
