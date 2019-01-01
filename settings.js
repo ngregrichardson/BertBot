@@ -196,29 +196,31 @@ function formatArray(value) {
 }
 
 function enabledTrelloNotifications() {
-  if(
-  if(cardCreated.prop('checked'))
-  if(cardDescriptionChanged.prop('checked', true);
-  if(cardDueDateChanged.prop('checked', true);
-  if(cardPositionChanged.prop('checked', true);
-  if(cardListChanged.prop('checked', true);
-  if(cardNameChanged.prop('checked', true);
-  if(emberAddedToCard.prop('checked', true);
-  if(memberRemovedFromCard.prop('checked', true);
-  if(hecklistAddedToCard.prop('checked', true);
-  if(checklistRemovedFromCard.prop('checked', true);
-  if(cardDeleted.prop('checked', true);
-  if(cardUnarchived.prop('checked', true);
-  if(cardArchived.prop('checked', true);
-  if(attachmentAddedToCard.prop('checked', true);
-  if(attachmentRemovedFromCard.prop('checked', true);
-  if(commentAdded.prop('checked', true);
-  if(commentEdited.prop('checked', true);
-  if(listCreated.prop('checked', true);
-  if(listNameChanged.prop('checked', true);
-  if(listPositionChanged.prop('checked', true);
-  if(listUnarchived.prop('checked', true);
-  if(listArchived.prop('checked', true);
-  if(checklistItemMarkedComplete.prop('checked', true);
-  if(checklistItemMarkedIncomplete.prop('checked', true);
+  var array = {};
+  if(getCheckboxValue(trelloNotificationsOn)) {
+    if(cardCreated.prop('checked')) 
+    if(cardDescriptionChanged.prop('checked', true);
+    if(cardDueDateChanged.prop('checked', true);
+    if(cardPositionChanged.prop('checked', true);
+    if(cardListChanged.prop('checked', true);
+    if(cardNameChanged.prop('checked', true);
+    if(emberAddedToCard.prop('checked', true);
+    if(memberRemovedFromCard.prop('checked', true);
+    if(hecklistAddedToCard.prop('checked', true);
+    if(checklistRemovedFromCard.prop('checked', true);
+    if(cardDeleted.prop('checked', true);
+    if(cardUnarchived.prop('checked', true);
+    if(cardArchived.prop('checked', true);
+    if(attachmentAddedToCard.prop('checked', true);
+    if(attachmentRemovedFromCard.prop('checked', true);
+    if(commentAdded.prop('checked', true);
+    if(commentEdited.prop('checked', true);
+    if(listCreated.prop('checked', true);
+    if(listNameChanged.prop('checked', true);
+    if(listPositionChanged.prop('checked', true);
+    if(listUnarchived.prop('checked', true);
+    if(listArchived.prop('checked', true);
+    if(checklistItemMarkedComplete.prop('checked', true);
+    if(checklistItemMarkedIncomplete.prop('checked', true);
+  }
 }
