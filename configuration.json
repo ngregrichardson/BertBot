@@ -9,7 +9,7 @@
       "iO0BogOJ"
     ],
     "enabledTrelloNotifications": [
-      "cardCreated"
+      "cardDeleted"
     ],
     "trelloPrefix": "!",
   "orderRequestEmailSystemOn": false,
