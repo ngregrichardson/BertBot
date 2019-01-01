@@ -1,7 +1,7 @@
 
 const express = require('express');
 const app = express();
-var datastore = require("./datastore").sync;
+const fs = require('fs');
 
 app.use(express.static('public'));
 
@@ -22,8 +22,14 @@ app.get('/styles', function(request, response) {
 });
 
 app.post("/save", function (request, response) {
-  console.log(request);
-  condole.log(response);
+  console.log(request.body);
+  
+  // fs.writeFile('configuration.json', data, function(err) {
+  //   if(err) {
+  //    console.log(err); 
+  //   }
+  //   response.redirect("/");
+  // });
   // try {
   //   var posts = datastore.get("posts");
   //   // We get the contents of the submitted form and append it to the posts array
@@ -36,8 +42,6 @@ app.post("/save", function (request, response) {
   //   console.log(err);
   // }
 });
-
-datastore.initializeApp(app);
 
 const listener = app.listen(process.env.PORT, function() {
   console.log('Your app is listening on port ' + listener.address().port);
