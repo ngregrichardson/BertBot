@@ -107,3 +107,8 @@ function toggleSwearFilter() {
 function save() {
   
 }
+// Gotcha...I think I can figure it out with that I didn;'t think of it like that...youll see me asking for help if it doesnt work!
+// I'm not even really sure it's possible...
+// The issue is it is a clientside script...I'm calling it from an html file so require doesnt work
+// tell it to send the data u want to save to the server then have the server edit the file then when it 
+//is done tell it to confirm then continue
