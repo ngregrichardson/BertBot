@@ -147,29 +147,29 @@ function save() {
 }
 
 function format() {
-  return {
-    "botName": botName.val().toString(),
-    "teamNumber": teamNumber.val().toString(),
-    "discordServerId": discordServerId.val().parseInt(),
+  return JSON.stringify({
+    "botName": makeString(botName.val()),
+    "teamNumber": makeString(teamNumber.val()),
+    "discordServerId": discordServerId.val(),
     "trelloNotificationsOn": getCheckboxValue(trelloNotificationsOn),
-      "trelloNotificationChannelId": isEnabled(trelloNotificationsOn, trelloNotificationChannelId.val()).parseInt(),
-      "trelloPollInterval": isEnabled(trelloNotificationsOn, trelloPollInterval.val()).parseInt(),
+      "trelloNotificationChannelId": isEnabled(trelloNotificationsOn, trelloNotificationChannelId.val()),
+      "trelloPollInterval": isEnabled(trelloNotificationsOn, trelloPollInterval.val()),
       "watchedTrelloBoardIds": isEnabled(trelloNotificationsOn, formatArray(watchedTrelloBoardIds)),
       "enabledTrelloNotifications": enabledTrelloNotifications(),
-      "trelloPrefix": isEnabled(trelloNotificationsOn, trelloPrefix.val()),
+      "trelloPrefix": makeString(isEnabled(trelloNotificationsOn, trelloPrefix.val())),
     "orderRequestEmailSystemOn": getCheckboxValue(orderRequestEmailSystemOn),
       "orderRequestBoardId": isEnabled(orderRequestEmailSystemOn, orderRequestBoardId.val()),
-      "orderPlacedChecklistItemName": isEnabled(orderRequestEmailSystemOn, orderPlacedChecklistItemName.val()),
-      "orderPlacedListName": isEnabled(orderRequestEmailSystemOn, orderPlacedListName.val()),
-      "orderRequestedListName": isEnabled(orderRequestEmailSystemOn, orderRequestedListName.val()),
+      "orderPlacedChecklistItemName": makeString(isEnabled(orderRequestEmailSystemOn, orderPlacedChecklistItemName.val())),
+      "orderPlacedListName": makeString(isEnabled(orderRequestEmailSystemOn, orderPlacedListName.val())),
+      "orderRequestedListName": makeString(isEnabled(orderRequestEmailSystemOn, orderRequestedListName.val())),
     "swearFilterOn": getCheckboxValue(swearFilterOn),
-      "swearFilterWhitelistedChannelNames": isEnabled(swearFilterOn, formatArray(swearFilterWhitelistedChannelNames)),
+      "swearFilterWhitelistedChannelNames": makeString(isEnabled(swearFilterOn, formatArray(swearFilterWhitelistedChannelNames))),
     "blaiseWhitelistedChannelNames": formatArray(blaiseWhitelistedChannelNames),
     "restrictedCommandRoles": formatArray(restrictedCommandRoles),
     "userIDs": {
     },
     "contentString": ""
-    };
+    });
 }
 
 function getCheckboxValue(checkbox) {
@@ -188,6 +188,10 @@ function isEnabled(parent, value) {
   }
 }
 
+function makeString(value) {
+  return '"' + value + '"';
+}
+
 function formatArray(value) {
   var array = value.toString().split(',');
   for(var val in array) {
@@ -200,25 +204,25 @@ function enabledTrelloNotifications() {
   var array = new Array();
   if(getCheckboxValue(trelloNotificationsOn)) {
     if(cardCreated.prop('checked')) array.push(cardCreated.attr('name').toString());
-    if(cardDescriptionChanged.prop('checked')) array.push(cardDescriptionChanged.attr('name'));
-    if(cardDueDateChanged.prop('checked')) array.push(cardDueDateChanged.attr('name'));
-    if(cardPositionChanged.prop('checked')) array.push(cardPositionChanged.attr('name'));
-    if(cardListChanged.prop('checked')) array.push(cardListChanged.attr('name'));
-    if(cardNameChanged.prop('checked')) array.push(cardNameChanged.attr('name'));
-    if(memberAddedToCard.prop('checked')) array.push(memberAddedToCard.attr('name'));
-    if(memberRemovedFromCard.prop('checked')) array.push(memberRemovedFromCard.attr('name'));
-    if(checklistAddedToCard.prop('checked')) array.push(checklistAddedToCard.attr('name'));
-    if(checklistRemovedFromCard.prop('checked')) array.push(checklistRemovedFromCard.attr('name'));
-    if(cardDeleted.prop('checked')) array.push(cardDeleted.attr('name'));
-    if(cardUnarchived.prop('checked')) array.push(cardUnarchived.attr('name'));
-    if(cardArchived.prop('checked')) array.push(cardArchived.attr('name'));
-    if(attachmentAddedToCard.prop('checked')) array.push(attachmentAddedToCard.attr('name'));
-    if(attachmentRemovedFromCard.prop('checked')) array.push(attachmentRemovedFromCard.attr('name'));
-    if(commentAdded.prop('checked')) array.push(commentAdded.attr('name'));
-    if(commentEdited.prop('checked')) array.push(commentEdited.attr('name'));
-    if(listCreated.prop('checked')) array.push(listCreated.attr('name'));
-    if(listNameChanged.prop('checked')) array.push(listNameChanged.attr('name'));
-    if(listPositionChanged.prop('checked')) array.push(listPositionChanged.attr('name'));
+    if(cardDescriptionChanged.prop('checked')) array.push(cardDescriptionChanged.attr('name').toString());
+    if(cardDueDateChanged.prop('checked')) array.push(cardDueDateChanged.attr('name').toString());
+    if(cardPositionChanged.prop('checked')) array.push(cardPositionChanged.attr('name').toString());
+    if(cardListChanged.prop('checked')) array.push(cardListChanged.attr('name').toString());
+    if(cardNameChanged.prop('checked')) array.push(cardNameChanged.attr('name').toString());
+    if(memberAddedToCard.prop('checked')) array.push(memberAddedToCard.attr('name').toString());
+    if(memberRemovedFromCard.prop('checked')) array.push(memberRemovedFromCard.attr('name').toString());
+    if(checklistAddedToCard.prop('checked')) array.push(checklistAddedToCard.attr('name').toString());
+    if(checklistRemovedFromCard.prop('checked')) array.push(checklistRemovedFromCard.attr('name').toString());
+    if(cardDeleted.prop('checked')) array.push(cardDeleted.attr('name').toString());
+    if(cardUnarchived.prop('checked')) array.push(cardUnarchived.attr('name').toString());
+    if(cardArchived.prop('checked')) array.push(cardArchived.attr('name').toString());
+    if(attachmentAddedToCard.prop('checked')) array.push(attachmentAddedToCard.attr('name').toString());
+    if(attachmentRemovedFromCard.prop('checked')) array.push(attachmentRemovedFromCard.attr('name').toString());
+    if(commentAdded.prop('checked')) array.push(commentAdded.attr('name').toString());
+    if(commentEdited.prop('checked')) array.push(commentEdited.attr('name').toString());
+    if(listCreated.prop('checked')) array.push(listCreated.attr('name').toString());
+    if(listNameChanged.prop('checked')) array.push(listNameChanged.attr('name').toString());
+    if(listPositionChanged.prop('checked')) array.push(listPositionChanged.attr('name').toString());
     if(listUnarchived.prop('checked')) array.push(listUnarchived.attr('name'));
     if(listArchived.prop('checked')) array.push(listArchived.attr('name'));
     if(checklistItemMarkedComplete.prop('checked')) array.push(checklistItemMarkedComplete.attr('name'));
