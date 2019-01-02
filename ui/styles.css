@@ -43,3 +43,26 @@ table {
   color: red;
   font-weight: bold;
 }
+
+iframe {
+  position: absolute;
+  bottom: 20px;
+  right:20px;
+  width: 20%;
+  height: 50%;
+}
+
+@media only screen and (max-width: 1145px) {
+  iframe {
+    width: 40%;
+    height: 50%;
+  }
+}
+
+@media only screen and (max-width: 635px), only screen and (max-device-width: 640px) {
+  iframe {
+    margin: auto;
+    width: 90%;
+    height: 30%;
+  }
+}
