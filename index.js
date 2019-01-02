@@ -52,17 +52,17 @@ const events = new Trello({
 bot.on('ready', () => {
   /* Trello Events Setup */
   if(config.trelloNotificationsOn) {
-    let guild = bot.guilds.get(parseInt(config.discordServerId))
-    let channel = bot.channels.get(parseInt(config.trelloNotificationChannelId))
-    // if (!guild) {
-    //   console.log(`Server with ID "${parseInt(config.discordServerId)}" not found! I can't function without a valid server and channel.\nPlease add the correct server ID to your conf file, or if the conf data is correct, ensure I have proper access.\nYou may need to add me to your server using this link:\n    https://discordapp.com/api/oauth2/authorize?client_id=${bot.user.id}&permissions=8&scope=bot`)
-    //   process.exit()
-    // } else if (!channel) {
-    //   console.log(`Channel with ID "${parseInt(config.trelloNotificationChannelId)}" not found! I can't function without a valid channel.\nPlease add the correct channel ID to your conf file, or if the conf data is correct, ensure I have proper access.`)
-    //   process.exit()
-    // } else if (!config.watchedTrelloBoardIds || config.watchedTrelloBoardIds.length < 1) {
-    //   console.log(`No board IDs provided! Please add at least one to your conf file. Check the readme if you need help finding a board ID.`)
-    // }
+    let guild = bot.guilds.get(config.discordServerId)
+    let channel = bot.channels.get(config.trelloNotificationChannelId)
+    if (!guild) {
+      console.log(`Server with ID "${config.discordServerId}" not found! I can't function without a valid server and channel.\nPlease add the correct server ID to your conf file, or if the conf data is correct, ensure I have proper access.\nYou may need to add me to your server using this link:\n    https://discordapp.com/api/oauth2/authorize?client_id=${bot.user.id}&permissions=8&scope=bot`)
+      process.exit()
+    } else if (!channel) {
+      console.log(`Channel with ID "${config.trelloNotificationChannelId}" not found! I can't function without a valid channel.\nPlease add the correct channel ID to your conf file, or if the conf data is correct, ensure I have proper access.`)
+      process.exit()
+    } else if (!config.watchedTrelloBoardIds || config.watchedTrelloBoardIds.length < 1) {
+      console.log(`No board IDs provided! Please add at least one to your conf file. Check the readme if you need help finding a board ID.`)
+    }
     conf.guild = guild
     conf.channel = channel
     if (!config.contentString) config.contentString = ""

@@ -25,14 +25,15 @@ app.get('/styles', function(request, response) {
 });
 
 app.post("/save", function (request, response) {
+  console.log(request.body);
   console.log(JSON.stringify(request.body));
-  fs.writeFile('configuration.json', JSON.stringify(request.body), function(err) {
-    if(err) {
-     console.log(err);
-    }
-    process.exit();
-    response.redirect("/");
-  });
+  // fs.writeFile('configuration.json', JSON.stringify(request.body), function(err) {
+  //   if(err) {
+  //    console.log(err);
+  //   }
+  //   process.exit();
+  //   response.redirect("/");
+  // });
 });
 
 const listener = app.listen(process.env.PORT, function() {

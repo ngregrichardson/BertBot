@@ -1,1 +1,36 @@
-{"botName":"Doop","teamNumber":"254","discordServerId":"529060705589002260","trelloNotificationsOn":"true","trelloNotificationChannelId":"529060705589002262","trelloPollInterval":"NaN","watchedTrelloBoardIds[]":"iO0BogOJ","enabledTrelloNotifications":"[\"cardCreated\"]","trelloPrefix":"!","orderRequestEmailSystemOn":"false","orderRequestBoardId":"","orderPlacedChecklistItemName":"","orderPlacedListName":"","orderRequestedListName":"","swearFilterOn":"true","swearFilterWhitelistedChannelNames[]":"","blaiseWhitelistedChannelNames[]":"allowAll","restrictedCommandRoles[]":["admin","mentor","leader"],"contentString":""}
+{
+  "botName": "BertBot",
+  "teamNumber": "4750",
+  "discordServerId": "529060705589002260",
+  "trelloNotificationsOn": false,
+    "trelloNotificationChannelId": "529060705589002262",
+    "trelloPollInterval": 10000,
+    "watchedTrelloBoardIds": [
+      "iO0BogOJ"
+    ],
+    "enabledTrelloNotifications": [
+      "cardCreated"
+    ],
+    "trelloPrefix": "!",
+  "orderRequestEmailSystemOn": false,
+    "orderRequestBoardId": "qI0K1VAl",
+    "orderPlacedChecklistItemName": "Order Placed",
+    "orderPlacedListName": "Orders Placed",
+    "orderRequestedListName": "Orders Requested",
+  "swearFilterOn": false,
+    "swearFilterWhitelistedChannelNames": [
+      "spam"
+    ],
+  "blaiseWhitelistedChannelNames": [
+    "allowAll"
+  ],
+  "restrictedCommandRoles": [
+    "admin",
+    "mentor",
+    "leader"
+  ],
+  "userIDs": {
+    "Noah": "475047504750475019"
+  },
+  "contentString": ""
+}
