@@ -46,7 +46,8 @@ var restrictedCommandRoles = $("input[name='restrictedCommandRoles']");
 var errorSpace = $("#error");
 
 $(function() {
-  if(config) {
+  errorSpace.innerHTML = localStorage.getItem('message');
+  if(config == undefined) {
     var json = config.responseJSON;
     botName.val(json.botName);
     teamNumber.val(json.teamNumber);
@@ -119,7 +120,8 @@ $(function() {
     blaiseWhitelistedChannelNames.val(json.blaiseWhitelistedChannelNames);
     restrictedCommandRoles.val(json.restrictedCommandRoles);
   }else {
-   handleError("The configuration couldn't be loaded. Try refreshing the page."); 
+    localStorage.setItem('message', 'The configuration was not found, so we reloaded the page.');
+    location.reload();
   }
 });
 
@@ -240,7 +242,7 @@ function enabledTrelloNotifications() {
 }
 
 function restart() {
-  $.post("/restart", "restart", function(data, status) {
+  $.post("/restart", "restart", function(resData, redStatus) {
     close();
   });
 }
