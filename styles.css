@@ -1,7 +1,8 @@
 body {
-  background-color: #454545;
+  background-color: #363942;
   color: white;
   font-family: 'Lato', sans-serif;
+  font-size: 110%;
 }
 
 ::selection {
@@ -13,7 +14,8 @@ h1 {
 }
 
 form {
- text-align: center; 
+  text-align: center;
+  font-weight: bold;
 }
 
 input {
@@ -36,8 +38,8 @@ table {
  text-align: left;
 }
 
-input[type='submit'] {
- font-size: 110%;
+input {
+ font-size: 90%;
 }
 
 #error {
