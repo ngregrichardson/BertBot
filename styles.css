@@ -23,6 +23,7 @@ input {
   border: none;
   border-bottom: solid 2px white;
   color: white;
+  font-size: 90%;
 }
 
 input:hover {
@@ -36,10 +37,6 @@ input:active, input:focus {
 table {
  margin: auto;
  text-align: left;
-}
-
-input {
- font-size: 90%;
 }
 
 #error {

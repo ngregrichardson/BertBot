@@ -33,8 +33,8 @@ app.post("/save", function (request, response) {
     if(err) {
      response.redirect();
     }
-    process.exit();
     response.redirect("/");
+    process.exit();
   });
 });
 
