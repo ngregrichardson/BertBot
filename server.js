@@ -24,6 +24,10 @@ app.get('/styles', function(request, response) {
   response.sendFile(__dirname + '/ui/styles.css');
 });
 
+app.get('/store', function(request, response) {
+  response.sendFile(__dirname + '/ui/store.js');
+});
+
 app.post("/restart", function(request, response) {
   process.exit();
 });
