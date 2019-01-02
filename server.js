@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 app.get('/', function(request, response) {
-  response.sendFile(__dirname + '/index.html');
+  response.sendFile(__dirname + '/ui/index.html');
 });
 
 app.get('/config', function(request, response) {
@@ -17,11 +17,11 @@ app.get('/config', function(request, response) {
 });
 
 app.get('/settings', function(request, response) {
-  response.sendFile(__dirname + '/settings.js');
+  response.sendFile(__dirname + '/ui/settings.js');
 });
 
 app.get('/styles', function(request, response) {
-  response.sendFile(__dirname + '/styles.css');
+  response.sendFile(__dirname + '/ui/styles.css');
 });
 
 app.post("/save", function (request, response) {
@@ -34,7 +34,6 @@ app.post("/save", function (request, response) {
      response.redirect();
     }
     response.redirect("/");
-    process.exit();
   });
 });
 
