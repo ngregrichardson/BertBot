@@ -25,13 +25,13 @@ app.get('/styles', function(request, response) {
 });
 
 app.post("/save", function (request, response) {
-  console.log(request.body);
-  fs.writeFile('configuration.json', request.body, function(err) {
-    if(err) {
-     console.log(err); 
-    }
-    //response.redirect("/");
-  });
+  //console.log(JSON.parse(request.body));
+  // fs.writeFile('configuration.json', JSON.parse(request.body), function(err) {
+  //   if(err) {
+  //    console.log(err); 
+  //   }
+  //   //response.redirect("/");
+  // });
 });
 
 const listener = app.listen(process.env.PORT, function() {
