@@ -47,16 +47,18 @@ class Meeting extends commando.Command {
 
   async run(message, { action, description, day, month, time }) {
     if(action == 'add') {
-      console.log(moment().year());
-      console.log(month);
-      console.log(moment().month(month).format('M'));
-      console.log(parseInt(time.split(':')[0]));
-      console.log(parseInt(time.split(':')[1]));
-      //var date = moment([ moment().year(), month, parseInt(day), parseInt(time.split(':')[0]), parseInt(time.split(':')[1])]).toObject();
-      //var remaining = moment().diff(date, 'days');
-      //console.log(date);
-      //console.log(remaining);
-      //meetings.meetings.push([description, date, remaining]);
+      if(!meetings.meetings) {
+        fs.writeFile('commands/meetings/meetings.json', JSON.stringify({ "meetings": [] }), function(err) {
+          
+        });
+      }
+      var date = moment([ moment().year(), moment().month(month).format('M') - 1, parseInt(day), parseInt(time.split(':')[0]), parseInt(time.split(':')[1])]).toObject();
+      var remaining = moment(date).diff(moment(), 'days');
+      date.description = description;
+      meetings.meetings.push(date);
+      fs.writeFile('commands/meetings/meetings.json', JSON.stringify(meetings.meetings), function(err) {
+        process.exit();
+      });
     }
   }
 }
