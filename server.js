@@ -28,7 +28,7 @@ app.post("/save", function (request, response) {
   console.log(JSON.stringify(request.body));
   fs.writeFile('configuration.json', JSON.stringify(request.body), function(err) {
     if(err) {
-     console.log(err); 
+     console.log(err);
     }
     process.exit();
     response.redirect("/");
