@@ -4,7 +4,7 @@ var teamNumber = $("input[name='teamNumber']");
 var discordServerId = $("input[name='discordServerId']");
 var trelloNotificationsOn = $("input[name='trelloNotificationsOn']");
 var trelloNotifications = $("#trelloNotifications");
-var trelloNotificationChannelName = $("input[name='trelloNotificationChannelName']");
+var trelloNotificationChannelId = $("input[name='trelloNotificationChannelId']");
 var trelloPollInterval = $("input[name='trelloPollInterval']");
 var watchedTrelloBoardIds = $("input[name='watchedTrelloBoardIds']");
 var cardCreated = $("input[name='cardCreated']");
@@ -59,7 +59,7 @@ $(function() {
     trelloNotificationsOn.prop('checked', true);
     trelloNotifications.find('*').attr('disabled', false);
   }
-  trelloNotificationChannelName.val(json.trelloNotificationChannelName);
+  trelloNotificationChannelId.val(json.trelloNotificationChannelId);
   trelloPollInterval.val(json.trelloPollInterval);
   watchedTrelloBoardIds.val(json.watchedTrelloBoardIds);
   
@@ -157,7 +157,7 @@ function format() {
     "teamNumber": teamNumber.val(),
     "discordServerId": parseInt(discordServerId.val()),
     "trelloNotificationsOn": getCheckboxValue(trelloNotificationsOn),
-      "trelloNotificationChannelName": isEnabled(trelloNotificationsOn, trelloNotificationChannelName.val()),
+      "trelloNotificationChannelId": isEnabled(trelloNotificationsOn, trelloNotificationChannelId.val()),
       "trelloPollInterval": isEnabled(trelloNotificationsOn, parseInt(trelloPollInterval.val())),
       "watchedTrelloBoardIds": isEnabled(trelloNotificationsOn, formatArray(watchedTrelloBoardIds)),
       "enabledTrelloNotifications": enabledTrelloNotifications(),

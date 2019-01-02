@@ -12,105 +12,109 @@
     </h1>
     <form>
       Bot Name:
-      <input type="text" name="botName" value=""><br>
+      <input type="text" name="botName" value="BeʳᵗBot"><br>
       Team Number:
-      <input type="number" name="teamNumber" value=""><br>
+      <input type="number" name="teamNumber" value="4750"><br>
       Discord Server ID:
-      <input type="text" name="discordServerId" value=""><br>
-      <input type="checkbox" name="trelloNotificationsOn" value="" onchange="toggleTrelloNotifications()">
+      <input type="text" name="discordServerId" value="475047504750475019"><br>
+      <input type="checkbox" name="trelloNotificationsOn" value="true" onchange="toggleTrelloNotifications()">
       Enable Trello Notifications?<br>
       <div id="trelloNotifications" style="display: none;">
-        Trello Notification Channel Name:
-        <input type="text" name="trelloNotificationChannelName" value=""><br>
+        Trello Notification Channel ID:
+        <input type="text" name="trelloNotificationChannelId" value="475047504750475019"><br>
         Trello Poll Interval (usually leave as default):
-        <input type="number" name="TrelloPollInterval" value=""><br>
+        <input type="number" name="TrelloPollInterval" value="10000"><br>
         Watched Trello Board IDs (separated by commas):
         <input type="text" name="watchedTrelloBoardIds" value=""><br>
         Trello Prefix:
-        <input type="text" name="trelloPrefix" value=""><br>
+        <input type="text" name="trelloPrefix" value="!"><br>
         Enabled Trello Notifications:<br>
         <table>
         <tr>
-        <td><input type="checkbox" name="cardCreated" value="">
+        <td><input type="checkbox" name="cardCreated" value="true">
         Card Created</td>
-        <td><input type="checkbox" name="cardDescriptionChanged" value="">
+        <td><input type="checkbox" name="cardDescriptionChanged" value="true">
         Card Due Date Changed</td>
-        <td><input type="checkbox" name="cardDueDateChanged" value="">
+        <td><input type="checkbox" name="cardDueDateChanged" value="true">
         Card Due Date Changed</td>
-        <td><input type="checkbox" name="cardPositionChanged" value="">
+        <td><input type="checkbox" name="cardPositionChanged" value="true">
         Card Position Changed</td>
         </tr><tr>
-        <td><input type="checkbox" name="cardListChanged" value="">
+        <td><input type="checkbox" name="cardListChanged" value="true">
         Card List Changed</td>
-        <td><input type="checkbox" name="cardNameChanged" value="">
+        <td><input type="checkbox" name="cardNameChanged" value="true">
         Card Name Changed</td>
-        <td><input type="checkbox" name="memberAddedToCard" value="">
+        <td><input type="checkbox" name="memberAddedToCard" value="true">
         Card Member Added</td>
-        <td><input type="checkbox" name="removeMemberFromCard" value="">
+        <td><input type="checkbox" name="removeMemberFromCard" value="true">
         Card Member Removed</td>
         </tr><tr>
-        <td><input type="checkbox" name="checklistAddedToCard" value="">
+        <td><input type="checkbox" name="checklistAddedToCard" value="true">
         Card Checklist Added</td>
-        <td><input type="checkbox" name="checklistRemovedFromCard" value="">
+        <td><input type="checkbox" name="checklistRemovedFromCard" value="true">
         Card Checklist Removed</td>
-        <td><input type="checkbox" name="deleteCard" value="">
+        <td><input type="checkbox" name="deleteCard" value="true">
         Card Deleted</td>
-        <td><input type="checkbox" name="cardUnarchived" value="">
+        <td><input type="checkbox" name="cardUnarchived" value="true">
         Card Unarchived</td>
         </tr><tr>
-        <td><input type="checkbox" name="cardArchived" value="">
+        <td><input type="checkbox" name="cardArchived" value="true">
         Card Archived</td>
-        <td><input type="checkbox" name="attachmentAddedToCard" value="">
+        <td><input type="checkbox" name="attachmentAddedToCard" value="true">
         Card Attachment Added</td>
-        <td><input type="checkbox" name="attachmentDeletedFromCard" value="">
+        <td><input type="checkbox" name="attachmentDeletedFromCard" value="true">
         Card Attachment Deleted</td>
-        <td><input type="checkbox" name="commentAdded" value="">
+        <td><input type="checkbox" name="commentAdded" value="true">
         Comment Added</td>
         </tr><tr>
-        <td><input type="checkbox" name="commentEdited" value="">
+        <td><input type="checkbox" name="commentEdited" value="true">
         Comment Edited</td>
-        <td><input type="checkbox" name="listCreated" value="">
+        <td><input type="checkbox" name="listCreated" value="true">
         List Created</td>
-        <td><input type="checkbox" name="listNameChanged" value="">
+        <td><input type="checkbox" name="listNameChanged" value="true">
         List Name Changed</td>
-        <td><input type="checkbox" name="listPositionChanged" value="">
+        <td><input type="checkbox" name="listPositionChanged" value="true">
         List Position Changed</td>
         </tr><tr>
-        <td><input type="checkbox" name="listUnarchived" value="">
+        <td><input type="checkbox" name="listUnarchived" value="true">
         List Unarchived</td>
-        <td><input type="checkbox" name="listArchived" value="">
+        <td><input type="checkbox" name="listArchived" value="true">
         List Archived</td>
-        <td><input type="checkbox" name="checklistItemMarkedComplete" value="">
+        <td><input type="checkbox" name="checklistItemMarkedComplete" value="true">
         Checklist Item Completed</td>
-        <td><input type="checkbox" name="checklistItemMarkedIncomplete" value="">
+        <td><input type="checkbox" name="checklistItemMarkedIncomplete" value="true">
         Checklist Item Incompleted</td>
         </tr>
         </table>
       </div>
-      <input type="checkbox" name="orderRequestEmailSystemOn" value="" onchange="toggleOrderRequestSystem()">
+      <input type="checkbox" name="orderRequestEmailSystemOn" value="true" onchange="toggleOrderRequestSystem()">
       Enable Order Request System?<br>
       <div id="orderRequestSystem" style="display: none">
         Order Request Board ID:
         <input type="text" name="orderRequestBoardId" value=""><br>
         Order Placed Checklist Item Name:
-        <input type="text" name="orderPlacedChecklistItemName" value=""><br>
+        <input type="text" name="orderPlacedChecklistItemName" value="Order Placed"><br>
         Order Placed List Name:
-        <input type="text" name="orderPlacedListName" value=""><br>
+        <input type="text" name="orderPlacedListName" value="Orders Placed"><br>
         Order Requested List Name:
-        <input type="text" name="orderRequestedListName" value="">
+        <input type="text" name="orderRequestedListName" value="Orders Requested">
       </div>
-      <input type="checkbox" name="swearFilterOn" value="" onchange="toggleSwearFilter()">
+      <input type="checkbox" name="swearFilterOn" value="swearFilterOn" onchange="toggleSwearFilter()">
       Enable Swear Filter?<br>
       <div id="swearFilter" style="display: none;">
         Swear Filter Whitelisted Channel Names (separated by commas):
         <input type="text" name="swearFilterWhitelistedChannelNames" value="">
       </div>
       Blaise Whitelisted Channel Names (separated by commas):
-      <input type="text" name="blaiseWhitelistedChannelNames" value=""><br>
+      <input type="text" name="blaiseWhitelistedChannelNames" value="allowAll"><br>
       Restricted Command Roles (separated by commas):
-      <input type="text" name="restrictedCommandRoles" value=""><br>
+      <input type="text" name="restrictedCommandRoles" value="admin,mentor,leader"><br>
       <input type="submit" value="Save" onclick="save()">
     </form>
+    
+    <p id="error">
+      
+    </p>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>
     <script src="/settings" type="text/javascript"></script>
   </body>

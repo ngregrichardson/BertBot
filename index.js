@@ -52,8 +52,8 @@ const events = new Trello({
 bot.on('ready', () => {
   /* Trello Events Setup */
   if(config.trelloNotificationsOn) {
-    let guild = bot.guilds.get(config.discordServerId);
-    let channel = bot.guilds.get(config.discordServerId).channels.find('name', config.trelloNotificationChannelName);
+    let guild = bot.guilds.get(config.discordServerId)
+    let channel = bot.channels.get(config.trelloNotificationChannelId)
     if (!guild) {
       console.log(`Server with ID "${config.discordServerId}" not found! I can't function without a valid server and channel.\nPlease add the correct server ID to your conf file, or if the conf data is correct, ensure I have proper access.\nYou may need to add me to your server using this link:\n    https://discordapp.com/api/oauth2/authorize?client_id=${bot.user.id}&permissions=8&scope=bot`)
       process.exit()
