@@ -50,7 +50,15 @@ $(function() {
   teamNumber.val(json.teamNumber);
   discordServerId.val(json.discordServerId);
   trelloNotificationsOn.val(json.trelloNotificationsOn);
-  if(json.trelloNotificationsOn == false) trelloNotifications.hide(); else trelloNotifications.show();
+  if(json.trelloNotificationsOn == false) {
+    trelloNotifications.hide();
+    trelloNotificationsOn.prop('checked', false);
+    trelloNotifications.find('*').attr('disabled', true);
+  }else {
+    trelloNotifications.show();
+    trelloNotificationsOn.prop('checked', true);
+    trelloNotifications.find('*').attr('disabled', false);
+  }
   trelloNotificationChannelId.val(json.trelloNotificationChannelId);
   trelloPollInterval.val(json.trelloPollInterval);
   watchedTrelloBoardIds.val(json.watchedTrelloBoardIds);
@@ -82,34 +90,32 @@ $(function() {
 
   trelloPrefix.val(json.trelloPrefix);
   orderRequestEmailSystemOn.val(json.orderRequestEmailSystemOn);
-  if(json.orderRequestEmailSystemOn == false) orderRequestSystem.hide(); else orderRequestSystem.show();
+  if(json.orderRequestEmailSystemOn == false) {
+    orderRequestSystem.hide();
+    orderRequestEmailSystemOn.prop('checked', false);
+    orderRequestSystem.find('*').attr('disabled', true);
+  }else {
+    orderRequestSystem.show();
+    orderRequestEmailSystemOn.prop('checked', true);
+    orderRequestSystem.find('*').attr('disabled', false);
+  }
   orderRequestBoardId.val(json.orderRequestBoardId);
   orderPlacedChecklistItemName.val(json.orderPlacedChecklistItemName);
   orderPlacedListName.val(json.orderPlacedListName);
   orderRequestedListName.val(json.orderRequestedListName);
   swearFilterOn.val(json.swearFilterOn);
-  if(json.swearFilterOn == false) swearFilter.hide(); else swearFilter.show();
+  if(json.swearFilterOn == false) {
+    swearFilter.hide();
+    swearFilterOn.prop('checked', false);
+    swearFilter.find('*').attr('disabled', true);
+  }else {
+    swearFilter.show();
+    swearFilterOn.prop('checked', true);
+    swearFilter.find('*').attr('disabled', false);
+  }
   swearFilterWhitelistedChannelNames.val(json.swearFilterWhitelistedChannelNames);
   blaiseWhitelistedChannelNames.val(json.blaiseWhitelistedChannelNames);
   restrictedCommandRoles.val(json.restrictedCommandRoles);
-  
-  if(getCheckboxValue(trelloNotificationsOn)) {
-    trelloNotifications.find('*').attr('disabled', false);
-  }else {
-    trelloNotifications.find('*').attr('disabled', true);
-  }
-  
-  if(getCheckboxValue(orderRequestEmailSystemOn)) {
-    orderRequestSystem.find('*').attr('disabled', false);
-  }else {
-    orderRequestSystem.find('*').attr('disabled', true);
-  }
-  
-  if(getCheckboxValue(swearFilterOn)) {
-    swearFilter.find('*').attr('disabled', false);
-  }else {
-    swearFilter.find('*').attr('disabled', true);
-  }
 });
 
 function toggleTrelloNotifications() {
