@@ -157,12 +157,10 @@ function save() {
 }
 
 function format() {
-  console.log(discordServerId.val());
-  console.log(Number(discordServerId.val()));
   var data = {
     "botName": botName.val(),
     "teamNumber": teamNumber.val(),
-    "discordServerId": Number(discordServerId.val()),
+    "discordServerId": discordServerId.val(),
     "trelloNotificationsOn": getCheckboxValue(trelloNotificationsOn),
       "trelloNotificationChannelId": isEnabled(trelloNotificationsOn, trelloNotificationChannelId.val()),
       "trelloPollInterval": isEnabled(trelloNotificationsOn, Number(trelloPollInterval.val())),
@@ -235,7 +233,7 @@ function enabledTrelloNotifications() {
     if(listArchived.prop('checked')) array.push(listArchived.attr('name').toString());
     if(checklistItemMarkedComplete.prop('checked')) array.push(checklistItemMarkedComplete.attr('name').toString());
     if(checklistItemMarkedIncomplete.prop('checked')) array.push(checklistItemMarkedIncomplete.attr('name').toString());
-    return JSON.stringify(array);
+    return array;
   }else {
     return "";
   }
