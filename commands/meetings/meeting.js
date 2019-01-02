@@ -20,6 +20,11 @@ class Meeting extends commando.Command {
         type: 'string'
       },
       {
+        key: 'description',
+        prompt: 'Description of the meeting',
+        type: 'string'
+      },
+      {
         key: 'day',
         prompt: 'Day of the meeting',
         type: 'string'
@@ -27,14 +32,12 @@ class Meeting extends commando.Command {
       {
         key: 'month',
         prompt: 'Month of the meeting',
-        type: 'string',
-        default: ''
+        type: 'string'
       },
       {
         key: 'time',
         prompt: 'Time of the meeting',
-        type: 'string',
-        default: ''
+        type: 'string'
       }]
     });
   }
@@ -42,10 +45,10 @@ class Meeting extends commando.Command {
     return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
   }
 
-  async run(message, { action, day, month, time }) {
+  async run(message, { action, description, day, month, time }) {
     if(action == 'add') {
-      var date = moment([ moment.year(), month, day, time.split(':')[0], time.split(':')[1]]);
-      fs.
+      var date = moment([ moment.year(), parseInt(month), parseInt(day), parseInt(time.split(':')[0]), parseInt(time.split(':')[1])]).format("dddd, MMMM ");
+      meetings.meetings.push([description, date]);
     }
   }
 }
