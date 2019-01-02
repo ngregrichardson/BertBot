@@ -4,8 +4,9 @@ const commando = require('discord.js-commando');
 const fs = require('fs');
 const config = JSON.parse(fs.readFileSync('configuration.json'));
 const meetings = JSON.parse(fs.readFileSync('commands/meetings/meetings.json'));
-const moment = require('moment');
+const moment = require('node-schedule');
 const formatJSON = require('json-format');
+
 
 class Meeting extends commando.Command {
   constructor(client) {
@@ -47,8 +48,12 @@ class Meeting extends commando.Command {
 
   async run(message, { action, description, day, month, time }) {
     if(action == 'add') {
-      var date = moment([ moment.year(), parseInt(month), parseInt(day), parseInt(time.split(':')[0]), parseInt(time.split(':')[1])]).format("dddd, MMMM ");
-      meetings.meetings.push([description, date]);
+      var date = new Date(month.toUpperCase() + ' ' + parseInt(day) + '');
+      var date = moment([ moment().year(), parseInt(month), parseInt(day), parseInt(time.split(':')[0]), parseInt(time.split(':')[1])]).format("dddd, MMMM Do YYYY, h:mm a");
+      var remaining = moment().diff(date, 'days');
+      console.log(date);
+      console.log(remaining);
+      //meetings.meetings.push([description, date, remaining]);
     }
   }
 }
