@@ -254,9 +254,3 @@ function restart() {
     
   });
 }
-//do you know how to make a new webpage pop up?
-// what do you mean pop up?
-// maybe
-//make a different html page pop up, blocking the error
-//oh check your discord server :P
-//make sure the file you use has the folder of reload

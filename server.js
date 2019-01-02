@@ -24,7 +24,7 @@ app.get('/styles', function(request, response) {
 });
 
 app.post("/restart", function(request, response) {
-  response.send('');
+  response.sendFile(__dirname + '/reload/reload.html');
   process.exit();
 });
 
