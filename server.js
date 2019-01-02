@@ -25,8 +25,8 @@ app.get('/styles', function(request, response) {
 });
 
 app.post("/save", function (request, response) {
-  console.log(request.body);
-  console.log(JSON.stringify(request.body));
+  console.log(request);
+  //console.log(JSON.stringify(request.body));
   // fs.writeFile('configuration.json', JSON.stringify(request.body), function(err) {
   //   if(err) {
   //    console.log(err);
