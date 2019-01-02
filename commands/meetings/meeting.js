@@ -62,7 +62,10 @@ class Meeting extends commando.Command {
     }else if(action == 'remove') {
       for(var meeting in meetings.meetings) {
        if(meeting.description == description || meeting.day == parseInt(day) && meeting.month == moment().month(month).format('M') - 1) {
-         meetings.meetings.splice(meeting.index);
+         removeFromArray(meetings.meetings, meeting);
+         fs.writeFile('commands/meetings/meetings.json', JSON.stringify(meetings), function(err) {
+           process.exit();
+         });
        }
       }
     }
@@ -75,6 +78,10 @@ function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function refresh() {
-  process.exit();
+function removeFromArray(arr, value) {
+
+   return arr.filter(function(ele){
+       return ele != value;
+   });
+
 }
