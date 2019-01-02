@@ -9,7 +9,7 @@
     "exclude": [
       "^public/",
       "^dist/",
-      "^reload/reload.html"
+      "^reload/"
     ],
     "include": [
       "\\.js$",

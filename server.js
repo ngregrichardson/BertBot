@@ -25,7 +25,10 @@ app.get('/styles', function(request, response) {
 
 app.post("/restart", function(request, response) {
   response.sendFile(__dirname + '/reload/reload.html');
-  process.exit();
+  setTimeout(()=>{
+    process.exit();
+  }, 1000)
+  
 });
 
 app.post("/save", function (request, response) {
