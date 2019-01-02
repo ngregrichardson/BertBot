@@ -147,8 +147,8 @@ function save() {
 
 function format() {
   var data = { "botName": botName.val(), "teamNumber": teamNumber.val(), "discordServerId": parseInt(discordServerId.val()), "trelloNotificationsOn": getCheckboxValue(trelloNotificationsOn), trelloNotificationChannelId: isEnabled(trelloNotificationsOn, trelloNotificationChannelId.val()), "trelloPollInterval": isEnabled(trelloNotificationsOn, parseInt(trelloPollInterval.val())), "watchedTrelloBoardIds": isEnabled(trelloNotificationsOn, formatArray(watchedTrelloBoardIds)), "enabledTrelloNotifications": enabledTrelloNotifications(), "trelloPrefix": isEnabled(trelloNotificationsOn, trelloPrefix.val()), "orderRequestEmailSystemOn": getCheckboxValue(orderRequestEmailSystemOn), "orderRequestBoardId": isEnabled(orderRequestEmailSystemOn, orderRequestBoardId.val()), "orderPlacedChecklistItemName": isEnabled(orderRequestEmailSystemOn, orderPlacedChecklistItemName.val()), "orderPlacedListName": isEnabled(orderRequestEmailSystemOn, orderPlacedListName.val()), "orderRequestedListName": isEnabled(orderRequestEmailSystemOn, orderRequestedListName.val()), "swearFilterOn": getCheckboxValue(swearFilterOn), "swearFilterWhitelistedChannelNames": isEnabled(swearFilterOn, formatArray(swearFilterWhitelistedChannelNames)), "blaiseWhitelistedChannelNames": formatArray(blaiseWhitelistedChannelNames), "restrictedCommandRoles": formatArray(restrictedCommandRoles), "userIDs": {}, "contentString": "" };
-  console.log(JSON.stringify(data));
-  return JSON.stringify(data);
+  console.log(data);
+  return data;
 }
 
 function getCheckboxValue(checkbox) {
