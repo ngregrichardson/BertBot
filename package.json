@@ -37,7 +37,8 @@
     "write-file": "^1.0.0",
     "xmlhttprequest": "^1.8.0",
     "mongodb": "^3.1.10",
-    "synchronize": "^2.0.0"
+    "synchronize": "^2.0.0",
+    "express-session": "^1.15.6"
   },
   "repository": {
     "type": "git",

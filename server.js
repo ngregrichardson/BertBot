@@ -2,14 +2,18 @@ const express = require('express');
 const app = express();
 const session = require('express-session');
 const fs = require('fs');
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
+var ssn;
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use(session({secret: 'XASDASDA' }));
 app.use(express.static('public'));
 
 app.get('/', function(request, response) {
+  ssn = request.session;
   response.sendFile(__dirname + '/ui/index.html');
+  response.render('/', { #error: 'Changes Saved!'});
 });
 
 app.get('/config', function(request, response) {
@@ -29,19 +33,18 @@ app.post("/restart", function(request, response) {
 });
 
 app.post("/save", function (request, response) {
+  ssn = request.session;
   var data;
   for(var i in request.body) {
     data = i;
   }
-  fs.writeFile('configuration.json', data, function(err) {
-    //What you want to do is use a session variable
-    //okay...thank you! I think I had looked at this before but overlooked it. thanks a bunch!
-    //Glad I could help! Make sure to click the thank button! of course!
-  
+  fs.writeFile('configuration.json', data, function(err) {  
     if(err) {
-     response.redirect("/");
+      ssn.error = err;
+      response.redirect("/");
+    }else {
+      response.redirect("/"); 
     }
-    response.redirect("/");
   });
 });
 
