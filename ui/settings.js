@@ -46,8 +46,9 @@ var restrictedCommandRoles = $("input[name='restrictedCommandRoles']");
 var errorSpace = $("#error");
 
 $(function() {
-  errorSpace.innerHTML = localStorage.getItem('message');
-  if(config == undefined) {
+  errorSpace.text(localStorage.getItem('message'));
+  localStorage.removeItem('message');
+  if(config) {
     var json = config.responseJSON;
     botName.val(json.botName);
     teamNumber.val(json.teamNumber);
@@ -154,7 +155,7 @@ function toggleSwearFilter() {
 
 function save() {
   $.post("/save", format(), function(data, status) {
-    console.log(data);
+    
   });
 }
 
@@ -245,8 +246,4 @@ function restart() {
   $.post("/restart", "restart", function(resData, redStatus) {
     close();
   });
-}
-
-function handleError(err) {
-  errorSpace.innderHTML(err);
 }

@@ -1,13 +1,11 @@
 const express = require('express');
 const app = express();
-const session = require('express-session');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const store = require('store');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.use(session({secret: 'XASDASDA' }));
 app.use(express.static('public'));
 
 app.get('/', function(request, response) {
@@ -37,10 +35,10 @@ app.post("/save", function (request, response) {
   }
   fs.writeFile('configuration.json', data, function(err) {  
     if(err) {
-      store('message', err);
+      store.set('message', err);
       response.redirect("/");
     }else {
-      store('message', 'Changes saved!');
+      store.set('message', 'Changes saved!');
       response.redirect("/"); 
     }
   });
