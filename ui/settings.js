@@ -250,9 +250,11 @@ function enabledTrelloNotifications() {
 }
 
 function restart() {
-  $.post("/restart", "restart", function(resData, redStatus) {
-    
-  });
+  $.post("/restart", "restart", function(data, status) {
+    // you want to restart the page here?
+    //what is the issue?
+    // all of this stuff below
+  }); //basically yes. when that posts it reloads the project, but then that redirects the user to a "the project couldn't be loaded" page bc it is restarting
 }
 
 // Whenever the user hits a button, I need the project to reload. This of course throws the user to an error page,

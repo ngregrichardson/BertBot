@@ -24,6 +24,7 @@ app.get('/styles', function(request, response) {
 });
 
 app.post("/restart", function(request, response) {
+  response.send('');
   process.exit();
 });
 
@@ -39,6 +40,10 @@ app.post("/save", function (request, response) {
       response.redirect("/");
     }
   });
+});
+
+app.get("status", function (request, response) {
+  response.send('ok');
 });
 
 const listener = app.listen(process.env.PORT, function() {
