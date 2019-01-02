@@ -251,12 +251,12 @@ function enabledTrelloNotifications() {
 
 function restart() {
   $.post("/restart", "restart", function(data, status) {
-    // you want to restart the page here?
-    //what is the issue?
-    // all of this stuff below
-  }); //basically yes. when that posts it reloads the project, but then that redirects the user to a "the project couldn't be loaded" page bc it is restarting
+    
+  });
 }
-
-// Whenever the user hits a button, I need the project to reload. This of course throws the user to an error page,
-//saying that the project couldn't be loaded. Is there any nice way to do it so it will wait for the
-//Glitch project to be done before it sends them back? If not, how could I close the window for the user and THEN reload the project?
+//do you know how to make a new webpage pop up?
+// what do you mean pop up?
+// maybe
+//make a different html page pop up, blocking the error
+//oh check your discord server :P
+//make sure the file you use has the folder of reload
