@@ -56,10 +56,17 @@ class Meeting extends commando.Command {
       var remaining = moment(date).diff(moment(), 'days');
       date.description = description;
       meetings.meetings.push(date);
-      fs.writeFile('commands/meetings/meetings.json', JSON.stringify(meetings.meetings), function(err) {
+      fs.writeFile('commands/meetings/meetings.json', JSON.stringify(meetings), function(err) {
         process.exit();
       });
+    }else if(action == 'remove') {
+      for(var meeting in meetings.meetings) {
+       if(meeting.description == description || meeting.day == parseInt(day) && meeting.month == moment().month(month).format('M') - 1) {
+         meetings.meetings.splice(meeting.index);
+       }
+      }
     }
+             
   }
 }
 module.exports = Meeting;
