@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 const bodyParser = require('body-parser');
-const store = require('store');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -35,11 +34,9 @@ app.post("/save", function (request, response) {
   }
   fs.writeFile('configuration.json', data, function(err) {  
     if(err) {
-      store.set('message', err);
       response.redirect("/");
     }else {
-      store.set('message', 'Changes saved!');
-      response.redirect("/"); 
+      response.redirect("/");
     }
   });
 });

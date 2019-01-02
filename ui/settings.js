@@ -45,6 +45,8 @@ var blaiseWhitelistedChannelNames = $("input[name='blaiseWhitelistedChannelNames
 var restrictedCommandRoles = $("input[name='restrictedCommandRoles']");
 var errorSpace = $("#error");
 
+//window.onbeforeunload = closing;
+
 $(function() {
   errorSpace.text(localStorage.getItem('message'));
   localStorage.removeItem('message');
@@ -243,7 +245,11 @@ function enabledTrelloNotifications() {
 }
 
 function restart() {
+  close();
+}
+
+function closing() {
   $.post("/restart", "restart", function(resData, redStatus) {
-    close();
+  
   });
 }
