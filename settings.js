@@ -1,3 +1,4 @@
+var config = $.getJSON('/config');
 var botName = $("input[name='botName']");
 var teamNumber = $("input[name='teamNumber']");
 var discordServerId = $("input[name='discordServerId']");
@@ -42,9 +43,10 @@ var swearFilter = $("#swearFilter");
 var swearFilterWhitelistedChannelNames = $("input[name='swearFilterWhitelistedChannelNames']");
 var blaiseWhitelistedChannelNames = $("input[name='blaiseWhitelistedChannelNames']");
 var restrictedCommandRoles = $("input[name='restrictedCommandRoles']");
+var errorSpace = $("#error");
 
 $(function() {
-  $.getJSON('/config', function(config) {
+  if(config) {
     var json = config.responseJSON;
     botName.val(json.botName);
     teamNumber.val(json.teamNumber);
@@ -116,7 +118,9 @@ $(function() {
     swearFilterWhitelistedChannelNames.val(json.swearFilterWhitelistedChannelNames);
     blaiseWhitelistedChannelNames.val(json.blaiseWhitelistedChannelNames);
     restrictedCommandRoles.val(json.restrictedCommandRoles);
-    });
+  }else {
+   handleError("The configuration couldn't be loaded. Try refreshing the page."); 
+  }
 });
 
 function toggleTrelloNotifications() {
@@ -233,4 +237,8 @@ function enabledTrelloNotifications() {
   }else {
     return "";
   }
+}
+
+function handleError(err) {
+  errorSpace.innderHTML(err);
 }
