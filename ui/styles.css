@@ -40,8 +40,10 @@ table {
 }
 
 #error {
-  color: red;
   font-weight: bold;
+  width: 100%;
+  margin: auto;
+  text-align: center;
 }
 
 iframe {
