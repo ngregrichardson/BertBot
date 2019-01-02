@@ -27,7 +27,15 @@ input:hover {
   border-bottom: solid 2px #b4b4b4;
 }
 
+input:active, input:focus {
+ border: solid 2px white; 
+}
+
 table {
  margin: auto;
  text-align: left;
+}
+
+input[type='submit'] {
+ font-size: 110%;
 }

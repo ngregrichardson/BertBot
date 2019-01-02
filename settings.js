@@ -1,4 +1,3 @@
-var config = $.getJSON('/config')
 var botName = $("input[name='botName']");
 var teamNumber = $("input[name='teamNumber']");
 var discordServerId = $("input[name='discordServerId']");
@@ -45,77 +44,79 @@ var blaiseWhitelistedChannelNames = $("input[name='blaiseWhitelistedChannelNames
 var restrictedCommandRoles = $("input[name='restrictedCommandRoles']");
 
 $(function() {
-  var json = config.responseJSON;
-  botName.val(json.botName);
-  teamNumber.val(json.teamNumber);
-  discordServerId.val(json.discordServerId);
-  trelloNotificationsOn.val(json.trelloNotificationsOn);
-  if(json.trelloNotificationsOn == false) {
-    trelloNotifications.hide();
-    trelloNotificationsOn.prop('checked', false);
-    trelloNotifications.find('*').attr('disabled', true);
-  }else {
-    trelloNotifications.show();
-    trelloNotificationsOn.prop('checked', true);
-    trelloNotifications.find('*').attr('disabled', false);
-  }
-  trelloNotificationChannelId.val(json.trelloNotificationChannelId);
-  trelloPollInterval.val(json.trelloPollInterval);
-  watchedTrelloBoardIds.val(json.watchedTrelloBoardIds);
-  
-  if(json.enabledTrelloNotifications.includes("cardCreated")) cardCreated.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("cardDescriptionChanged")) cardDescriptionChanged.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("cardDueDateChanged")) cardDueDateChanged.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("cardPositionChanged")) cardPositionChanged.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("cardListChanged")) cardListChanged.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("cardNameChanged")) cardNameChanged.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("memberAddedToCard") || json.enabledTrelloNotifications.includes("memberAddedToCardBySelf")) memberAddedToCard.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("memberRemovedFromCard") || json.enabledTrelloNotifications.includes("memberRemovedFromCardBySelf")) memberRemovedFromCard.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("checklistAddedToCard")) checklistAddedToCard.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("checklistRemovedFromCard")) checklistRemovedFromCard.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("cardDeleted")) cardDeleted.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("cardUnarchived")) cardUnarchived.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("cardArchived")) cardArchived.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("attachmentAddedToCard")) attachmentAddedToCard.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("attachmentRemovedFromCard")) attachmentRemovedFromCard.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("commentAdded")) commentAdded.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("commentEdited")) commentEdited.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("listCreated")) listCreated.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("listNameChanged")) listNameChanged.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("listPositionChanged")) listPositionChanged.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("listUnarchived")) listUnarchived.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("listArchived")) listArchived.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("checklistItemMarkedComplete")) checklistItemMarkedComplete.prop('checked', true);
-  if(json.enabledTrelloNotifications.includes("checklistItemMarkedIncomplete")) checklistItemMarkedIncomplete.prop('checked', true);
+  $.getJSON('/config', function(config) {
+    var json = config.responseJSON;
+    botName.val(json.botName);
+    teamNumber.val(json.teamNumber);
+    discordServerId.val(json.discordServerId);
+    trelloNotificationsOn.val(json.trelloNotificationsOn);
+    if(json.trelloNotificationsOn == false) {
+      trelloNotifications.hide();
+      trelloNotificationsOn.prop('checked', false);
+      trelloNotifications.find('*').attr('disabled', true);
+    }else {
+      trelloNotifications.show();
+      trelloNotificationsOn.prop('checked', true);
+      trelloNotifications.find('*').attr('disabled', false);
+    }
+    trelloNotificationChannelId.val(json.trelloNotificationChannelId);
+    trelloPollInterval.val(json.trelloPollInterval);
+    watchedTrelloBoardIds.val(json.watchedTrelloBoardIds);
 
-  trelloPrefix.val(json.trelloPrefix);
-  orderRequestEmailSystemOn.val(json.orderRequestEmailSystemOn);
-  if(json.orderRequestEmailSystemOn == false) {
-    orderRequestSystem.hide();
-    orderRequestEmailSystemOn.prop('checked', false);
-    orderRequestSystem.find('*').attr('disabled', true);
-  }else {
-    orderRequestSystem.show();
-    orderRequestEmailSystemOn.prop('checked', true);
-    orderRequestSystem.find('*').attr('disabled', false);
-  }
-  orderRequestBoardId.val(json.orderRequestBoardId);
-  orderPlacedChecklistItemName.val(json.orderPlacedChecklistItemName);
-  orderPlacedListName.val(json.orderPlacedListName);
-  orderRequestedListName.val(json.orderRequestedListName);
-  swearFilterOn.val(json.swearFilterOn);
-  if(json.swearFilterOn == false) {
-    swearFilter.hide();
-    swearFilterOn.prop('checked', false);
-    swearFilter.find('*').attr('disabled', true);
-  }else {
-    swearFilter.show();
-    swearFilterOn.prop('checked', true);
-    swearFilter.find('*').attr('disabled', false);
-  }
-  swearFilterWhitelistedChannelNames.val(json.swearFilterWhitelistedChannelNames);
-  blaiseWhitelistedChannelNames.val(json.blaiseWhitelistedChannelNames);
-  restrictedCommandRoles.val(json.restrictedCommandRoles);
+    if(json.enabledTrelloNotifications.includes("cardCreated")) cardCreated.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("cardDescriptionChanged")) cardDescriptionChanged.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("cardDueDateChanged")) cardDueDateChanged.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("cardPositionChanged")) cardPositionChanged.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("cardListChanged")) cardListChanged.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("cardNameChanged")) cardNameChanged.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("memberAddedToCard") || json.enabledTrelloNotifications.includes("memberAddedToCardBySelf")) memberAddedToCard.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("memberRemovedFromCard") || json.enabledTrelloNotifications.includes("memberRemovedFromCardBySelf")) memberRemovedFromCard.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("checklistAddedToCard")) checklistAddedToCard.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("checklistRemovedFromCard")) checklistRemovedFromCard.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("cardDeleted")) cardDeleted.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("cardUnarchived")) cardUnarchived.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("cardArchived")) cardArchived.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("attachmentAddedToCard")) attachmentAddedToCard.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("attachmentRemovedFromCard")) attachmentRemovedFromCard.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("commentAdded")) commentAdded.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("commentEdited")) commentEdited.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("listCreated")) listCreated.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("listNameChanged")) listNameChanged.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("listPositionChanged")) listPositionChanged.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("listUnarchived")) listUnarchived.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("listArchived")) listArchived.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("checklistItemMarkedComplete")) checklistItemMarkedComplete.prop('checked', true);
+    if(json.enabledTrelloNotifications.includes("checklistItemMarkedIncomplete")) checklistItemMarkedIncomplete.prop('checked', true);
+
+    trelloPrefix.val(json.trelloPrefix);
+    orderRequestEmailSystemOn.val(json.orderRequestEmailSystemOn);
+    if(json.orderRequestEmailSystemOn == false) {
+      orderRequestSystem.hide();
+      orderRequestEmailSystemOn.prop('checked', false);
+      orderRequestSystem.find('*').attr('disabled', true);
+    }else {
+      orderRequestSystem.show();
+      orderRequestEmailSystemOn.prop('checked', true);
+      orderRequestSystem.find('*').attr('disabled', false);
+    }
+    orderRequestBoardId.val(json.orderRequestBoardId);
+    orderPlacedChecklistItemName.val(json.orderPlacedChecklistItemName);
+    orderPlacedListName.val(json.orderPlacedListName);
+    orderRequestedListName.val(json.orderRequestedListName);
+    swearFilterOn.val(json.swearFilterOn);
+    if(json.swearFilterOn == false) {
+      swearFilter.hide();
+      swearFilterOn.prop('checked', false);
+      swearFilter.find('*').attr('disabled', true);
+    }else {
+      swearFilter.show();
+      swearFilterOn.prop('checked', true);
+      swearFilter.find('*').attr('disabled', false);
+    }
+    swearFilterWhitelistedChannelNames.val(json.swearFilterWhitelistedChannelNames);
+    blaiseWhitelistedChannelNames.val(json.blaiseWhitelistedChannelNames);
+    restrictedCommandRoles.val(json.restrictedCommandRoles);
+    });
 });
 
 function toggleTrelloNotifications() {
