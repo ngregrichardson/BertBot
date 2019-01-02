@@ -239,6 +239,10 @@ function enabledTrelloNotifications() {
   }
 }
 
+function restart() {
+  close();
+}
+
 function handleError(err) {
   errorSpace.innderHTML(err);
 }
