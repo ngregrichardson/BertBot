@@ -240,7 +240,9 @@ function enabledTrelloNotifications() {
 }
 
 function restart() {
-  close();
+  $.post("/restart", "restart", function(data, status) {
+    close();
+  });
 }
 
 function handleError(err) {
