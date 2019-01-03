@@ -76,16 +76,10 @@ class Meeting extends commando.Command {
          collector.on('collect', message => {
            if(message.content.toLowerCase() == "yes") {
              meetings.meetings.splice(i, 1);
+             console.log(meetings.meetings);
+             fs.writeFileSync('commands/meetings/meetings.json', JSON.stringify(meetings));
              message.channel.send('The meeting was deleted');
-             fs.writeFile('commands/meetings/meetings.json', JSON.stringify(meetings), function(err) {
-                if(err) {
-                  console.log(err);
-                }
-               console.log('ran');
-                // setTimeout(function() {
-                //   process.exit();
-                // }, 2000);
-              });
+             process.exit();
            }else if(message.content.toLowerCase() == "no") {
              message.channel.send('The process was aborted');
            }else {

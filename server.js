@@ -23,6 +23,10 @@ app.get('/styles', function(request, response) {
   response.sendFile(__dirname + '/ui/styles.css');
 });
 
+app.get('/meetings', function(request, response) {
+  response.sendFile(__dirname + '/commands/meetings/meetings.json');
+});
+
 app.post("/restart", function(request, response) {
   response.sendFile(__dirname + '/reload/reload.html');
   setTimeout(()=>{
