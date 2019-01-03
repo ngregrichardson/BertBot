@@ -10,7 +10,7 @@ class Winner extends commando.Command {
       name: 'winner',
       group: 'random',
       memberName: 'winner',
-      description: 'Displays the guaranteed next winner of the next FRC season.',
+      description: 'Displays the guaranteed winners of the next FRC season',
       throttling: {
         usages: 1,
         duration: 60

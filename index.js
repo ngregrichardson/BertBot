@@ -174,14 +174,10 @@ bot.on('ready', () => {
               let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`Upcoming meeting on: ${moment(data.meetings[i]).format('dddd, MMMM Do, h:mm')}`).setDescription(`**Meeting Plans:** ${data.meetings[i].description}`);
               bot.channels.get(config.meetingNotificationChannelId).send(embed);
               data.meetings.splice(i, 1);
-              fs.writeFile('commands/meetings/meetings.json', JSON.stringify(data), function(err) {
-                if(err) {
-                  console.log(err);
-                }
-                setTimeout(function() {
-                  process.exit();
-                }, 3000);
-              });
+              fs.writeFileSync('commands/meetings/meetings.json', JSON.stringify(data));
+              setTimeout(function() {
+                process.exit();
+              }, 2000);
             }
           }
         }
@@ -201,7 +197,7 @@ bot.on('message', message => { // When a message is sent
           if (message.content.toLowerCase().split(" ")[x] == profanities[i].toLowerCase()) { // If any of the words match
             var time = new Date(); // Get the date and time
             message.guild.owner.send('**' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + '** | **' + message.author.username + '** tried to say **'+ profanities[i] + '** in **' + message.channel.name + "** `" + message.content + "`"); // Send a message to the server owner
-            message.author.send("Your message in **" + message.channel.name + "** was deleted because it contained **" + profanities[i] + "**. If this is a mistake, contact your server moderator. Otherwise, you might want to retry sending your message like this: `" + message.content.replace(profanities[i], "****") + "`"); // Send a message to the author
+            message.author.send("Your message in **" + message.channel.name + "** was deleted because it contained **" + profanities[i] + "**. If this is a mistake, contact your server owner. Otherwise, you might want to retry sending your message like this: `" + message.content.replace(profanities[i], "****") + "`"); // Send a message to the author
             message.delete(); // Delete the message
             return; // Move on
           }
@@ -212,27 +208,26 @@ bot.on('message', message => { // When a message is sent
 });
 
 
-/* In progress like tracker */
+/* Like Tracker */
 
-// bot.on('messageReactionAdd', function(messageReaction, user) {
-//   if(messageReaction._emoji.name == '👍') {
-//     function setAuth(step) {
-//       var creds = {
-//         client_email: process.env.SAE,
-//         private_key: process.env.GPK
-//       };
-//       //doc.useServiceAccountAuth(creds, step);
-//     }
-//   }
-// });
-
-// function checkForLikes(message) {
-//   for(var i = 0; i < message.reactions.length; i++) {
-//     if(message.reactions[i].emoji.id == '490900369811963914') {
-//       // TODO: Google sheets stuff here
-//     }
-//   }
-// }
+bot.on('messageReactionAdd', function(messageReaction, user) {
+  if(config.likeCounterOn) {
+    if(messageReaction._emoji.name == '👍') {
+      fs.readFile('commands/random/likes.json', function(err, response) {
+        var data = JSON.parse(response);
+        var author = messageReaction.message.author.username;
+        var reactor = user.username;
+        if(author != reactor) {
+          if(!data[author]) {
+            data[author] = 0;
+          }
+          data[author]++;
+          fs.writeFileSync('commands/random/likes.json', JSON.stringify(data));
+        }
+      });
+    }
+  }
+});
 
 /*
 ** ====================================

@@ -7,41 +7,40 @@ var meetings = JSON.parse(fs.readFileSync('commands/meetings/meetings.json'));
 const moment = require('moment');
 const formatJSON = require('json-format');
 const Discord = require('discord.js');
-const prompter = require('discordjs-prompt');
 
 class Meeting extends commando.Command {
   constructor(client) {
     super(client, {
       name: 'meeting',
-      group: 'custom',
+      group: 'meetings',
       memberName: 'meeting',
-      description: 'Creates a custom command **R**',
+      description: 'Manages meetings **R**',
       args: [{
         key: 'action',
-        prompt: 'Add or delete a meeting.',
+        prompt: 'The correct usage of `!meeting` is `!meeting **add|remove** "description" day month time',
         type: 'string'
       },
       {
         key: 'description',
-        prompt: 'Description of the meeting',
+        prompt: 'The correct usage of `!meeting` is `!meeting add|remove "**description**" day month time',
         type: 'string',
         default: ''
       },
       {
         key: 'day',
-        prompt: 'Day of the meeting',
+        prompt: 'The correct usage of `!meeting` is `!meeting add|remove "description" **day** month time',
         type: 'string',
         default: ''
       },
       {
         key: 'month',
-        prompt: 'Month of the meeting',
+        prompt: 'The correct usage of `!meeting` is `!meeting add|remove "description" day **month** time',
         type: 'string',
         default: ''
       },
       {
         key: 'time',
-        prompt: 'Time of the meeting',
+        prompt: 'The correct usage of `!meeting` is `!meeting add|remove "description" day month **time**',
         type: 'string',
         default: ''
       }]
@@ -64,7 +63,7 @@ class Meeting extends commando.Command {
       var remaining = moment(date).diff(moment(), 'days');
       date.description = description;
       meetings.meetings.push(date);
-      message.channel.send('The meeting was created');
+      message.channel.send('The meeting was added. The bot is now restarting.');
       fs.writeFileSync('commands/meetings/meetings.json', JSON.stringify(meetings));
       setTimeout(function() {
         process.exit();
@@ -72,28 +71,28 @@ class Meeting extends commando.Command {
     }else if(action == 'remove') {
       for(var i = 0; i < meetings.meetings.length; i++) {
        if(meetings.meetings[i].description == description || meetings.meetings[i].day == parseInt(day) && meetings.meetings[i].month == moment().month(month).format('M') - 1) {
-         let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`Are you sure you want to remove this?`).setDescription(`**Upcoming meeting on:** ${moment(meetings.meetings[i]).format('dddd, MMMM Do, h:mm')}\n\n**Meeting Plans:** ${meetings.meetings[i].description}`);
+         let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`Are you sure you want to remove this? (yes/no)`).setDescription(`**Upcoming meeting on:** ${moment(meetings.meetings[i]).format('dddd, MMMM Do, h:mm')}\n\n**Meeting Plans:** ${meetings.meetings[i].description}`);
          message.channel.send(embed);
          var collector = new Discord.MessageCollector(message.channel, m => m.author.id == message.author.id, { time: 10000 });
          collector.on('collect', message => {
            if(message.content.toLowerCase() == "yes") {
              meetings.meetings.splice(i - 1, 1);
              fs.writeFileSync('commands/meetings/meetings.json', JSON.stringify(meetings));
-             message.channel.send('The meeting was deleted. The bot is now restarting.');
+             message.channel.send('The meeting was removed. The bot is now restarting.');
              setTimeout(function() {
                process.exit();
              }, 2000);
            }else if(message.content.toLowerCase() == "no") {
-             message.channel.send('The process was aborted');
+             message.channel.send('The removal process was aborted.');
              return;
            }else {
-             message.channel.send('Please answer with `yes` or `no`');
+             message.channel.send('The correct usage is `yes|no`');
            }
          });
        }
       }
     }else {
-      message.channel.send('You must specify `add` or `remove` for this command.');
+      message.channel.send('The correct usage of `!meeting` is `!meeting **add|remove** "description" day month time');
     }
              
   }

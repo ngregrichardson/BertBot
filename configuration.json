@@ -17,6 +17,7 @@
   "swearFilterWhitelistedChannelNames":[""],
   "meetingNotificationsOn":false,
   "meetingNotificationChannelId":"",
+  "likeCounterOn": false,
   "blaiseWhitelistedChannelNames":["allowAll"],
   "restrictedCommandRoles":["owner"],
   "userIDs":{},

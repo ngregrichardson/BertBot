@@ -12,19 +12,19 @@ module.exports = class Strawpoll extends commando.Command {
       name: 'strawpoll',
       group: 'polls',
       memberName: 'strawpoll',
-      description: 'Creates a new strawpoll and sends the link in the channel. **R**',
+      description: 'Creates a strawpoll **R**',
       throttling: {
         usages: 1,
         duration: 10
       },
       args: [{
         key: 'title',
-        prompt: 'What is the title of the strawpoll?',
+        prompt: 'The correct usage of `!strawpoll` is `!strawpoll "**title**" ["option 1"] ["option 2"]...`',
         type: 'string',
         max: 200
       }, {
         key: 'options',
-        prompt: 'The options in the strawpoll.',
+        prompt: 'The correct usage of `!strawpoll` is `!strawpoll "title" **["option 1"] ["option 2"]**...`',
         type: 'string',
         infinite: true,
         max: 140

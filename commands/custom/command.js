@@ -18,26 +18,26 @@ class Command extends commando.Command {
       name: 'command',
       group: 'custom',
       memberName: 'command',
-      description: 'Creates a custom command **R**',
+      description: 'Manages custom commands **R**',
       args: [{
         key: 'action',
-        prompt: 'Add or remove command',
+        prompt: 'The correct usage of `!command` is `!command **add|remove** name "description" "response"',
         type: 'string'
       },
       {
         key: 'name',
-        prompt: 'Name of the command',
+        prompt: 'The correct usage of `!command` is `!command add|remove **name** "description" "response"',
         type: 'string'
       },
       {
         key: 'description',
-        prompt: 'Description of the command',
+        prompt: 'The correct usage of `!command` is `!command add|remove name "**description**" "response"',
         type: 'string',
         default: ''
       },
       {
         key: 'response',
-        prompt: 'The response the bot will give',
+        prompt: 'The correct usage of `!command` is `!command add|remove name "description" "**response**"',
         type: 'string',
         default: ''
       }]
@@ -50,19 +50,19 @@ class Command extends commando.Command {
   async run(message, { action, name, description, response }) {
     if(action == 'add') {
       var data = file1 + capitalize(name) + file2 + name + file3 + name + file4 + description + file5 + response + file6 + capitalize(name) + file7;
-      message.channel.send('The command was added. The bot is now restarting.');
+      message.channel.send('The !' + name + ' command was added. The bot is now restarting.');
       fs.writeFileSync('commands/custom/' + name + '.js', data);
       setTimeout(function() {
         process.exit();
       }, 2000);
     }else if(action == 'remove') {
-      message.channel.send('The command was deleted. The bot is now restarting.');
+      message.channel.send('The !' + name + ' command was removed. The bot is now restarting.');
       fs.unlinkSync('commands/custom/' + name + '.js');
       setTimeout(function() {
         process.exit();
       }, 2000);
     }else {
-      message.channel.send('You must specify `add` or `remove` for this command.');
+      message.channel.send('The correct usage of `!command` is `!command **add|remove** name "description" "response"');
     }
   }
 }

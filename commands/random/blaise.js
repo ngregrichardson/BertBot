@@ -12,14 +12,14 @@ class Blaise extends commando.Command {
       name: 'blaise',
       group: 'random',
       memberName: 'blaise',
-      description: 'Tells a dad joke.',
+      description: 'Displays a dad joke',
       throttling: {
         usages: 1,
         duration: 60
       },
       args: [{
         key: 'term',
-        prompt: 'What would you like the joke to be about?',
+        prompt: 'The correct usage of `!blaise` is `!blaise "**search term**"`',
         type: 'string',
         default: ''
       }]
