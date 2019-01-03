@@ -7,7 +7,6 @@ var meetings = JSON.parse(fs.readFileSync('commands/meetings/meetings.json'));
 const moment = require('moment');
 const formatJSON = require('json-format');
 const Discord = require('discord.js');
-const prompter = require('discordjs-prompt');
 
 class Meeting extends commando.Command {
   constructor(client) {
