@@ -212,18 +212,17 @@ bot.on('message', message => { // When a message is sent
 
 bot.on('messageReactionAdd', function(messageReaction, user) {
   if(messageReaction._emoji.name == '👍') {
-    fs.readFile('likes/likes.json', function(err, response) {
+    fs.readFile('commands/likes/likes.json', function(err, response) {
       var data = JSON.parse(response);
       var author = messageReaction.message.author.username;
       var reactor = user.username;
       if(author != reactor) {
-        
+        if(!data[author]) {
+          data[author] = 0; 
+        }
+        data[author]++;
+        fs.writeFileSync('commands/likes/likes.json', JSON.stringify(data));
       }
-      data[author]);
-      messageReaction.message.channel.send('hey!');
-      //if(author != reactor) {
-        //fs.writeFileSync('likes/likes.json', JSON.stringify(data));
-      //}
     });
   }
 });
