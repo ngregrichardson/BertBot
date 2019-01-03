@@ -10,7 +10,7 @@ class PID extends commando.Command {
       name: 'pid',
       group: 'random',
       memberName: 'pid',
-      description: 'Displays the definitely correct PID values in the channel.',
+      description: 'Displays the 100% correct calculated PID values',
       throttling: {
         usages: 1,
         duration: 60
@@ -21,10 +21,7 @@ class PID extends commando.Command {
     var p = Math.random();
     var i = Math.random();
     var d = Math.random();
-    message.channel.send("Your correct values are:");
-    message.channel.send("P: " + p);
-    message.channel.send("I: " + i);
-    message.channel.send("D: " + d);
+    message.channel.send("Your correct values are:\n\nP: " + p + "\n\nI: " + i + "\n\nD: " + d);
   }
 }
 module.exports = PID;

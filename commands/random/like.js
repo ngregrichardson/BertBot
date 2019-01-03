@@ -11,14 +11,14 @@ class Like extends commando.Command {
       name: 'like',
       group: 'random',
       memberName: 'like',
-      description: 'Tells you the amount of likes you have.',
+      description: 'DIsplays the amount of likes',
       throttling: {
         usages: 1,
         duration: 30
       },
       args: [{
         key: 'term',
-        prompt: 'Would you like to display the top 5 liked members or your count?',
+        prompt: 'The correct usage of `!like` is `!like **count|top**`',
         type: 'string',
         default: ''
       }]

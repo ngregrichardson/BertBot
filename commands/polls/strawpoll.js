@@ -24,7 +24,7 @@ module.exports = class Strawpoll extends commando.Command {
         max: 200
       }, {
         key: 'options',
-        prompt: 'The correct usage of `!strawpoll` is `!strawpoll **title** ["options..."]',
+        prompt: 'The correct usage of `!strawpoll` is `!strawpoll "title" **["option 1"] ["option 2"]**...`',
         type: 'string',
         infinite: true,
         max: 140
