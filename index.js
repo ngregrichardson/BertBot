@@ -68,7 +68,6 @@ bot.on('ready', () => {
     if (!config.enabledTrelloNotifications) config.enabledTrelloNotifications = []
     if (!config.userIDs) config.userIDs = {}
     if (!config.realNames) config.realNames = true
-    console.log(`== Bot logged in as @${bot.user.tag}. Ready for action! ==`)
     events.start()
   }
 
@@ -170,10 +169,10 @@ bot.on('ready', () => {
         if(data.meetings){
           for(var i = 0; i < data.meetings.length; i++) {
             var remaining = moment(data.meetings[i]).diff(moment(), 'days');
+            console.log(remaining);
             if(remaining <= 1) {
               let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`Upcoming meeting on ${moment(data.meetings[i]).format('dddd, MMMM Do at h:mm a')}`).setDescription(`**Meeting Plans:** ${data.meetings[i].description}`);
               bot.channels.get(config.meetingNotificationChannelId).send('doop');
-              console.log('ran!');
               data.meetings.splice(i, 1);
               fs.writeFile('commands/meetings/meetings.json', JSON.stringify(data), function(err) {
                 process.exit();
@@ -184,6 +183,7 @@ bot.on('ready', () => {
       });
     }, 2000);
   }
+  console.log(`== Bot logged in as @${bot.user.tag}. Ready for action! ==`)
 });
 
 /* Swear Filter */
