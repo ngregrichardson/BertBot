@@ -212,7 +212,7 @@ bot.on('message', message => { // When a message is sent
 
 bot.on('messageReactionAdd', function(messageReaction, user) {
   if(messageReaction._emoji.name == '👍') {
-    fs.readFile('commands/likes/likes.json', function(err, response) {
+    fs.readFile('commands/random/likes.json', function(err, response) {
       var data = JSON.parse(response);
       var author = messageReaction.message.author.username;
       var reactor = user.username;
@@ -221,7 +221,7 @@ bot.on('messageReactionAdd', function(messageReaction, user) {
           data[author] = 0; 
         }
         data[author]++;
-        fs.writeFileSync('commands/likes/likes.json', JSON.stringify(data));
+        fs.writeFileSync('commands/random/likes.json', JSON.stringify(data));
       }
     });
   }

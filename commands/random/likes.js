@@ -9,30 +9,30 @@ class Likes extends commando.Command {
   constructor(client) {
     super(client, {
       name: 'likes',
-      group: 'likes',
+      group: 'random',
       memberName: 'likes',
       description: 'Tells you the amount of likes you have.',
       throttling: {
         usages: 1,
         duration: 30
-      },
-      args: [{
-        key: 'top',
-        prompt: 'Would you like to displaythe top 5 liked members?',
-        type: 'string',
-        default: ''
-      }]
+      }//,
+      //args: [{
+      //  key: 'top',
+      //  prompt: 'Would you like to display the top 5 liked members?',
+      //  type: 'string',
+      //  default: ''
+      //}]
     });
   }
-  async run(message, { top }) {
-    fs.readFileSync('commands/likes/likes.json', function(err, response) {
+  async run(message, args) {
+    fs.readFileSync('commands/random/likes.json', function(err, response) {
       if(err) {
         console.log(err);
       }
       var data = JSON.parse(response);
       if(top == 'top') {
         for(var i = 0; i < Object.keys(data).length; i++) {
-          console.log();
+          console.log(data[i]);
         }
         //let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`**Top Liked Users**`).setDescription(`**1. ** ${}\n\n**Meeting Plans:** ${meetings.meetings[i].description}`);
       }

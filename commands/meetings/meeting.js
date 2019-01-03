@@ -12,7 +12,7 @@ class Meeting extends commando.Command {
   constructor(client) {
     super(client, {
       name: 'meeting',
-      group: 'custom',
+      group: 'meetings',
       memberName: 'meeting',
       description: 'Creates a custom command **R**',
       args: [{
