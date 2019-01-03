@@ -14,7 +14,7 @@ class Kickoff extends commando.Command {
     });
   }
   async run(message, args) {
-    var t = getTimeRemaining('January 05 2019 10:00:00 EST-0400');
+    var t = getTimeRemaining('January 05 2019 10:30:00 EST-0400');
     message.channel.send("There are **" + t.days + "** days, **" + t.hours + "** hours, **" + t.minutes + "** minutes, and **" + t.seconds + "** seconds left until the 2019 kickoff!");
   }
 }

@@ -10,14 +10,14 @@ class Poll extends commando.Command {
       name: 'poll',
       group: 'polls',
       memberName: 'poll',
-      description: 'Creates a new yes/no/maybe poll in the channel. **R**',
+      description: 'Creates a yes/no/maybe poll in the channel **R**',
       throttling: {
         usages: 1,
         duration: 10
       },
       args: [{
         key: 'question',
-        prompt: 'What would you like the poll to be about?',
+        prompt: 'The correct usage of `!poll` is `!poll **question**',
         type: 'string'
       }]
     });
