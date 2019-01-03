@@ -41,9 +41,11 @@ class Like extends commando.Command {
         }else {
           top = values.sort((a, b) => b.likes - a.likes).splice(0, 5);
         }
-        var string;
-        
-        //let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`**Top Liked Users**`).setDescription(`**1. ** ${}\n\n**Meeting Plans:** ${meetings.meetings[i].description}`);
+        let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`**Top Liked Users**`);
+        for(var i = 0; i < top.length; i++) {
+          embed.addField(`**${i}. ** ${top[i].name}: **${top[i].likes}**\n\n`);
+        }
+        message.channel.send(embed);
       }else if(term == 'count') {
         if(data[message.author.username]) {
         message.author.send("You have " + data[message.author.username] + " likes!");
