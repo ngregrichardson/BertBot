@@ -26,7 +26,7 @@ class Spam extends commando.Command {
     });
   }
   hasPermission(message) {
-    return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
+    if(config.restrictedCommandRoles) return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
   }
   async run(message, args) {
     let func;

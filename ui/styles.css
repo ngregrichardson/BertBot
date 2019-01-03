@@ -26,6 +26,10 @@ input {
   font-size: 90%;
 }
 
+.required {
+  border-bottom: solid 2px red !important;
+}
+
 input:hover {
   border-bottom: solid 2px #b4b4b4;
 }

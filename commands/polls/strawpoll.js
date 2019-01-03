@@ -32,7 +32,7 @@ module.exports = class Strawpoll extends commando.Command {
     });
   }
   hasPermission(message) {
-    return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
+    if(config.restrictedCommandRoles) return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
   }
   async run(message, { title, options }) {
     if (options.length < 2) {

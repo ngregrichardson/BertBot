@@ -13,22 +13,22 @@
     </h1>
     <form>
       Bot Name:
-      <input type="text" name="botName" value=""><br>
+      <input type="text" name="botName" class="required" value=""><br>
       Team Number:
-      <input type="number" name="teamNumber" value=""><br>
+      <input type="number" name="teamNumber" class="required" value=""><br>
       Discord Server ID:
-      <input type="text" name="discordServerId" value=""><br>
+      <input type="text" name="discordServerId" class="required" value=""><br>
       <input type="checkbox" name="trelloNotificationsOn" value="" onchange="toggleTrelloNotifications()">
       Enable Trello Notifications?<br>
       <div id="trelloNotifications" style="display: none;">
         Trello Notification Channel ID:
-        <input type="text" name="trelloNotificationChannelId" value=""><br>
-        Trello Poll Interval (usually leave as default):
-        <input type="number" name="trelloPollInterval" value=""><br>
+        <input type="text" name="trelloNotificationChannelId" class="required" value=""><br>
+        Trello Poll Interval (default 10000):
+        <input type="number" name="trelloPollInterval" class="required" value=""><br>
         Watched Trello Board IDs (separated by commas):
-        <input type="text" name="watchedTrelloBoardIds" value=""><br>
+        <input type="text" name="watchedTrelloBoardIds" class="required" value=""><br>
         Trello Prefix:
-        <input type="text" name="trelloPrefix" value="!"><br>
+        <input type="text" name="trelloPrefix" class="required" value="!"><br>
         Enabled Trello Notifications:<br>
         <table>
         <tr>
@@ -92,13 +92,13 @@
       Enable Order Request System?<br>
       <div id="orderRequestSystem" style="display: none">
         Order Request Board ID:
-        <input type="text" name="orderRequestBoardId" value=""><br>
+        <input type="text" name="orderRequestBoardId" class="required" value=""><br>
         Order Placed Checklist Item Name:
-        <input type="text" name="orderPlacedChecklistItemName" value=""><br>
+        <input type="text" name="orderPlacedChecklistItemName" class="required" value=""><br>
         Order Placed List Name:
-        <input type="text" name="orderPlacedListName" value=""><br>
+        <input type="text" name="orderPlacedListName" class="required" value=""><br>
         Order Requested List Name:
-        <input type="text" name="orderRequestedListName" value="">
+        <input type="text" name="orderRequestedListName" class="required" value="">
       </div>
       <input type="checkbox" name="swearFilterOn" value="" onchange="toggleSwearFilter()">
       Enable Swear Filter?<br>
@@ -110,7 +110,7 @@
       Enable Meeting Notifications?<br>
       <div id="meetingNotifications" style="display: none;">
         Meeting Notifications Channel ID:
-        <input type="text" name="meetingNotificationChannelId" value="">
+        <input type="text" name="meetingNotificationChannelId" class="required" value="">
       </div>
       Blaise Whitelisted Channel Names (separated by commas):
       <input type="text" name="blaiseWhitelistedChannelNames" value=""><br>

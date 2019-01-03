@@ -48,7 +48,7 @@ class Meeting extends commando.Command {
     });
   }
   hasPermission(message) {
-    return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
+    if(config.restrictedCommandRoles) return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
   }
 
   async run(message, { action, description, day, month, time }) {
@@ -79,7 +79,7 @@ class Meeting extends commando.Command {
            if(message.content.toLowerCase() == "yes") {
              meetings.meetings.splice(i - 1, 1);
              fs.writeFileSync('commands/meetings/meetings.json', JSON.stringify(meetings));
-             message.channel.send('The meeting was deleted');
+             message.channel.send('The meeting was deleted. The bot is now restarting.');
              setTimeout(function() {
                process.exit();
              }, 2000);
@@ -87,7 +87,7 @@ class Meeting extends commando.Command {
              message.channel.send('The process was aborted');
              return;
            }else {
-             message.channel.send('Please answer with yes or no');
+             message.channel.send('Please answer with `yes` or `no`');
            }
          });
        }

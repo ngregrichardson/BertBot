@@ -23,7 +23,7 @@ class Poll extends commando.Command {
     });
   }
   hasPermission(message) {
-    return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
+    if(config.restrictedCommandRoles) return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
   }
   async run(message, args) {
     message.channel.send('**' + args.question + '**').then(function(message) {
