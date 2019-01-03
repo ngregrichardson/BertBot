@@ -25,35 +25,39 @@ class Like extends commando.Command {
     });
   }
   async run(message, { term }) {
-    fs.readFile('commands/random/likes.json', function(err, response) {
-      if(err) {
-        console.log(err);
-      }
-      var data = JSON.parse(response);
-      var values = [];
-      var top;
-      if(term == 'top') {
-        for(var member in data) {
-          values.push({'name': member, 'likes': data[member]})
+    if(config.likeCounterOn) {
+      fs.readFile('commands/random/likes.json', function(err, response) {
+        if(err) {
+          console.log(err);
         }
-        if(values.length < 5) {
-          top = values.sort((a, b) => b.likes - a.likes).splice(0, values.length);
+        var data = JSON.parse(response);
+        var values = [];
+        var top;
+        if(term == 'top') {
+          for(var member in data) {
+            values.push({'name': member, 'likes': data[member]})
+          }
+          if(values.length < 5) {
+            top = values.sort((a, b) => b.likes - a.likes).splice(0, values.length);
+          }else {
+            top = values.sort((a, b) => b.likes - a.likes).splice(0, 5);
+          }
+          let embed = new Discord.RichEmbed().setColor("#127ABD").setTitle(`**Top Likes**`);
+          for(var i = 0; i < top.length; i++) {
+            embed.addField(`**${i + 1}. ** ${top[i].name}: **${top[i].likes}** likes`, `------------------------`);
+          }
+          message.channel.send(embed);
+        }else if(term == 'count') {
+          if(data[message.author.username]) {
+          message.author.send("You have " + data[message.author.username] + " likes!");
         }else {
-          top = values.sort((a, b) => b.likes - a.likes).splice(0, 5);
+          message.author.send("You do not have any likes yet.");
         }
-        let embed = new Discord.RichEmbed().setColor("#127ABD").setTitle(`**Top Likes**`);
-        for(var i = 0; i < top.length; i++) {
-          embed.addField(`**${i + 1}. ** ${top[i].name}: **${top[i].likes}** likes`, `------------------------`);
+        }else {
+          message.channel.send('You must specify `count` or `top` for this command.');
         }
-        message.channel.send(embed);
-      }else if(term == 'count') {
-        if(data[message.author.username]) {
-        message.author.send("You have " + data[message.author.username] + " likes!");
-      }else {
-        message.author.send("You do not have any likes yet.");
-      }
-      }
-    });
+      });
+    }
   }
 }
 module.exports = Like;

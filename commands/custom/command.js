@@ -21,23 +21,23 @@ class Command extends commando.Command {
       description: 'Creates a custom command **R**',
       args: [{
         key: 'action',
-        prompt: 'Add or remove command',
+        prompt: 'The correct usage of `!command` is `!command **add|remove** name "description" "response"',
         type: 'string'
       },
       {
         key: 'name',
-        prompt: 'Name of the command',
+        prompt: 'The correct usage of `!command` is `!command add|remove **name** "description" "response"',
         type: 'string'
       },
       {
         key: 'description',
-        prompt: 'Description of the command',
+        prompt: 'The correct usage of `!command` is `!command add|remove name "**description**" "response"',
         type: 'string',
         default: ''
       },
       {
         key: 'response',
-        prompt: 'The response the bot will give',
+        prompt: 'The correct usage of `!command` is `!command add|remove name "description" "**response**"',
         type: 'string',
         default: ''
       }]

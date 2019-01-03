@@ -211,19 +211,21 @@ bot.on('message', message => { // When a message is sent
 /* In progress like tracker */
 
 bot.on('messageReactionAdd', function(messageReaction, user) {
-  if(messageReaction._emoji.name == '👍') {
-    fs.readFile('commands/random/likes.json', function(err, response) {
-      var data = JSON.parse(response);
-      var author = messageReaction.message.author.username;
-      var reactor = user.username;
-      if(author != reactor) {
-        if(!data[author]) {
-          data[author] = 0;
+  if(config.likeCounterOn) {
+    if(messageReaction._emoji.name == '👍') {
+      fs.readFile('commands/random/likes.json', function(err, response) {
+        var data = JSON.parse(response);
+        var author = messageReaction.message.author.username;
+        var reactor = user.username;
+        if(author != reactor) {
+          if(!data[author]) {
+            data[author] = 0;
+          }
+          data[author]++;
+          fs.writeFileSync('commands/random/likes.json', JSON.stringify(data));
         }
-        data[author]++;
-        fs.writeFileSync('commands/random/likes.json', JSON.stringify(data));
-      }
-    });
+      });
+    }
   }
 });
 

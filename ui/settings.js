@@ -44,6 +44,7 @@ var swearFilterWhitelistedChannelNames = $("input[name='swearFilterWhitelistedCh
 var meetingNotificationsOn = $("input[name='meetingNotificationsOn']");
 var meetingNotifications = $("#meetingNotifications");
 var meetingNotificationChannelId = $("input[name='meetingNotificationChannelId']");
+var likeCounterOn = $("input[name='likeCounterOn']");
 var blaiseWhitelistedChannelNames = $("input[name='blaiseWhitelistedChannelNames']");
 var restrictedCommandRoles = $("input[name='restrictedCommandRoles']");
 var errorSpace = $("#error");
@@ -135,6 +136,7 @@ $(function() {
         meetingNotifications.find('*').attr('disabled', false);
       }
       meetingNotificationChannelId.val(json.meetingNotificationChannelId);
+      likeCounterOn.val(json.likeCounterOn);
       blaiseWhitelistedChannelNames.val(json.blaiseWhitelistedChannelNames);
       restrictedCommandRoles.val(json.restrictedCommandRoles);
     }else {
@@ -209,6 +211,7 @@ function format() {
       "swearFilterWhitelistedChannelNames": isEnabled(swearFilterOn, formatArray(swearFilterWhitelistedChannelNames)),
     "meetingNotificationsOn": getCheckboxValue(meetingNotificationsOn),
       "meetingNotificationChannelId": isEnabled(meetingNotificationsOn, meetingNotificationChannelId.val()),
+    "likeCounterOn": getCheckboxValue(likeCounterOn),
     "blaiseWhitelistedChannelNames": formatArray(blaiseWhitelistedChannelNames),
     "restrictedCommandRoles": formatArray(restrictedCommandRoles),
     "userIDs": {},
