@@ -10,7 +10,7 @@ class PID extends commando.Command {
       name: 'pid',
       group: 'random',
       memberName: 'pid',
-      description: 'Displays the 100% correct calculated PID values',
+      description: 'Displays 100% correct calculated PID values',
       throttling: {
         usages: 1,
         duration: 60

@@ -16,38 +16,44 @@ BeʳᵗBot was created for FRC team 4750 to use in their Discord server. The bot
 ### Order Request System
 - Links with Trello and Gmail to send a mentor a notification when an order request form is uploaded to Trello
 - Once the order has been placed by the mentor, they can simply reply and it will move the card from the *Orders Requested* to *Orders Placed* list and check off the ckeclist item for *Order Placed*.
+### Like Tracker
+- Monitors who has the most 👍 reactions on their messages
+- Can be used for prizes and engagement
 # Commands
 ### Kickoff
 - Displays the amount of time until kickoff  
 Use: `!kickoff`
 ### Poll
-- Creates a yes/no/maybe poll in the channel  
+- Creates a yes/no/maybe poll in the channel **R**
 Use: `!poll [question]`
-### Strawpoll
-- Creates a strawpoll and sends the link in the channel  
+### Strawpoll 
+- Creates a strawpoll and displays it in the channel **R**
 Use: `!strawpoll ["title"] ["option 1"] ["option 2"]...`
 - Use quotation marks around the title and each option
 ### Blaise
-- Sends a random dad joke in the channel  
-Use: `!blaise [keyword](optional)`
+- Displays a random dad joke in the channel  
+Use: `!blaise [search term](optional)`
 ### PID
-- Calculates totally definitely correct PID values in the channel  
+- Displays 100% correct calculated PID values
 Use: `!pid`
 ### Winner
-- Accurately predicts the winners of the upcoming FRC season  
+- Displays the guaranteed winners of the next FRC season
 Use: `!winner`
-### Spam
+### Spam 
 - *not currently useable unless you have a channel and role named spam*
-- Adds or removes a user from the spam chat  
+- Manages the spam chat **R**
 Use: `!spam [add|remove] #[DiscordTag]`
 ### Command
-- Creates or deletes a command
+- Add or remove custom commands **R**
 Use: `!command [add|remove] [name] ["description"] ["response"]`
 - Javascript can be injected if the response begins with `");` and ends with `console.log("`
 ### Meeting
-- Creates or deletes a meeting
+- Add or remove meetings **R**
 Use: `!meeting [add|remove] ["description"] [day] [month] [time]`
 - To remove a meeting, either use just the description or (to be more specific) the description, day, and month
+### Like
+- Displays the author's amount of likes or the top 5 users
+Use: `!like count|top`
 # Setup
 Setting up BeʳᵗBot is simple. It is a self-hosted bot, so this setup will show you how to create the bot and how to set it up on Glitch. Let's get started!
  1. Let's create a Discord application [here](https://discordapp.com/developers/applications/). The name and app icon can be anything you want.
@@ -57,7 +63,7 @@ Setting up BeʳᵗBot is simple. It is a self-hosted bot, so this setup will sho
  3. Next, lets set up the bot on [Glitch](https://glitch.com). Create an account and then create a new *hello-express* project. In the top left, click on the name of your project (you can rename it if you want) and select *Advanced Options*. Then, after hitting *Grant access*, click *Import from GitHub* and paste in `ngregrichardson/BertBot`. This will import the project into Glitch.
  ![Step 3](https://i.imgur.com/w6CfsDL.jpg)
  4. Next we can configure the bot to your needs. Click on *Show* and select whatever features you'd like. The required features are highlighted in **red**.
- ![Step 4](https://i.imgur.com/6MGV9cB.jpg)
+ ![Step 4](https://i.imgur.com/kHl20EQ.jpg)
 	- Bot Name - The name of your bot as you set in the Discord application
 	- Team Number - The team number of your FRC team
 	- Discord Server ID- The ID of your Discord server. Enable developer mode in Discord and right click on the server name to retrieve.
@@ -76,6 +82,7 @@ Setting up BeʳᵗBot is simple. It is a self-hosted bot, so this setup will sho
 		- Swear Filter Whitelisted Channel Names - The names of the channels that will not be affected by the swear filter
 	- Enable Meeting Notifications? - Whether or not you want the meeting notifications enabled
 		- Meeting Notifications Channel ID - The ID of the channel you want meeting notifications in
+	- Enable Like Tracker? - Whether or not you want the like tracker enabled
 	- Blaise Whitelisted Channel Names - The names of the channels that allow the !blaise command (setting this to allowAll will allow it in all channels)
 	- Restricted Command Roles - The names of the roles that are able to use restricted commands
 Once you are done, make sure to hit *Save* and then once the page reloads, hit *Restart Bot* (don't mind the error page :P). You can now close that window.

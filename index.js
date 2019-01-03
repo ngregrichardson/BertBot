@@ -197,7 +197,7 @@ bot.on('message', message => { // When a message is sent
           if (message.content.toLowerCase().split(" ")[x] == profanities[i].toLowerCase()) { // If any of the words match
             var time = new Date(); // Get the date and time
             message.guild.owner.send('**' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + '** | **' + message.author.username + '** tried to say **'+ profanities[i] + '** in **' + message.channel.name + "** `" + message.content + "`"); // Send a message to the server owner
-            message.author.send("Your message in **" + message.channel.name + "** was deleted because it contained **" + profanities[i] + "**. If this is a mistake, contact your server moderator. Otherwise, you might want to retry sending your message like this: `" + message.content.replace(profanities[i], "****") + "`"); // Send a message to the author
+            message.author.send("Your message in **" + message.channel.name + "** was deleted because it contained **" + profanities[i] + "**. If this is a mistake, contact your server owner. Otherwise, you might want to retry sending your message like this: `" + message.content.replace(profanities[i], "****") + "`"); // Send a message to the author
             message.delete(); // Delete the message
             return; // Move on
           }
@@ -208,7 +208,7 @@ bot.on('message', message => { // When a message is sent
 });
 
 
-/* In progress like tracker */
+/* Like Tracker */
 
 bot.on('messageReactionAdd', function(messageReaction, user) {
   if(config.likeCounterOn) {
