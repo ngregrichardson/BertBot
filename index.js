@@ -166,18 +166,20 @@ bot.on('ready', () => {
         if(err) {
           console.log(err);
         }
-        for(var i = 0; i < data.meetings.length; i++) {
-          var remaining = moment(data.meetings[i]).diff(moment(), 'days');
-          if(remaining <= 1) {
-            bot.channels.get(config.meetingNotificationChannelId).send('');
-            data.meetings.splice(i, 1);
-            fs.writeFile('commands/meetings/meetings.json', data, function(err) {
-              process.exit();
-            });
-          }
-        }
+        console.log(JSON.parse(data));
+        // for(var i = 0; i < data.meetings.length; i++) {
+        //   var remaining = moment(data.meetings[i]).diff(moment(), 'days');
+        //   if(remaining <= 1) {
+        //     let embed = getEmbedBase(event).setTitle(`Upcoming meeting on ${moment(data.meetings[i]).format('dddd, MMMM Do at h:mm a')}`).setDescription(`**Meeting Plans:** ${data.meetings[i].description}`);
+        //     bot.channels.get(config.meetingNotificationChannelId).send(embed);
+        //     data.meetings.splice(i, 1);
+        //     fs.writeFile('commands/meetings/meetings.json', data, function(err) {
+        //       process.exit();
+        //     });
+        //   }
+        // }
       });
-    }, 7200000);
+    }, 2000);
   }
 });
 
