@@ -172,10 +172,14 @@ bot.on('ready', () => {
             if(remaining <= 1) {
               let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`Upcoming meeting on: ${moment(data.meetings[i]).format('dddd, MMMM Do, h:mm')}`).setDescription(`**Meeting Plans:** ${data.meetings[i].description}`);
               bot.channels.get(config.meetingNotificationChannelId).send(embed);
-              setTimeout
               data.meetings.splice(i, 1);
               fs.writeFile('commands/meetings/meetings.json', JSON.stringify(data), function(err) {
-                setTimeout(process.exit(), 2000);
+                if(err) {
+                  console.log(err);
+                }
+                setTimeout(function() {
+                  process.exit();
+                }, 5000);
               });
             }
           }
