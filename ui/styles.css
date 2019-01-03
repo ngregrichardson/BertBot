@@ -1,0 +1,74 @@
+body {
+  background-color: #363942;
+  color: white;
+  font-family: 'Lato', sans-serif;
+  font-size: 110%;
+}
+
+::selection {
+ background: red; 
+}
+
+h1 {
+  text-align: center;
+}
+
+form {
+  text-align: center;
+  font-weight: bold;
+}
+
+input {
+  background: transparent;
+  border: none;
+  border-bottom: solid 2px white;
+  color: white;
+  font-size: 90%;
+}
+
+.required {
+  border-bottom: solid 2px red !important;
+}
+
+input:hover {
+  border-bottom: solid 2px #b4b4b4;
+}
+
+input:active, input:focus {
+ border: solid 2px white; 
+}
+
+table {
+ margin: auto;
+ text-align: left;
+}
+
+#error {
+  font-weight: bold;
+  width: 100%;
+  margin: auto;
+  text-align: center;
+}
+
+iframe {
+  position: absolute;
+  bottom: 20px;
+  right:20px;
+  width: 20%;
+  height: 50%;
+}
+
+@media only screen and (max-width: 1145px) {
+  iframe {
+    width: 40%;
+    height: 50%;
+  }
+}
+
+@media only screen and (max-width: 635px), only screen and (max-device-width: 640px) {
+  iframe {
+    margin: auto;
+    width: 90%;
+    height: 30%;
+  }
+}

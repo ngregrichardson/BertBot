@@ -26,7 +26,7 @@ class Spam extends commando.Command {
     });
   }
   hasPermission(message) {
-    return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
+    if(config.restrictedCommandRoles) return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
   }
   async run(message, args) {
     let func;
@@ -40,7 +40,7 @@ class Spam extends commando.Command {
       func = args.function;
       member = message.member;
     }else if(args.user !== undefined && args.function !== undefined) {
-      func = args.function
+      func = args.function;
       member = message.guild.members.find(m => m.id === args.user.id);
     }else {
       message.channel.send("Please use the correct format! `!spam add|remove @username`"); 
@@ -60,7 +60,7 @@ class Spam extends commando.Command {
           return;
         }
       }else {
-        message.channel.send("Please use the correct format! `!spam add|remove @username` (2nd)");
+        message.channel.send("Please use the correct format! `!spam add|remove @username`");
         return;
       }
     }

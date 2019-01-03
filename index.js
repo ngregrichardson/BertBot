@@ -1,6 +1,8 @@
 /* Config */
 const fs = require('fs');
 const config = JSON.parse(fs.readFileSync('configuration.json'));
+const ui = require('./server.js');
+const moment = require('moment');
 /* Google Packages */
 const GoogleSpreadsheet = require('googleapis');
 /* Discord Packages */
@@ -23,6 +25,8 @@ bot.registry.registerGroup('random', 'Random');
 bot.registry.registerGroup('info', 'Info');
 bot.registry.registerGroup('polls', 'Polls');
 bot.registry.registerGroup('spam', 'Spam');
+bot.registry.registerGroup('meetings', 'Meetings');
+bot.registry.registerGroup('custom', 'Custom');
 bot.registry.registerDefaults();
 bot.registry.registerCommandsIn(__dirname + "/commands");
 bot.login(process.env.TOKEN);
@@ -31,12 +35,10 @@ bot.login(process.env.TOKEN);
 var sheet;
 /* Swear Bot Setup */
 const profanities = JSON.parse(fs.readFileSync('swears.json'));
-/* Trello Setup */
-const conf = JSON.parse(fs.readFileSync('conf.json'));
 const rapid = new RapidAPI(process.env.R1, process.env.R2);
 let latestActivityId = fs.existsSync('.latestActivityID') ? fs.readFileSync('.latestActivityID') : 0
 const events = new Trello({
-  pollFrequency: config.trelloPollInterval,
+  pollFrequency: parseInt(config.trelloPollInterval),
   minId: latestActivityId,
   start: false,
   trello: {
@@ -53,25 +55,20 @@ bot.on('ready', () => {
     let guild = bot.guilds.get(config.discordServerId)
     let channel = bot.channels.get(config.trelloNotificationChannelId)
     if (!guild) {
-      console.log(`Server with ID "${config.discordServerId}" not found! I can't function without a valid server and channel.\nPlease add the correct server ID to your conf file, or if the conf data is correct, ensure I have proper access.\nYou may need to add me to your server using this link:\n    https://discordapp.com/api/oauth2/authorize?client_id=${bot.user.id}&permissions=8&scope=bot`)
+      console.log(`Server with ID "${config.discordServerId}" not found! Trello notifications can't function without a valid server and channel.\nPlease add the correct server ID to your configuration and ensure I have proper access.\nYou may need to add me to your server using this link:\n    https://discordapp.com/api/oauth2/authorize?client_id=${bot.user.id}&permissions=8&scope=bot`)
       process.exit()
     } else if (!channel) {
-      console.log(`Channel with ID "${config.trelloNotificationChannelId}" not found! I can't function without a valid channel.\nPlease add the correct channel ID to your conf file, or if the conf data is correct, ensure I have proper access.`)
+      console.log(`Channel with ID "${config.trelloNotificationChannelId}" not found! Trello notifications can't function without a valid channel.\nPlease add the correct channel ID to your configuration and ensure I have proper access.`)
       process.exit()
     } else if (!config.watchedTrelloBoardIds || config.watchedTrelloBoardIds.length < 1) {
-      console.log(`No board IDs provided! Please add at least one to your conf file. Check the readme if you need help finding a board ID.`)
+      console.log(`No board IDs provided! Please add at least one to your configuration. The board ID can be found in the URL: https://trello.com/b/TRELLO_ID/urtrelloboardname`)
     }
-    conf.guild = guild
-    conf.channel = channel
+    config.guild = guild
+    config.channel = channel
     if (!config.contentString) config.contentString = ""
     if (!config.enabledTrelloNotifications) config.enabledTrelloNotifications = []
     if (!config.userIDs) config.userIDs = {}
-    if (!conf.realNames) conf.realNames = true
-    if (!config.trelloPrefix) {
-      config.trelloPrefix = "!"
-      fs.writeFileSync('conf.json', JSON.stringify(conf, null, 4), (err, data) => console.log(`Updated conf file with default prefix ('!')`))
-    }
-    console.log(`== Bot logged in as @${bot.user.tag}. Ready for action! ==`)
+    if (!config.realNames) config.realNames = true
     events.start()
   }
 
@@ -160,8 +157,38 @@ bot.on('ready', () => {
           });
         });
       });
-    }, 30000);
+    }, 60000);
   }
+  
+  if(config.meetingNotificationsOn) {
+    setInterval(function() {
+      fs.readFile('commands/meetings/meetings.json', function(err, response) {
+        if(err) {
+          console.log(err);
+        }
+        var data = JSON.parse(response);
+        if(data.meetings){
+          for(var i = 0; i < data.meetings.length; i++) {
+            var remaining = moment(data.meetings[i]).diff(moment(), 'days');
+            if(remaining <= 1) {
+              let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`Upcoming meeting on: ${moment(data.meetings[i]).format('dddd, MMMM Do, h:mm')}`).setDescription(`**Meeting Plans:** ${data.meetings[i].description}`);
+              bot.channels.get(config.meetingNotificationChannelId).send(embed);
+              data.meetings.splice(i, 1);
+              fs.writeFile('commands/meetings/meetings.json', JSON.stringify(data), function(err) {
+                if(err) {
+                  console.log(err);
+                }
+                setTimeout(function() {
+                  process.exit();
+                }, 3000);
+              });
+            }
+          }
+        }
+      });
+    }, 2000);
+  }
+  console.log(`== Bot logged in as @${bot.user.tag}. Ready for action! ==`)
 });
 
 /* Swear Filter */
@@ -218,7 +245,7 @@ events.on('createCard', (event, board) => {
   if (!eventEnabled(`cardCreated`)) return
   let embed = getEmbedBase(event)
     .setTitle(`New card created under __${event.data.list.name}__!`)
-    .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card created under __${event.data.list.name}__ by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+    .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card created under __${event.data.list.name}__ by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
   send(addDiscordUserData(embed, event.memberCreator))
 })
 // Fired when a card is updated (description, due date, position, associated list, name, and archive status)
@@ -228,7 +255,7 @@ events.on('updateCard', (event, board) => {
     if (!eventEnabled(`cardDescriptionChanged`)) return
     embed
       .setTitle(`Card description changed!`)
-      .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card description changed (see below) by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+      .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card description changed (see below) by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
       .addField(`New Description`, typeof event.data.card.desc === "string" && event.data.card.desc.trim().length > 0 ? (event.data.card.desc.length > 1024 ? `${event.data.card.desc.trim().slice(0, 1020)}...` : event.data.card.desc) : `*[No description]*`)
       .addField(`Old Description`, typeof event.data.old.desc === "string" && event.data.old.desc.trim().length > 0 ? (event.data.old.desc.length > 1024 ? `${event.data.old.desc.trim().slice(0, 1020)}...` : event.data.old.desc) : `*[No description]*`)
     send(addDiscordUserData(embed, event.memberCreator))
@@ -236,25 +263,25 @@ events.on('updateCard', (event, board) => {
     if (!eventEnabled(`cardDueDateChanged`)) return
     embed
       .setTitle(`Card due date changed!`)
-      .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card due date changed to __${event.data.card.due ? new Date(event.data.card.due).toUTCString() : `[No due date]`}__ from __${event.data.old.due ? new Date(event.data.old.due).toUTCString() : `[No due date]`}__ by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+      .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card due date changed to __${event.data.card.due ? new Date(event.data.card.due).toUTCString() : `[No due date]`}__ from __${event.data.old.due ? new Date(event.data.old.due).toUTCString() : `[No due date]`}__ by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
     send(addDiscordUserData(embed, event.memberCreator))
   } else if (event.data.old.hasOwnProperty("pos")) {
     if (!eventEnabled(`cardPositionChanged`)) return
     embed
       .setTitle(`Card position changed!`)
-      .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card position in list __${event.data.list.name}__ changed by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+      .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card position in list __${event.data.list.name}__ changed by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
     send(addDiscordUserData(embed, event.memberCreator))
   } else if (event.data.old.hasOwnProperty("idList")) {
     if (!eventEnabled(`cardListChanged`)) return
     embed
       .setTitle(`Card list changed!`)
-      .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card moved to list __${event.data.listAfter.name}__ from list __${event.data.listBefore.name}__ by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+      .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card moved to list __${event.data.listAfter.name}__ from list __${event.data.listBefore.name}__ by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
     send(addDiscordUserData(embed, event.memberCreator))
   } else if (event.data.old.hasOwnProperty("name")) {
     if (!eventEnabled(`cardNameChanged`)) return
     embed
       .setTitle(`Card name changed!`)
-      .setDescription(`**CARD:** *[See below for card name]* — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card name changed (see below) by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+      .setDescription(`**CARD:** *[See below for card name]* — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card name changed (see below) by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
       .addField(`New Name`, event.data.card.name)
       .addField(`Old Name`, event.data.old.name)
     send(addDiscordUserData(embed, event.memberCreator))
@@ -263,13 +290,13 @@ events.on('updateCard', (event, board) => {
       if (!eventEnabled(`cardUnarchived`)) return
       embed
         .setTitle(`Card unarchived!`)
-        .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card unarchived and returned to list __${event.data.list.name}__ by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+        .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card unarchived and returned to list __${event.data.list.name}__ by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
       send(addDiscordUserData(embed, event.memberCreator))
     } else {
       if (!eventEnabled(`cardArchived`)) return
       embed
         .setTitle(`Card archived!`)
-        .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card under list __${event.data.list.name}__ archived by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+        .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card under list __${event.data.list.name}__ archived by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
       send(addDiscordUserData(embed, event.memberCreator))
     }
   }
@@ -279,7 +306,7 @@ events.on('deleteCard', (event, board) => {
   if (!eventEnabled(`cardDeleted`)) return
   let embed = getEmbedBase(event)
     .setTitle(`Card deleted!`)
-    .setDescription(`**EVENT:** Card deleted from list __${event.data.list.name}__ by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+    .setDescription(`**EVENT:** Card deleted from list __${event.data.list.name}__ by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
   send(addDiscordUserData(embed, event.memberCreator))
 })
 // Fired when a comment is posted, or edited
@@ -289,7 +316,7 @@ events.on('commentCard', (event, board) => {
     if (!eventEnabled(`commentEdited`)) return
     embed
       .setTitle(`Comment edited on card!`)
-      .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card comment edited (see below for comment text) by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+      .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card comment edited (see below for comment text) by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
       .addField(`Comment Text`, event.data.text.length > 1024 ? `${event.data.text.trim().slice(0, 1020)}...` : event.data.text)
       .setTimestamp(event.data.dateLastEdited)
     send(addDiscordUserData(embed, event.memberCreator))
@@ -297,7 +324,7 @@ events.on('commentCard', (event, board) => {
     if (!eventEnabled(`commentAdded`)) return
     embed
       .setTitle(`Comment added to card!`)
-      .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card comment added (see below for comment text) by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+      .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Card comment added (see below for comment text) by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
       .addField(`Comment Text`, event.data.text.length > 1024 ? `${event.data.text.trim().slice(0, 1020)}...` : event.data.text)
     send(addDiscordUserData(embed, event.memberCreator))
   }
@@ -306,7 +333,7 @@ events.on('commentCard', (event, board) => {
 events.on('addMemberToCard', (event, board) => {
   let embed = getEmbedBase(event)
   .setTitle(`Member added to card!`)
-  .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Member **[${conf.realNames ? event.member.fullName : event.member.username}](https://trello.com/${event.member.username})**`)
+  .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Member **[${config.realNames ? event.member.fullName : event.member.username}](https://trello.com/${event.member.username})**`)
   let editedEmbed = addDiscordUserData(embed, event.member)
   if (event.member.id === event.memberCreator.id) {
     if (!eventEnabled(`memberAddedToCardBySelf`)) return
@@ -314,7 +341,7 @@ events.on('addMemberToCard', (event, board) => {
     send(editedEmbed)
   } else {
     if (!eventEnabled(`memberAddedToCard`)) return
-    editedEmbed.setDescription(editedEmbed.description + ` added to card by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+    editedEmbed.setDescription(editedEmbed.description + ` added to card by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
     send(addDiscordUserData(editedEmbed, event.memberCreator))
   }
 })
@@ -322,7 +349,7 @@ events.on('addMemberToCard', (event, board) => {
 events.on('removeMemberFromCard', (event, board) => {
   let embed = getEmbedBase(event)
   .setTitle(`Member removed from card!`)
-  .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Member **[${conf.realNames ? event.member.fullName : event.member.username}](https://trello.com/${event.member.username})**`)
+  .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Member **[${config.realNames ? event.member.fullName : event.member.username}](https://trello.com/${event.member.username})**`)
   let editedEmbed = addDiscordUserData(embed, event.member)
   if (event.member.id === event.memberCreator.id) {
     if (!eventEnabled(`memberRemovedFromCardBySelf`)) return
@@ -330,7 +357,7 @@ events.on('removeMemberFromCard', (event, board) => {
     send(editedEmbed)
   } else {
     if (!eventEnabled(`memberRemovedFromCard`)) return
-    editedEmbed.setDescription(editedEmbed.description + ` removed from card by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+    editedEmbed.setDescription(editedEmbed.description + ` removed from card by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
     send(addDiscordUserData(editedEmbed, event.memberCreator))
   }
 })
@@ -339,7 +366,7 @@ events.on('createList', (event, board) => {
   if (!eventEnabled(`listCreated`)) return
   let embed = getEmbedBase(event)
     .setTitle(`New list created!`)
-    .setDescription(`**EVENT:** List __${event.data.list.name}__ created by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+    .setDescription(`**EVENT:** List __${event.data.list.name}__ created by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
   send(addDiscordUserData(embed, event.memberCreator))
 })
 // Fired when a list is renamed, moved, archived, or unarchived
@@ -349,26 +376,26 @@ events.on('updateList', (event, board) => {
     if (!eventEnabled(`listNameChanged`)) return
     embed
       .setTitle(`List name changed!`)
-      .setDescription(`**EVENT:** List renamed to __${event.data.list.name}__ from __${event.data.old.name}__ by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+      .setDescription(`**EVENT:** List renamed to __${event.data.list.name}__ from __${event.data.old.name}__ by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
     send(addDiscordUserData(embed, event.memberCreator))
   } else if (event.data.old.hasOwnProperty("pos")) {
     if (!eventEnabled(`listPositionChanged`)) return
     embed
       .setTitle(`List position changed!`)
-      .setDescription(`**EVENT:** List __${event.data.list.name}__ position changed by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+      .setDescription(`**EVENT:** List __${event.data.list.name}__ position changed by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
     send(addDiscordUserData(embed, event.memberCreator))
   } else if (event.data.old.hasOwnProperty("closed")) {
     if (event.data.old.closed) {
       if (!eventEnabled(`listUnarchived`)) return
       embed
         .setTitle(`List unarchived!`)
-        .setDescription(`**EVENT:** List __${event.data.list.name}__ unarchived by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+        .setDescription(`**EVENT:** List __${event.data.list.name}__ unarchived by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
       send(addDiscordUserData(embed, event.memberCreator))
     } else {
       if (!eventEnabled(`listArchived`)) return
       embed
         .setTitle(`List archived!`)
-        .setDescription(`**EVENT:** List __${event.data.list.name}__ archived by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+        .setDescription(`**EVENT:** List __${event.data.list.name}__ archived by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
       send(addDiscordUserData(embed, event.memberCreator))
     }
   }
@@ -392,7 +419,7 @@ events.on('addAttachmentToCard', (event, board) => {
   if (!eventEnabled(`attachmentAddedToCard`)) return
   let embed = getEmbedBase(event)
     .setTitle(`Attachment added to card!`)
-    .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Attachment named \`${event.data.attachment.name}\` added to card by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+    .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Attachment named \`${event.data.attachment.name}\` added to card by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
   send(addDiscordUserData(embed, event.memberCreator))
 })
 // Fired when an attachment is removed from a card
@@ -400,7 +427,7 @@ events.on('deleteAttachmentFromCard', (event, board) => {
   if (!eventEnabled(`attachmentRemovedFromCard`)) return
   let embed = getEmbedBase(event)
     .setTitle(`Attachment removed from card!`)
-    .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Attachment named \`${event.data.attachment.name}\` removed from card by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+    .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Attachment named \`${event.data.attachment.name}\` removed from card by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
   send(addDiscordUserData(embed, event.memberCreator))
 })
 // Fired when a checklist is added to a card (same thing as created)
@@ -408,7 +435,7 @@ events.on('addChecklistToCard', (event, board) => {
   if (!eventEnabled(`checklistAddedToCard`)) return
   let embed = getEmbedBase(event)
     .setTitle(`Checklist added to card!`)
-    .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Checklist named \`${event.data.checklist.name}\` added to card by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+    .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Checklist named \`${event.data.checklist.name}\` added to card by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
   send(addDiscordUserData(embed, event.memberCreator))
 })
 // Fired when a checklist is removed from a card (same thing as deleted)
@@ -416,7 +443,7 @@ events.on('removeChecklistFromCard', (event, board) => {
   if (!eventEnabled(`checklistRemovedFromCard`)) return
   let embed = getEmbedBase(event)
     .setTitle(`Checklist removed from card!`)
-    .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Checklist named \`${event.data.checklist.name}\` removed from card by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+    .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Checklist named \`${event.data.checklist.name}\` removed from card by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
   send(addDiscordUserData(embed, event.memberCreator))
 })
 // Fired when a checklist item's completion status is toggled
@@ -425,14 +452,14 @@ events.on('updateCheckItemStateOnCard', (event, board) => {
     if (!eventEnabled(`checklistItemMarkedComplete`)) return
     let embed = getEmbedBase(event)
       .setTitle(`Checklist item marked complete!`)
-      .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Checklist item under checklist \`${event.data.checklist.name}\` marked complete by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+      .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Checklist item under checklist \`${event.data.checklist.name}\` marked complete by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
       .addField(`Checklist Item Name`, event.data.checkItem.name.length > 1024 ? `${event.data.checkItem.name.trim().slice(0, 1020)}...` : event.data.checkItem.name)
     send(addDiscordUserData(embed, event.memberCreator))
   } else if (event.data.checkItem.state === "incomplete") {
     if (!eventEnabled(`checklistItemMarkedIncomplete`)) return
     let embed = getEmbedBase(event)
       .setTitle(`Checklist item marked incomplete!`)
-      .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Checklist item under checklist \`${event.data.checklist.name}\` marked incomplete by **[${conf.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
+      .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Checklist item under checklist \`${event.data.checklist.name}\` marked incomplete by **[${config.realNames ? event.memberCreator.fullName : event.memberCreator.username}](https://trello.com/${event.memberCreator.username})**`)
       .addField(`Checklist Item Name`, event.data.checkItem.name.length > 1024 ? `${event.data.checkItem.name.trim().slice(0, 1020)}...` : event.data.checkItem.name)
     send(addDiscordUserData(embed, event.memberCreator))
   }
@@ -448,17 +475,17 @@ events.on('maxId', (id) => {
   latestActivityId = id
   fs.writeFileSync('.latestActivityID', id)
 })
-const send = (embed, content = ``) => conf.channel.send(`${content} ${config.contentString}`, {embed:embed}).catch(err => console.error(err))
-const eventEnabled = (type) => config.enabledEvents.length > 0 ? config.enabledEvents.includes(type) : true
+const send = (embed, content = ``) => config.channel.send(`${content} ${config.contentString}`, {embed:embed}).catch(err => console.error(err))
+const eventEnabled = (type) => config.enabledTrelloNotifications.length > 0 ? config.enabledTrelloNotifications.includes(type) : true
 const logEventFire = (event) => console.log(`${new Date(event.date).toUTCString()} - ${event.type} fired`)
 const getEmbedBase = (event) => new Discord.RichEmbed()
-.setFooter(`${conf.guild.members.get(bot.user.id).displayName} • ${event.data.board.name} [${event.data.board.shortLink}]`, bot.user.displayAvatarURL)
+.setFooter(`${config.guild.members.get(bot.user.id).displayName} • ${event.data.board.name} [${event.data.board.shortLink}]`, bot.user.displayAvatarURL)
 .setTimestamp(event.hasOwnProperty(`date`) ? event.date : Date.now())
 .setColor("#127ABD")
 // adds thumbanail and appends user mention to the end of the description, if possible
 const addDiscordUserData = (embed, member) => {
   if (config.userIDs[member.username]) {
-    let discordUser = conf.guild.members.get(config.userIDs[member.username])
+    let discordUser = config.guild.members.get(config.userIDs[member.username])
     if (discordUser) embed
       .setThumbnail(discordUser.user.displayAvatarURL)
       .setDescription(`${embed.description} / ${discordUser.toString()}`)
@@ -467,15 +494,6 @@ const addDiscordUserData = (embed, member) => {
 }
 /* Ping */
 const http = require('http');
-const express = require('express');
-const app = express();
-app.get("/", (request, response) => {
-  response.sendStatus(200);
-});
-app.listen(process.env.PORT);
-app.on('listening',function(){
-    console.log('Server is already running');
-});
 setInterval(() => {
   http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
 }, 280000);
