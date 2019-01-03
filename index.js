@@ -169,13 +169,13 @@ bot.on('ready', () => {
         if(data.meetings){
           for(var i = 0; i < data.meetings.length; i++) {
             var remaining = moment(data.meetings[i]).diff(moment(), 'days');
-            console.log(remaining);
             if(remaining <= 1) {
-              let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`Upcoming meeting on ${moment(data.meetings[i]).format('dddd, MMMM Do at h:mm a')}`).setDescription(`**Meeting Plans:** ${data.meetings[i].description}`);
-              bot.channels.get(config.meetingNotificationChannelId).send('doop');
+              let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`Upcoming meeting on: ${moment(data.meetings[i]).format('dddd, MMMM Do, h:mm')}`).setDescription(`**Meeting Plans:** ${data.meetings[i].description}`);
+              bot.channels.get(config.meetingNotificationChannelId).send(embed);
+              setTimeout
               data.meetings.splice(i, 1);
               fs.writeFile('commands/meetings/meetings.json', JSON.stringify(data), function(err) {
-                process.exit();
+                setTimeout(process.exit(), 2000);
               });
             }
           }
