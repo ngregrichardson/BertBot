@@ -65,27 +65,28 @@ class Meeting extends commando.Command {
       date.description = description;
       meetings.meetings.push(date);
       fs.writeFile('commands/meetings/meetings.json', JSON.stringify(meetings), function(err) {
-        process.exit();
+    //process.exit();
       });
     }else if(action == 'remove') {
       for(var i = 0; i < meetings.meetings.length; i++) {
        if(meetings.meetings[i].description == description || meetings.meetings[i].day == parseInt(day) && meetings.meetings[i].month == moment().month(month).format('M') - 1) {
          let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`Are you sure you want to remove this?`).setDescription(`**Upcoming meeting on:** ${moment(meetings.meetings[i]).format('dddd, MMMM Do, h:mm')}\n\n**Meeting Plans:** ${meetings.meetings[i].description}`);
-         let prompt = message.channel.send(embed);
+         message.channel.send(embed);
          var collector = new Discord.MessageCollector(message.channel, m => m.author.id == message.author.id, { time: 10000 });
          collector.on('collect', message => {
            if(message.content.toLowerCase() == "yes") {
-             meetings.meetings.splice(i, 1);
-             console.log(meetings.meetings);
+             remove(i);
              fs.writeFileSync('commands/meetings/meetings.json', JSON.stringify(meetings));
              message.channel.send('The meeting was deleted');
-             process.exit();
+             //process.exit();
            }else if(message.content.toLowerCase() == "no") {
              message.channel.send('The process was aborted');
            }else {
              message.channel.send('Please answer with yes or no');
            }
          });
+       }else {
+         message.channel.send('There were no set meetings that matches those parameters.');
        }
       }
     }else {
@@ -106,4 +107,14 @@ function removeFromArray(arr, value) {
        return ele != value;
    });
 
+}
+
+function remove(n) {
+  var array;
+  for(var i = 0; i < meetings.meetings.length; i++) {
+    if(i != n) {
+      
+    }
+  }
+  meetings.meetings.splice(i, 1);
 }
