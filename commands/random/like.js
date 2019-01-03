@@ -12,10 +12,10 @@ class Like extends commando.Command {
       group: 'random',
       memberName: 'like',
       description: 'Tells you the amount of likes you have.',
-      // throttling: {
-      //   usages: 1,
-      //   duration: 30
-      // },
+      throttling: {
+        usages: 1,
+        duration: 30
+      },
       args: [{
         key: 'term',
         prompt: 'Would you like to display the top 5 liked members or your count?',
@@ -41,9 +41,9 @@ class Like extends commando.Command {
         }else {
           top = values.sort((a, b) => b.likes - a.likes).splice(0, 5);
         }
-        let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`**Top Liked Users**`);
+        let embed = new Discord.RichEmbed().setColor("#127ABD").setTitle(`**Top Likes**`);
         for(var i = 0; i < top.length; i++) {
-          embed.addField(`**${i}. ** ${top[i].name}: **${top[i].likes}**\n\n`);
+          embed.addField(`**${i + 1}. ** ${top[i].name}: **${top[i].likes}** likes`, `------------------------`);
         }
         message.channel.send(embed);
       }else if(term == 'count') {
