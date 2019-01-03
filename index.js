@@ -2,6 +2,7 @@
 const fs = require('fs');
 const config = JSON.parse(fs.readFileSync('configuration.json'));
 const ui = require('./server.js');
+const moment = require('moment');
 /* Google Packages */
 const GoogleSpreadsheet = require('googleapis');
 /* Discord Packages */
@@ -156,7 +157,24 @@ bot.on('ready', () => {
           });
         });
       });
-    }, 30000);
+    }, 60000);
+  }
+  
+  if(true) {
+    setInterval(function() {
+      fs.readFile('commands/meetings/meetings.json', function(err, data) {
+        if(err) {
+          console.log(err);
+        }
+        for(var i = 0; i < data.meetings.length; i++) {
+          var remaining = moment(data.meetings[i]).diff(moment(), 'days');
+          if(remaining <= 1) {
+            
+          }
+        }
+        data.meeting
+      });
+    }, 7200000);
   }
 });
 
