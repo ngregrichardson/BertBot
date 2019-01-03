@@ -6,6 +6,8 @@ const config = JSON.parse(fs.readFileSync('configuration.json'));
 var meetings = JSON.parse(fs.readFileSync('commands/meetings/meetings.json'));
 const moment = require('moment');
 const formatJSON = require('json-format');
+const Discord = require('discord.js');
+const prompter = require('discordjs-prompt');
 
 class Meeting extends commando.Command {
   constructor(client) {
@@ -68,10 +70,14 @@ class Meeting extends commando.Command {
     }else if(action == 'remove') {
       for(var i = 0; i < meetings.meetings.length; i++) {
        if(meetings.meetings[i].description == description || meetings.meetings[i].day == parseInt(day) && meetings.meetings[i].month == moment().month(month).format('M') - 1) {
-         meetings.meetings.splice(i, 1);
-         fs.writeFile('commands/meetings/meetings.json', JSON.stringify(meetings), function(err) {
-           process.exit();
-         });
+         let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`Are you sure you want to remove this?`).setDescription(`**Upcoming meeting on:** ${moment(meetings.meetings[i]).format('dddd, MMMM Do, h:mm')}\n\n**Meeting Plans:** ${meetings.meetings[i].description}`);
+         let prompt = message.channel.send(embed);
+         var collector = new Discord.MessageCollector(message.channel, m => m.author.id == message.author.id, { time: 10000 });
+         
+         //meetings.meetings.splice(i, 1);
+         //fs.writeFile('commands/meetings/meetings.json', JSON.stringify(meetings), function(err) {
+           //process.exit();
+         //});
        }
       }
     }else {

@@ -4,6 +4,7 @@ dependencies:
   dadjokes-wrapper: 0.1.4
   discord.js: 11.4.2
   discord.js-commando: 0.10.0
+  discordjs-prompt: 0.0.5
   express: 4.16.4
   express-session: 1.15.6
   fs: 0.0.2
@@ -381,6 +382,10 @@ packages:
       uws: ^9.14.0
     resolution:
       integrity: sha512-MDwpu0lMFTjqomijDl1Ed9miMQe6kB4ifKdP28QZllmLv/HVOJXhatRgjS8urp/wBlOfx+qAYSXcdI5cKGYsfg==
+  /discordjs-prompt/0.0.5:
+    dev: false
+    resolution:
+      integrity: sha512-uBUdxOwfZ+LlAdDH4BmQElWZ4DxvTfoY2G0fcfpH8rXOdeU7yWnCUu2na9k/WrDhOHf8q4WRGarU00DRP+Nzww==
   /duplexer2/0.0.2:
     dependencies:
       readable-stream: 1.1.14
@@ -2097,6 +2102,7 @@ specifiers:
   dadjokes-wrapper: ^0.1.4
   discord.js: ^11.4.2
   discord.js-commando: ^0.10.0
+  discordjs-prompt: ^0.0.5
   express: ^4.16.4
   express-session: ^1.15.6
   fs: ^0.0.2
