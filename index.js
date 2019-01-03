@@ -160,7 +160,7 @@ bot.on('ready', () => {
     }, 60000);
   }
   
-  if(true) {
+  if(config.meetingNotificationsOn) {
     setInterval(function() {
       fs.readFile('commands/meetings/meetings.json', function(err, data) {
         if(err) {
@@ -169,10 +169,13 @@ bot.on('ready', () => {
         for(var i = 0; i < data.meetings.length; i++) {
           var remaining = moment(data.meetings[i]).diff(moment(), 'days');
           if(remaining <= 1) {
-            
+            bot.channels.get(config.meetingNotificationChannelId).send('');
+            data.meetings.splice(i, 1);
+            fs.writeFile('commands/meetings/meetings.json', data, function(err) {
+              process.exit();
+            });
           }
         }
-        data.meeting
       });
     }, 7200000);
   }

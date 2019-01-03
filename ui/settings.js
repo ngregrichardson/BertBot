@@ -41,6 +41,9 @@ var orderRequestedListName = $("input[name='orderRequestedListName']");
 var swearFilterOn = $("input[name='swearFilterOn']");
 var swearFilter = $("#swearFilter");
 var swearFilterWhitelistedChannelNames = $("input[name='swearFilterWhitelistedChannelNames']");
+var meetingNotificationsOn = $("input[name='meetingNotificationsOn']");
+var meetingNotifications = $("#meetingNotifications");
+var meetingNotificationChannelId = $("input[name='meetingNotificationChannelId']");
 var blaiseWhitelistedChannelNames = $("input[name='blaiseWhitelistedChannelNames']");
 var restrictedCommandRoles = $("input[name='restrictedCommandRoles']");
 var errorSpace = $("#error");
@@ -121,6 +124,17 @@ $(function() {
         swearFilter.find('*').attr('disabled', false);
       }
       swearFilterWhitelistedChannelNames.val(json.swearFilterWhitelistedChannelNames);
+      meetingNotificationsOn.val(json.meetingNotificationsOn);
+      if(json.meetingNotificationsOn == false) {
+        meetingNotifications.hide();
+        meetingNotificationsOn.prop('checked', false);
+        meetingNotifications.find('*').attr('disabled', true);
+      }else {
+        meetingNotifications.show();
+        meetingNotificationsOn.prop('checked', true);
+        meetingNotifications.find('*').attr('disabled', false);
+      }
+      meetingNotificationChannelId.val(json.meetingNotificationChannelId);
       blaiseWhitelistedChannelNames.val(json.blaiseWhitelistedChannelNames);
       restrictedCommandRoles.val(json.restrictedCommandRoles);
     }else {
@@ -160,6 +174,15 @@ function toggleSwearFilter() {
   }
 }
 
+function toggleMeetingNotifications() {
+  meetingNotifications.toggle();
+  if(getCheckboxValue(meetingNotificationsOn)) {
+    meetingNotifications.find('*').attr('disabled', false);
+  }else {
+    meetingNotifications.find('*').attr('disabled', true);
+  }
+}
+
 function save() {
   $.post("/save", format(), function(data, status) {
     
@@ -184,6 +207,8 @@ function format() {
       "orderRequestedListName": isEnabled(orderRequestEmailSystemOn, orderRequestedListName.val()),
     "swearFilterOn": getCheckboxValue(swearFilterOn),
       "swearFilterWhitelistedChannelNames": isEnabled(swearFilterOn, formatArray(swearFilterWhitelistedChannelNames)),
+    "meetingNotificationsOn": getCheckboxValue(meetingNotificationsOn),
+      "meetingNotificationChannelId": isEnabled(meetingNotificationsOn, meetingNotificationChannelId.val()),
     "blaiseWhitelistedChannelNames": formatArray(blaiseWhitelistedChannelNames),
     "restrictedCommandRoles": formatArray(restrictedCommandRoles),
     "userIDs": {},

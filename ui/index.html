@@ -106,6 +106,12 @@
         Swear Filter Whitelisted Channel Names (separated by commas):
         <input type="text" name="swearFilterWhitelistedChannelNames" value="">
       </div>
+      <input type="checkbox" name="meetingNotificationsOn" value="" onchange="toggleMeetingNotifications()">
+      Enable Meeting Notifications?<br>
+      <div id="meetingNotifications" style="display: none;">
+        Meeting Notifications Channel ID:
+        <input type="text" name="meetingNotificationChannelId" value="">
+      </div>
       Blaise Whitelisted Channel Names (separated by commas):
       <input type="text" name="blaiseWhitelistedChannelNames" value=""><br>
       Restricted Command Roles (separated by commas):
