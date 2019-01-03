@@ -162,22 +162,25 @@ bot.on('ready', () => {
   
   if(config.meetingNotificationsOn) {
     setInterval(function() {
-      fs.readFile('commands/meetings/meetings.json', function(err, data) {
+      fs.readFile('commands/meetings/meetings.json', function(err, response) {
         if(err) {
           console.log(err);
         }
-        console.log(JSON.parse(data));
-        // for(var i = 0; i < data.meetings.length; i++) {
-        //   var remaining = moment(data.meetings[i]).diff(moment(), 'days');
-        //   if(remaining <= 1) {
-        //     let embed = getEmbedBase(event).setTitle(`Upcoming meeting on ${moment(data.meetings[i]).format('dddd, MMMM Do at h:mm a')}`).setDescription(`**Meeting Plans:** ${data.meetings[i].description}`);
-        //     bot.channels.get(config.meetingNotificationChannelId).send(embed);
-        //     data.meetings.splice(i, 1);
-        //     fs.writeFile('commands/meetings/meetings.json', data, function(err) {
-        //       process.exit();
-        //     });
-        //   }
-        // }
+        var data = JSON.parse(response);
+        if(data.meetings){
+          for(var i = 0; i < data.meetings.length; i++) {
+            var remaining = moment(data.meetings[i]).diff(moment(), 'days');
+            if(remaining <= 1) {
+              let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`Upcoming meeting on ${moment(data.meetings[i]).format('dddd, MMMM Do at h:mm a')}`).setDescription(`**Meeting Plans:** ${data.meetings[i].description}`);
+              bot.channels.get(config.meetingNotificationChannelId).send('doop');
+              console.log('ran!');
+              data.meetings.splice(i, 1);
+              fs.writeFile('commands/meetings/meetings.json', JSON.stringify(data), function(err) {
+                process.exit();
+              });
+            }
+          }
+        }
       });
     }, 2000);
   }

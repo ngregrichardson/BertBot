@@ -3,7 +3,7 @@ const commando = require('discord.js-commando');
 /* Config */
 const fs = require('fs');
 const config = JSON.parse(fs.readFileSync('configuration.json'));
-const meetings = JSON.parse(fs.readFileSync('commands/meetings/meetings.json'));
+var meetings = JSON.parse(fs.readFileSync('commands/meetings/meetings.json'));
 const moment = require('moment');
 const formatJSON = require('json-format');
 
@@ -53,7 +53,9 @@ class Meeting extends commando.Command {
     if(action == 'add') {
       if(!meetings.meetings) {
         fs.writeFile('commands/meetings/meetings.json', JSON.stringify({ "meetings": [] }), function(err) {
-          
+          fs.readFile('commands/meetings/meetings.json', function(err, data){
+            meetings = data;
+          });
         });
       }
       var date = moment([ moment().year(), moment().month(month).format('M') - 1, parseInt(day), parseInt(time.split(':')[0]), parseInt(time.split(':')[1])]).toObject();
