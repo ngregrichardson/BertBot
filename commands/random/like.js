@@ -30,22 +30,18 @@ class Like extends commando.Command {
         console.log(err);
       }
       var data = JSON.parse(response);
-      var people = [];
-      var likes = [];
-      var indexes;
+      var values = [];
+      var top;
       if(term == 'top') {
         for(var member in data) {
-          people.push(member);
-          likes.push(data[member]);
+          values.push({'name': member, 'likes': data[member]})
         }
-        console.log(people);
-        console.log(likes);
-        for(var i = 0; people.length > 5; i++) {
-          var top = likes.sort
+        if(values.length < 5) {
+          top = values.sort((a, b) => b.likes - a.likes).splice(0, values.length);
+        }else {
+          top = values.sort((a, b) => b.likes - a.likes).splice(0, 5);
         }
-        
-        console.log(people);
-        console.log(likes);
+        var string;
         
         //let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`**Top Liked Users**`).setDescription(`**1. ** ${}\n\n**Meeting Plans:** ${meetings.meetings[i].description}`);
       }else if(term == 'count') {

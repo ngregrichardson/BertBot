@@ -218,7 +218,7 @@ bot.on('messageReactionAdd', function(messageReaction, user) {
       var reactor = user.username;
       if(author != reactor) {
         if(!data[author]) {
-          data[author] = 0; 
+          data[author] = 0;
         }
         data[author]++;
         fs.writeFileSync('commands/random/likes.json', JSON.stringify(data));
