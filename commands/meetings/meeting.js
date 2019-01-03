@@ -16,28 +16,32 @@ class Meeting extends commando.Command {
       description: 'Creates a custom command **R**',
       args: [{
         key: 'action',
-        prompt: 'Add, edit, or delete a meeting.',
+        prompt: 'Add or delete a meeting.',
         type: 'string'
       },
       {
         key: 'description',
         prompt: 'Description of the meeting',
-        type: 'string'
+        type: 'string',
+        default: ''
       },
       {
         key: 'day',
         prompt: 'Day of the meeting',
-        type: 'string'
+        type: 'string',
+        default: ''
       },
       {
         key: 'month',
         prompt: 'Month of the meeting',
-        type: 'string'
+        type: 'string',
+        default: ''
       },
       {
         key: 'time',
         prompt: 'Time of the meeting',
-        type: 'string'
+        type: 'string',
+        default: ''
       }]
     });
   }
@@ -60,14 +64,16 @@ class Meeting extends commando.Command {
         process.exit();
       });
     }else if(action == 'remove') {
-      for(var meeting in meetings.meetings) {
-       if(meeting.description == description || meeting.day == parseInt(day) && meeting.month == moment().month(month).format('M') - 1) {
-         removeFromArray(meetings.meetings, meeting);
+      for(var i = 0; i < meetings.meetings.length; i++) {
+       if(meetings.meetings[i].description == description || meetings.meetings[i].day == parseInt(day) && meetings.meetings[i].month == moment().month(month).format('M') - 1) {
+         meetings.meetings.splice(i, 1);
          fs.writeFile('commands/meetings/meetings.json', JSON.stringify(meetings), function(err) {
            process.exit();
          });
        }
       }
+    }else {
+      message.channel.send('You must specify `add` or `remove` for this command.');
     }
              
   }
