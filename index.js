@@ -214,25 +214,14 @@ bot.on('message', message => { // When a message is sent
 
 /* In progress like tracker */
 
-// bot.on('messageReactionAdd', function(messageReaction, user) {
-//   if(messageReaction._emoji.name == '👍') {
-//     function setAuth(step) {
-//       var creds = {
-//         client_email: process.env.SAE,
-//         private_key: process.env.GPK
-//       };
-//       //doc.useServiceAccountAuth(creds, step);
-//     }
-//   }
-// });
-
-// function checkForLikes(message) {
-//   for(var i = 0; i < message.reactions.length; i++) {
-//     if(message.reactions[i].emoji.id == '490900369811963914') {
-//       // TODO: Google sheets stuff here
-//     }
-//   }
-// }
+bot.on('messageReactionAdd', function(messageReaction, user) {
+  if(messageReaction._emoji.name == '👍') {
+    messageReaction.message.channel.send('hey!');
+    var author = messageReaction.message.author.username;
+    console.log(author);
+    console.log(user.username);
+  }
+});
 
 /*
 ** ====================================
