@@ -73,11 +73,25 @@ class Meeting extends commando.Command {
          let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`Are you sure you want to remove this?`).setDescription(`**Upcoming meeting on:** ${moment(meetings.meetings[i]).format('dddd, MMMM Do, h:mm')}\n\n**Meeting Plans:** ${meetings.meetings[i].description}`);
          let prompt = message.channel.send(embed);
          var collector = new Discord.MessageCollector(message.channel, m => m.author.id == message.author.id, { time: 10000 });
-         
-         //meetings.meetings.splice(i, 1);
-         //fs.writeFile('commands/meetings/meetings.json', JSON.stringify(meetings), function(err) {
-           //process.exit();
-         //});
+         collector.on('collect', message => {
+           if(message.content.toLowerCase() == "yes") {
+             meetings.meetings.splice(i, 1);
+             message.channel.send('The meeting was deleted');
+             fs.writeFile('commands/meetings/meetings.json', JSON.stringify(meetings), function(err) {
+                if(err) {
+                  console.log(err);
+                }
+               console.log('ran');
+                // setTimeout(function() {
+                //   process.exit();
+                // }, 2000);
+              });
+           }else if(message.content.toLowerCase() == "no") {
+             message.channel.send('The process was aborted');
+           }else {
+             message.channel.send('Please answer with yes or no');
+           }
+         });
        }
       }
     }else {

@@ -179,7 +179,7 @@ bot.on('ready', () => {
                 }
                 setTimeout(function() {
                   process.exit();
-                }, 5000);
+                }, 3000);
               });
             }
           }
