@@ -174,14 +174,10 @@ bot.on('ready', () => {
               let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`Upcoming meeting on: ${moment(data.meetings[i]).format('dddd, MMMM Do, h:mm')}`).setDescription(`**Meeting Plans:** ${data.meetings[i].description}`);
               bot.channels.get(config.meetingNotificationChannelId).send(embed);
               data.meetings.splice(i, 1);
-              fs.writeFile('commands/meetings/meetings.json', JSON.stringify(data), function(err) {
-                if(err) {
-                  console.log(err);
-                }
-                setTimeout(function() {
-                  process.exit();
-                }, 3000);
-              });
+              fs.writeFileSync('commands/meetings/meetings.json', JSON.stringify(data));
+              setTimeout(function() {
+                process.exit();
+              }, 2000);
             }
           }
         }
@@ -216,10 +212,19 @@ bot.on('message', message => { // When a message is sent
 
 bot.on('messageReactionAdd', function(messageReaction, user) {
   if(messageReaction._emoji.name == '👍') {
-    messageReaction.message.channel.send('hey!');
-    var author = messageReaction.message.author.username;
-    console.log(author);
-    console.log(user.username);
+    fs.readFile('likes/likes.json', function(err, response) {
+      var data = JSON.parse(response);
+      var author = messageReaction.message.author.username;
+      var reactor = user.username;
+      if(author != reactor) {
+        
+      }
+      data[author]);
+      messageReaction.message.channel.send('hey!');
+      //if(author != reactor) {
+        //fs.writeFileSync('likes/likes.json', JSON.stringify(data));
+      //}
+    });
   }
 });
 
