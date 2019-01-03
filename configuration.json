@@ -1,1 +1,24 @@
-{"botName":"BertBot","teamNumber":"4750","discordServerId":"529060705589002260","trelloNotificationsOn":true,"trelloNotificationChannelId":"530255405947944960","trelloPollInterval":10000,"watchedTrelloBoardIds":["UCVxVlJC"],"enabledTrelloNotifications":["cardCreated","cardDescriptionChanged","cardListChanged","commentAdded","commentEdited"],"trelloPrefix":"!","orderRequestEmailSystemOn":false,"orderRequestBoardId":"","orderPlacedChecklistItemName":"","orderPlacedListName":"","orderRequestedListName":"","swearFilterOn":true,"swearFilterWhitelistedChannelNames":[""],"meetingNotificationsOn":false,"meetingNotificationChannelId":"","blaiseWhitelistedChannelNames":["allowAll"],"restrictedCommandRoles":["owner"],"userIDs":{},"contentString":""}
+{
+  "botName":"BertBot",
+  "teamNumber":"4750",
+  "discordServerId":"529060705589002260",
+  "trelloNotificationsOn":true,
+  "trelloNotificationChannelId":"530255405947944960",
+  "trelloPollInterval":10000,
+  "watchedTrelloBoardIds":["UCVxVlJC"],
+  "enabledTrelloNotifications":["cardCreated","cardDescriptionChanged","cardListChanged","commentAdded","commentEdited"],
+  "trelloPrefix":"!",
+  "orderRequestEmailSystemOn":false,
+  "orderRequestBoardId":"",
+  "orderPlacedChecklistItemName":"",
+  "orderPlacedListName":"",
+  "orderRequestedListName":"",
+  "swearFilterOn":true,
+  "swearFilterWhitelistedChannelNames":[""],
+  "meetingNotificationsOn":false,
+  "meetingNotificationChannelId":"",
+  "blaiseWhitelistedChannelNames":["allowAll"],
+  "restrictedCommandRoles":["owner"],
+  "userIDs":{},
+  "contentString":""
+}
