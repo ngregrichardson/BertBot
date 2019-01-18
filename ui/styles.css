@@ -32,6 +32,7 @@ input {
   border-bottom: solid 2px white;
   color: white;
   font-size: 90%;
+  cursor: pointer;
 }
 
 input[type="image"], input[type="image"]:hover, input[type="image"]:active, input[type="image"]:focus {
@@ -60,6 +61,27 @@ input:hover {
 
 input:active, input:focus {
  border: solid 2px white; 
+}
+
+button {
+  background: transparent;
+  border: none;
+  border-bottom: solid 2px white;
+  color: white;
+  font-size: 90%;
+}
+
+button:hover {
+  border-bottom: solid 2px #b4b4b4;
+}
+
+button:active, button:focus {
+ border: solid 2px white; 
+}
+
+.button-link, .button-link:hover {
+  color: white;
+  text-decoration: none;
 }
 
 table {

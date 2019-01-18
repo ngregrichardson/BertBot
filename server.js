@@ -37,11 +37,23 @@ app.get('/config', function (request, response) {
 
 app.post("/config", function (request, response) {
   db.set('config', request.body).write();
+  fs.writeFile(__dirname + '/ui/savedConfig.json', _.keys(db.get('config').value())[0], (err) => {
+    if (err) console.log(err);
+  });
   response.sendStatus(200);
 });
 
 app.get('/settings', function (request, response) {
   response.sendFile(__dirname + '/ui/settings.js');
+});
+
+app.get('/download', function (request, response) {
+  response.download(__dirname + '/ui/savedConfig.json', 'savedConfig.json');
+});
+
+app.post('/download', function (request, response) {
+  response.attachment(__dirname + '/ui/savedConfig.json');
+  response.sendStatus(200);
 });
 
 app.get('/meetings', function (request, response) {
@@ -66,23 +78,12 @@ app.get('/styles', function (request, response) {
 });
 
 app.post("/restart", function (request, response) {
-  response.sendFile(__dirname + '/reload/reload.html');
-  setTimeout(function () {
-    process.exit();
-  }, 1000);
+  process.exit();
 });
 
 const listener = app.listen(process.env.PORT, function () {
 
 });
-
-function checkForMeetings() {
-  if (Object.getOwnPropertyNames(JSON.parse(_.keys(db.get('meetings').value())[0])).length == 0) {
-    return {};
-  } else {
-    return JSON.parse(_.keys(db.get('meetings').value())[0]);
-  }
-}
 
 module.exports = {
   config: JSON.parse(_.keys(db.get('config').value())[0]),
