@@ -1,7 +1,8 @@
 /* Config */
 const fs = require('fs');
-const config = JSON.parse(fs.readFileSync('configuration.json'));
-const ui = require('./server.js');
+const db = require('/app/server.js').db,
+  config = require('/app/server.js').config,
+  meetings = require('/app/server.js').meetings;
 const moment = require('moment');
 /* Google Packages */
 const GoogleSpreadsheet = require('googleapis');
@@ -27,11 +28,11 @@ bot.registry.registerGroup('polls', 'Polls');
 bot.registry.registerGroup('spam', 'Spam');
 bot.registry.registerGroup('meetings', 'Meetings');
 bot.registry.registerGroup('custom', 'Custom');
+bot.registry.registerGroup('mod', 'Mod');
+bot.registry.registerGroup('tba', 'Tba');
 bot.registry.registerDefaults();
 bot.registry.registerCommandsIn(__dirname + "/commands");
 bot.login(process.env.TOKEN);
-/* Google Setup */
-//var doc = new GoogleSpreadsheet(process.env.GSHID);
 var sheet;
 /* Swear Bot Setup */
 const profanities = JSON.parse(fs.readFileSync('swears.json'));
@@ -51,7 +52,7 @@ const events = new Trello({
 /* Bot Setup */
 bot.on('ready', () => {
   /* Trello Events Setup */
-  if(config.trelloNotificationsOn) {
+  if (config.trelloNotificationsOn) {
     let guild = bot.guilds.get(config.discordServerId)
     let channel = bot.channels.get(config.trelloNotificationChannelId)
     if (!guild) {
@@ -73,7 +74,7 @@ bot.on('ready', () => {
   }
 
   /* Gmail Reader */
-  if(config.orderRequestEmailSystemOn) {
+  if (config.orderRequestEmailSystemOn) {
     gConfig = {
       imap: {
         user: process.env.GFROM,
@@ -84,7 +85,7 @@ bot.on('ready', () => {
         authTimeout: 3000
       }
     };
-    setInterval(function() {
+    setInterval(function () {
       imaps.connect(gConfig).then(function (connection) { // Connect to the email
         return connection.openBox('ARCHIVE').then(function () { // Open the inbox
           var searchCriteria = [ // Search the inbox for
@@ -101,32 +102,32 @@ bot.on('ready', () => {
                 return part.which === 'HEADER';
               })[0].body.subject[0];
             });
-            for(var i = 0; i < subjects.length; i++) { // For each email
-              if(!subjects[i].includes('#')) return; // If it doesn't include a #
+            for (var i = 0; i < subjects.length; i++) { // For each email
+              if (!subjects[i].includes('#')) return; // If it doesn't include a #
               var id = subjects[i].substring(subjects[i].indexOf('#') + 1); // Get the ID
               rapid.call('Trello', 'getCardChecklists', { // Get the checklist from the card
                 'apiKeys': process.env.KEY, // Auth
                 'accessToken': process.env.TTOKEN, // Auth
                 'cardIdOrShortlink': id // Card ID
-              }).on('success', (payload)=>{ // When it gets the checklist
-                if(payload == undefined) return;
-                for(var j = 0; j < payload[0].checkItems.length; j++) { // For each item in the checklist
-                  if(payload[0].checkItems[j].name == config.orderPlacedChecklistItemName) { // If the item is called 'Order Placed'
+              }).on('success', (payload) => { // When it gets the checklist
+                if (payload == undefined) return;
+                for (var j = 0; j < payload[0].checkItems.length; j++) { // For each item in the checklist
+                  if (payload[0].checkItems[j].name == config.orderPlacedChecklistItemName) { // If the item is called 'Order Placed'
                     rapid.call('Trello', 'updateCardCheckItem', { // Update the checklist item
                       'apiKeys': process.env.KEY, // Auth
                       'accessToken': process.env.TTOKEN, // Auth
                       'cardIdOrShortlink': id, // Card ID
                       'idCheckItem': payload[0].checkItems[j].id, // Checklist item ID
                       'state': 'complete' // State to set to
-                    }).on('success', (payload)=>{ // When it updates the checklist item
+                    }).on('success', (payload) => { // When it updates the checklist item
                       rapid.call('Trello', 'getBoardLists', { // Get the id of the list to move to
                         'apiKeys': process.env.KEY, // Auth
                         'accessToken': process.env.TTOKEN, // Auth
                         'boardId': config.orderRequestBoardId // Board ID
-                      }).on('success', (payload)=>{ // When it gets the list of lists
+                      }).on('success', (payload) => { // When it gets the list of lists
                         var listId; // List ID
-                        for(var k = 0; k < payload.length; k++) { // For each list
-                          if(payload[k].name == config.orderPlacedListName) { // If it is the list
+                        for (var k = 0; k < payload.length; k++) { // For each list
+                          if (payload[k].name == config.orderPlacedListName) { // If it is the list
                             listId = payload[k].id; // Get the id
                             break; // Break out of the loop
                           }
@@ -136,21 +137,21 @@ bot.on('ready', () => {
                           'accessToken': process.env.TTOKEN, // Auth
                           'cardIdOrShortlink': id, // Card ID
                           'idList': listId // List ID
-                        }).on('success', (payload)=>{ // When it moves the card
+                        }).on('success', (payload) => { // When it moves the card
                           //console.log('Completed!'); // Confirmation
-                        }).on('error', (payload)=>{ // If it couldn't move the card
+                        }).on('error', (payload) => { // If it couldn't move the card
                           console.log("Error moving card: " + payload); // Print the error
                         });
-                      }).on('error', (payload)=>{
+                      }).on('error', (payload) => {
                         console.log("Error getting list: " + payload); // Print the error
                       });
-                    }).on('error', (payload)=>{ // If it couldn't update the checklist
+                    }).on('error', (payload) => { // If it couldn't update the checklist
                       console.log("Error updating checklist: " + payload); // Print the error
                     });
                     break; // Break from the loop
                   }
                 }
-              }).on('error', (payload)=>{ // If it couldn't retrieve the checklist
+              }).on('error', (payload) => { // If it couldn't retrieve the checklist
                 console.log("Error retrieving checklist: " + payload); // Print the error
               });
             }
@@ -159,29 +160,21 @@ bot.on('ready', () => {
       });
     }, 60000);
   }
-  
-  if(config.meetingNotificationsOn) {
-    setInterval(function() {
-      fs.readFile('commands/meetings/meetings.json', function(err, response) {
-        if(err) {
-          console.log(err);
+
+  if (config.meetingNotificationsOn) {
+    setInterval(function () {
+      for (var meeting in meetings) {
+        var remaining = moment(meetings[meeting]).diff(moment(), 'hours');
+        if (remaining <= 23) {
+          let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`Upcoming meeting on: ${moment(meetings[meeting]).format('dddd, MMMM Do, h:mm')}`).setDescription(`**Meeting Plans:** ${meetings[meeting].description}`);
+          bot.channels.get(config.meetingNotificationChannelId).send(embed);
+          delete meetings[meeting];
+          db.set('meetings', JSON.stringify(meetings)).write();
+          setTimeout(function () {
+            process.exit();
+          }, 1000);
         }
-        var data = JSON.parse(response);
-        if(data.meetings){
-          for(var i = 0; i < data.meetings.length; i++) {
-            var remaining = moment(data.meetings[i]).diff(moment(), 'days');
-            if(remaining <= 1) {
-              let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`Upcoming meeting on: ${moment(data.meetings[i]).format('dddd, MMMM Do, h:mm')}`).setDescription(`**Meeting Plans:** ${data.meetings[i].description}`);
-              bot.channels.get(config.meetingNotificationChannelId).send(embed);
-              data.meetings.splice(i, 1);
-              fs.writeFileSync('commands/meetings/meetings.json', JSON.stringify(data));
-              setTimeout(function() {
-                process.exit();
-              }, 2000);
-            }
-          }
-        }
-      });
+      }
     }, 2000);
   }
   console.log(`== Bot logged in as @${bot.user.tag}. Ready for action! ==`)
@@ -189,14 +182,14 @@ bot.on('ready', () => {
 
 /* Swear Filter */
 bot.on('message', message => { // When a message is sent
-  if(config.swearFilterOn) {
+  if (config.swearFilterOn) {
     // If the message is not in the spam chat, not in dms, and not from BertBot himself
-    if(!config.swearFilterWhitelistedChannelNames.includes(message.channel.name) && message.author.id !== bot.user.id && message.channel.type !== 'dm') {
+    if (!config.swearFilterWhitelistedChannelNames.includes(message.channel.name) && message.author.id !== bot.user.id && message.channel.type !== 'dm') {
       for (var i = 0; i < profanities.length; i++) { // Run through each profane word
         for (var x = 0; x < message.content.split(" ").length; x++) { // Run through each word in the message, splitting at the spaces
           if (message.content.toLowerCase().split(" ")[x] == profanities[i].toLowerCase()) { // If any of the words match
             var time = new Date(); // Get the date and time
-            message.guild.owner.send('**' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + '** | **' + message.author.username + '** tried to say **'+ profanities[i] + '** in **' + message.channel.name + "** `" + message.content + "`"); // Send a message to the server owner
+            message.guild.owner.send('**' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + '** | **' + message.author.username + '** tried to say **' + profanities[i] + '** in **' + message.channel.name + "** `" + message.content + "`"); // Send a message to the server owner
             message.author.send("Your message in **" + message.channel.name + "** was deleted because it contained **" + profanities[i] + "**. If this is a mistake, contact your server owner. Otherwise, you might want to retry sending your message like this: `" + message.content.replace(profanities[i], "****") + "`"); // Send a message to the author
             message.delete(); // Delete the message
             return; // Move on
@@ -207,33 +200,31 @@ bot.on('message', message => { // When a message is sent
   }
 });
 
-
 /* Like Tracker */
 
-bot.on('messageReactionAdd', function(messageReaction, user) {
-  if(config.likeCounterOn) {
-    if(messageReaction._emoji.name == '👍') {
-      fs.readFile('commands/random/likes.json', function(err, response) {
-        var data = JSON.parse(response);
-        var author = messageReaction.message.author.username;
-        var reactor = user.username;
-        if(author != reactor) {
-          if(!data[author]) {
-            data[author] = 0;
-          }
-          data[author]++;
-          fs.writeFileSync('commands/random/likes.json', JSON.stringify(data));
+bot.on('messageReactionAdd', function (messageReaction, user) {
+  if (config.likeCounterOn) {
+    if (messageReaction._emoji.name == '👍') {
+      var current = db.get('likes').value();
+      var author = messageReaction.message.author.username;
+      var reactor = user.username;
+      if (author != reactor) {
+        if (!current[author]) {
+          current[author] = 0;
         }
-      });
+        current[author]++;
+        db.set('likes', current).write();
+        process.exit();
+      }
     }
   }
 });
 
 /*
-** ====================================
-** Trello event handlers and functions.
-** ====================================
-*/
+ ** ====================================
+ ** Trello event handlers and functions.
+ ** ====================================
+ */
 
 // Fired when a card is created
 events.on('createCard', (event, board) => {
@@ -327,8 +318,8 @@ events.on('commentCard', (event, board) => {
 // Fired when a member is added to a card
 events.on('addMemberToCard', (event, board) => {
   let embed = getEmbedBase(event)
-  .setTitle(`Member added to card!`)
-  .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Member **[${config.realNames ? event.member.fullName : event.member.username}](https://trello.com/${event.member.username})**`)
+    .setTitle(`Member added to card!`)
+    .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Member **[${config.realNames ? event.member.fullName : event.member.username}](https://trello.com/${event.member.username})**`)
   let editedEmbed = addDiscordUserData(embed, event.member)
   if (event.member.id === event.memberCreator.id) {
     if (!eventEnabled(`memberAddedToCardBySelf`)) return
@@ -343,8 +334,8 @@ events.on('addMemberToCard', (event, board) => {
 // Fired when a member is removed from a card
 events.on('removeMemberFromCard', (event, board) => {
   let embed = getEmbedBase(event)
-  .setTitle(`Member removed from card!`)
-  .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Member **[${config.realNames ? event.member.fullName : event.member.username}](https://trello.com/${event.member.username})**`)
+    .setTitle(`Member removed from card!`)
+    .setDescription(`**CARD:** ${event.data.card.name} — **[CARD LINK](https://trello.com/c/${event.data.card.shortLink})**\n\n**EVENT:** Member **[${config.realNames ? event.member.fullName : event.member.username}](https://trello.com/${event.member.username})**`)
   let editedEmbed = addDiscordUserData(embed, event.member)
   if (event.member.id === event.memberCreator.id) {
     if (!eventEnabled(`memberRemovedFromCardBySelf`)) return
@@ -397,14 +388,14 @@ events.on('updateList', (event, board) => {
 })
 // Fired when an attachment is added to a card
 events.on('addAttachmentToCard', (event, board) => {
-  if(config.orderRequestEmailSystemOn) {
-    if(event.data.list.name == config.orderRequestedListName) { // If the attachment is in the 'Orders Requested' list
-      if(event.data.attachment != undefined) { // If the attachment exists
+  if (config.orderRequestEmailSystemOn) {
+    if (event.data.list.name == config.orderRequestedListName) { // If the attachment is in the 'Orders Requested' list
+      if (event.data.attachment != undefined) { // If the attachment exists
         sendEmail({ // Send an email
           subject: 'New order form from ' + event.memberCreator.fullName + '! #' + event.data.card.id, // Create the subject line
           html: '<a href="' + event.data.attachment.url + '" style="text-decoration:none;color:black;font-size:200%;">Here is the form!</a><br><p>Reply "Order Completed" to mark complete on the Trello</p>' // Create the email
         }, function (err, res) { // Callback
-          if(err) { // If there is an error
+          if (err) { // If there is an error
             console.log("Error sending email: " + err); // Print the error
           }
         });
@@ -461,22 +452,24 @@ events.on('updateCheckItemStateOnCard', (event, board) => {
 })
 
 /*
-** =======================
-** Miscellaneous functions
-** =======================
-*/
+ ** =======================
+ ** Miscellaneous functions
+ ** =======================
+ */
 events.on('maxId', (id) => {
   if (latestActivityId == id) return
   latestActivityId = id
   fs.writeFileSync('.latestActivityID', id)
 })
-const send = (embed, content = ``) => config.channel.send(`${content} ${config.contentString}`, {embed:embed}).catch(err => console.error(err))
+const send = (embed, content = ``) => config.channel.send(`${content} ${config.contentString}`, {
+  embed: embed
+}).catch(err => console.error(err))
 const eventEnabled = (type) => config.enabledTrelloNotifications.length > 0 ? config.enabledTrelloNotifications.includes(type) : true
 const logEventFire = (event) => console.log(`${new Date(event.date).toUTCString()} - ${event.type} fired`)
 const getEmbedBase = (event) => new Discord.RichEmbed()
-.setFooter(`${config.guild.members.get(bot.user.id).displayName} • ${event.data.board.name} [${event.data.board.shortLink}]`, bot.user.displayAvatarURL)
-.setTimestamp(event.hasOwnProperty(`date`) ? event.date : Date.now())
-.setColor("#127ABD")
+  .setFooter(`${config.guild.members.get(bot.user.id).displayName} • ${event.data.board.name} [${event.data.board.shortLink}]`, bot.user.displayAvatarURL)
+  .setTimestamp(event.hasOwnProperty(`date`) ? event.date : Date.now())
+  .setColor("#127ABD")
 // adds thumbanail and appends user mention to the end of the description, if possible
 const addDiscordUserData = (embed, member) => {
   if (config.userIDs[member.username]) {

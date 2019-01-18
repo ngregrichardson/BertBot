@@ -1,8 +1,6 @@
-const commando = require('discord.js-commando');
-
 /* Config */
-const fs = require('fs');
-const config = JSON.parse(fs.readFileSync('configuration.json'));
+const commando = require('discord.js-commando');
+const config = require('/app/server.js').config;
 
 class Poll extends commando.Command {
   constructor(client) {
@@ -10,7 +8,8 @@ class Poll extends commando.Command {
       name: 'poll',
       group: 'polls',
       memberName: 'poll',
-      description: 'Creates a yes/no/maybe poll in the channel **R**',
+      usage: 'poll <"question">',
+      description: 'Creates a yes/no/maybe poll in the channel. **R**',
       throttling: {
         usages: 1,
         duration: 10
@@ -23,17 +22,17 @@ class Poll extends commando.Command {
     });
   }
   hasPermission(message) {
-    if(config.restrictedCommandRoles) return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
+    if (config.restrictedCommandRoles) return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
   }
   async run(message, args) {
-    message.channel.send('**' + args.question + '**').then(function(message) {
-      message.react("👍");
-      message.react("🤷");
-      message.react("👎");
-    }).catch(function(error) {
-      console.log(error);
+    message.channel.send('**' + args.question + '**').then(function (message) { // Send the question
+      message.react("👍"); // React with a thumbs up
+      message.react("🤷"); // React with a shrug
+      message.react("👎"); // React with a thumbs down
+    }).catch(function (error) { // Catch any error
+      console.log(error); // Output error
     });
-    message.delete();
+    message.delete(); // Delete the message
   }
 }
 module.exports = Poll;

@@ -1,9 +1,8 @@
+/* Config */
 const commando = require('discord.js-commando');
 const Discord = require('discord.js');
-
-/* Config */
-const fs = require('fs');
-const config = JSON.parse(fs.readFileSync('configuration.json'));
+const db = require('/app/server.js').db,
+  config = require('/app/server.js').config;
 
 class Like extends commando.Command {
   constructor(client) {
@@ -11,7 +10,8 @@ class Like extends commando.Command {
       name: 'like',
       group: 'random',
       memberName: 'like',
-      description: 'DIsplays the amount of likes',
+      usage: 'like <count|top>',
+      description: 'Displays the amount of likes.',
       throttling: {
         usages: 1,
         duration: 30
@@ -24,39 +24,43 @@ class Like extends commando.Command {
       }]
     });
   }
-  async run(message, { term }) {
-    if(config.likeCounterOn) {
-      fs.readFile('commands/random/likes.json', function(err, response) {
-        if(err) {
-          console.log(err);
+  async run(message, {
+    term
+  }) {
+    if (config.likeCounterOn) { // If like counter is enabled
+      var likes = db.get('likes').value(); // Get likes from database
+      var values = [];
+      var top;
+      if (term == 'top') { // If we're looking for the top 5
+        for (var member in likes) { // For every member 
+          values.push({
+            'name': member,
+            'likes': likes[member]
+          }); // Add them to values array
         }
-        var data = JSON.parse(response);
-        var values = [];
-        var top;
-        if(term == 'top') {
-          for(var member in data) {
-            values.push({'name': member, 'likes': data[member]})
-          }
-          if(values.length < 5) {
-            top = values.sort((a, b) => b.likes - a.likes).splice(0, values.length);
-          }else {
-            top = values.sort((a, b) => b.likes - a.likes).splice(0, 5);
-          }
-          let embed = new Discord.RichEmbed().setColor("#127ABD").setTitle(`**Top Likes**`);
-          for(var i = 0; i < top.length; i++) {
-            embed.addField(`**${i + 1}. ** ${top[i].name}: **${top[i].likes}** likes`, `------------------------`);
-          }
-          message.channel.send(embed);
-        }else if(term == 'count') {
-          if(data[message.author.username]) {
-          message.author.send("You have " + data[message.author.username] + " likes!");
-        }else {
-          message.author.send("You do not have any likes yet.");
+        if (values.length < 5) { // If there are less than 5 values
+          top = values.sort((a, b) => b.likes - a.likes).splice(0, values.length); // Sort the likes
+        } else { // Otherwise
+          top = values.sort((a, b) => b.likes - a.likes).splice(0, 5); // Sort the likes, then cut out all but the top 5
         }
-        }else {
-          message.channel.send('You must specify `count` or `top` for this command.');
+        // Create embed
+        let embed = new Discord.RichEmbed().setColor("#127ABD").setTitle(`**Top Likes**`);
+        for (var i = 0; i < top.length; i++) { // For each member in the top 5
+          // Add an embed field for each member
+          embed.addField(`**${i + 1}. ** ${top[i].name}: **${top[i].likes}** likes`, `------------------------`);
         }
-      });
+        message.channel.send(embed); // Send the embed
+      } else if (term == 'count') { // If we are looking for the user's count
+        if (likes[message.author.username]) { // If the user has likes
+          var grammar;
+          likes[message.author.username] == 1 ? grammar = " like!" : grammar = " likes!"; // Make sure the grammar is correct :)
+          message.author.send("You have " + likes[message.author.username] + grammar); // Message the user with their like count
+        } else { // Otherwise
+          message.author.send("You do not have any likes yet."); // Output error
+        }
+      } else { // Otherwise
+        message.channel.send('You must specify `count` or `top` for this command.'); // Output error
+      }
     }
   }
 }
