@@ -9,6 +9,14 @@ body {
  background: red; 
 }
 
+a, a:visited {
+  color: white;
+}
+
+a:hover {
+  color: #b4b4b4;
+}
+
 h1 {
   text-align: center;
 }
@@ -24,6 +32,22 @@ input {
   border-bottom: solid 2px white;
   color: white;
   font-size: 90%;
+}
+
+input[type="image"], input[type="image"]:hover, input[type="image"]:active, input[type="image"]:focus {
+  width: 25px;
+  height: 25px;
+  border: none;
+  padding: 3px 5px 0px 5px;
+  -webkit-transition: width 1s, height 1s;
+  transition: width 1s, height 1s;
+}
+
+input[type="image"]:hover {
+  width: 30px;
+  height: 30px;
+  -webkit-transition: width 1s, height 1s;
+  transition: width 1s, height 1s;
 }
 
 .required {
@@ -50,6 +74,14 @@ table {
   text-align: center;
 }
 
+.meeting {
+  background-color: #2b2b2b;
+  width: 30%;
+  margin: auto;
+  text-align: left;
+  padding: 20px 0px 20px 20px;
+}
+
 iframe {
   position: absolute;
   bottom: 20px;
@@ -63,6 +95,10 @@ iframe {
     width: 40%;
     height: 50%;
   }
+  
+  .meeting {
+    width: 80%;
+  }
 }
 
 @media only screen and (max-width: 635px), only screen and (max-device-width: 640px) {
@@ -70,5 +106,9 @@ iframe {
     margin: auto;
     width: 90%;
     height: 30%;
+  }
+  
+  .meeting {
+    width: 80%;
   }
 }

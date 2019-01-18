@@ -1,10 +1,8 @@
+/* Config */
+const commando = require('discord.js-commando');
+const config = require('/app/server.js').config;
 const DadJokes = require('dadjokes-wrapper');
 const dj = new DadJokes();
-const commando = require('discord.js-commando');
-
-/* Config */
-const fs = require('fs');
-const config = JSON.parse(fs.readFileSync('configuration.json'));
 
 class Blaise extends commando.Command {
   constructor(client) {
@@ -12,10 +10,11 @@ class Blaise extends commando.Command {
       name: 'blaise',
       group: 'random',
       memberName: 'blaise',
-      description: 'Displays a dad joke',
+      usage: 'blaise *<search term>*',
+      description: 'Tells a dad joke.',
       throttling: {
         usages: 1,
-        duration: 60
+        duration: 600
       },
       args: [{
         key: 'term',
@@ -25,19 +24,24 @@ class Blaise extends commando.Command {
       }]
     });
   }
-  async run(message, { term }) {
-    if(config.blaiseWhitelistedChannelNames.includes(message.channel.name) || config.blaiseWhitelistedChannelNames.includes("allowAll")) {
-      if(term) {
-        dj.searchJoke({'term': term}).then(function(res) {
-          if(res) {
-            message.channel.send(res.results[Math.floor(Math.random() * res.results.length)].joke);
-          }else {
-            message.channel.send('Sorry, there are no jokes with that keyword');
+  async run(message, {
+    term
+  }) {
+    // If the channel is whitelisted
+    if (config.blaiseWhitelistedChannelNames.includes(message.channel.name) || config.blaiseWhitelistedChannelNames.includes("allowAll")) {
+      if (term) { // If there is a term
+        dj.searchJoke({
+          'term': term
+        }).then(function (res) { // Get a joke from that term
+          if (res.total_jokes != 0) { // If there are jokes with that term
+            message.channel.send(res.results[Math.floor(Math.random() * res.results.length)].joke); // Display the joke
+          } else { // Otherwise
+            message.channel.send('Sorry, there are no jokes with that keyword'); // Output error
           }
         });
-      } else {
-        dj.randomJoke().then(function(res) {
-          message.channel.send(res);
+      } else { // Otherwise
+        dj.randomJoke().then(function (res) { // Get a random joke
+          message.channel.send(res); // Display the joke
         });
       }
     }

@@ -1,6 +1,7 @@
 dependencies:
   bufferutil: 4.0.1
   common-tags: 1.8.0
+  cool-ascii-faces: 1.3.4
   dadjokes-wrapper: 0.1.4
   discord.js: 11.4.2
   discord.js-commando: 0.10.0
@@ -14,8 +15,10 @@ dependencies:
   http: 0.0.0
   imap-simple: 4.2.0
   json-format: 1.0.1
+  json-string: 0.0.1
+  lowdb: 1.0.0
   moment: 2.23.0
-  mongodb: 3.1.10
+  mongodb: 3.1.12
   node-localstorage: 1.3.1
   node-schedule: 1.3.1
   node-superfetch: 0.1.9
@@ -29,6 +32,8 @@ dependencies:
   synchronize: 2.0.0
   trello: 0.9.1
   trello-events: 0.1.6
+  underscore: 1.9.1
+  wikijs: 5.0.0-alpha.1
   write-file: 1.0.0
   xmlhttprequest: 1.8.0
 packages:
@@ -165,6 +170,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-DYCIAbY0KtM8kd+dC0TcCbkeXD0=
+  /camelcase/4.1.0:
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha1-1UVjW+HjPFQmScaRc+Xeas+uNN0=
   /caseless/0.12.0:
     dev: false
     resolution:
@@ -185,6 +196,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-0dyXOSAxTfZ/vrlCI7TuNQI56Ws=
+  /clone/1.0.4:
+    dev: false
+    engines:
+      node: '>=0.8'
+    resolution:
+      integrity: sha1-2jCcwmPfFZlMaIypAheco8fNfH4=
   /coffee-script/1.3.2:
     deprecated: CoffeeScript on NPM has moved to "coffeescript" (no hyphen)
     dev: false
@@ -241,6 +258,13 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha1-5+Ch+e9DtMi6klxcWpboBtFoc7s=
+  /cool-ascii-faces/1.3.4:
+    dependencies:
+      stream-spigot: 3.0.6
+    dev: false
+    hasBin: true
+    resolution:
+      integrity: sha1-8Wo6d91ZRBSBJ2ykZz5qR8ZvsLI=
   /core-util-is/1.0.2:
     dev: false
     resolution:
@@ -319,6 +343,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-71WKyrjeJSBs1xOQbXTlaTDrafI=
+  /defaults/1.0.3:
+    dependencies:
+      clone: 1.0.4
+    dev: false
+    resolution:
+      integrity: sha1-xlYFHpgX2f8I7YgUd/P+QBnz730=
   /define-properties/1.1.3:
     dependencies:
       object-keys: 1.0.12
@@ -419,6 +449,12 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha1-rT/0yG7C0CkyL1oCw6mmBslbP1k=
+  /encoding/0.1.12:
+    dependencies:
+      iconv-lite: 0.4.24
+    dev: false
+    resolution:
+      integrity: sha1-U4tm8+5izRq1HsMjgp0flIDHS+s=
   /es6-promise/3.0.2:
     dev: false
     resolution:
@@ -850,6 +886,12 @@ packages:
       node: '>=0.8.19'
     resolution:
       integrity: sha1-khi5srkoojixPcT7a21XbyMUU+o=
+  /infobox-parser/3.1.1:
+    dependencies:
+      camelcase: 4.1.0
+    dev: false
+    resolution:
+      integrity: sha512-Ka1r7/II7406upOtsU0HSJDZ07h82E5XaTiFuXX64lvaRp+KULgoxNXYZW2xT9Q59cwogIazRw1sxm7aAcNLUg==
   /inherits/2.0.3:
     dev: false
     resolution:
@@ -895,12 +937,22 @@ packages:
     dev: false
     resolution:
       integrity: sha1-MVc3YcBX4zwukaq56W2gjO++duU=
+  /is-promise/2.1.0:
+    dev: false
+    resolution:
+      integrity: sha1-eaKp7OfwlugPNtKy87wWwf9L8/o=
   /is-retry-allowed/1.1.0:
     dev: false
     engines:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-EaBgVotnM5REAz0BJaYaINVk+zQ=
+  /is-stream/1.1.0:
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha1-EtSj3U5o4Lec6428hBc66A2RykQ=
   /is-typedarray/1.0.0:
     dev: false
     resolution:
@@ -913,6 +965,13 @@ packages:
     dev: false
     resolution:
       integrity: sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE=
+  /isomorphic-fetch/2.2.1:
+    dependencies:
+      node-fetch: 1.7.3
+      whatwg-fetch: 3.0.0
+    dev: false
+    resolution:
+      integrity: sha1-YRrhrPFPXoH3KVB0coGf6XM1WKk=
   /isstream/0.1.2:
     dev: false
     resolution:
@@ -935,6 +994,10 @@ packages:
     hasBin: true
     resolution:
       integrity: sha1-jxDXl32NefL2/4YqgbBRPMslaGw=
+  /javascript-natural-sort/0.7.1:
+    dev: false
+    resolution:
+      integrity: sha1-+eIwPUUH9tdDVac2ZNFED7Wg71k=
   /jsbn/0.1.1:
     dev: false
     resolution:
@@ -955,6 +1018,14 @@ packages:
     dev: false
     resolution:
       integrity: sha1-tIDIkuWaLwWVTOcnvT8qTogvnhM=
+  /json-string/0.0.1:
+    dependencies:
+      defaults: 1.0.3
+      javascript-natural-sort: 0.7.1
+      repeat-string: 1.6.1
+    dev: false
+    resolution:
+      integrity: sha1-t6/i5Uwcv6ki+rYXfqaSt+hOzTU=
   /json-stringify-safe/5.0.1:
     dev: false
     resolution:
@@ -1009,6 +1080,18 @@ packages:
     dev: false
     resolution:
       integrity: sha512-XsP+KhQif4bjX1kbuSiySJFNAehNxgLb6hPRGJ9QsUr8ajHkuXGdrHmFUTUUXhDwVX2R5bY4JNZEwbUiMhV+MA==
+  /lowdb/1.0.0:
+    dependencies:
+      graceful-fs: 4.1.15
+      is-promise: 2.1.0
+      lodash: 4.17.11
+      pify: 3.0.0
+      steno: 0.4.4
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha512-2+x8esE/Wb9SQ1F9IHaYWfsC9FIecLOPrK4g17FGEayjUWH172H6nwicRovGvSE2CPZouc2MCIqCI7h9d+GftQ==
   /lowercase-keys/1.0.0:
     dev: false
     engines:
@@ -1037,11 +1120,11 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
-  /memory-pager/1.4.0:
+  /memory-pager/1.5.0:
     dev: false
     optional: true
     resolution:
-      integrity: sha512-ycuyV5gKpZln7HB/A11wCpAxEY9VQ2EhYU1F56pUAxvmj6OyOHtB9tkLLjAyFsPdghSP2S3Ujk3aYJCusgiMZg==
+      integrity: sha512-ZS4Bp4r/Zoeq6+NLJpP+0Zzm0pR8whtGPf1XExKLJBAczGMnSi3It14OiNCStjQjM6NU1okjQGSxgEZN8eBYKg==
   /merge-descriptors/1.0.1:
     dev: false
     resolution:
@@ -1135,7 +1218,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-3IE39bHVqFbWWaPOMHZF98Q9c3LDKGTmypMiTM2QygGXXElkFWIH7GxfmlwmY2vwa+wmNsoYZmG2iusf1ZjJoA==
-  /mongodb-core/3.1.9:
+  /mongodb-core/3.1.11:
     dependencies:
       bson: 1.1.0
       require_optional: 1.0.1
@@ -1144,16 +1227,16 @@ packages:
     optionalDependencies:
       saslprep: 1.0.2
     resolution:
-      integrity: sha512-MJpciDABXMchrZphh3vMcqu8hkNf/Mi+Gk6btOimVg1XMxLXh87j6FAvRm+KmwD1A9fpu3qRQYcbQe4egj23og==
-  /mongodb/3.1.10:
+      integrity: sha512-rD2US2s5qk/ckbiiGFHeu+yKYDXdJ1G87F6CG3YdaZpzdOm5zpoAZd/EKbPmFO6cQZ+XVXBXBJ660sSI0gc6qg==
+  /mongodb/3.1.12:
     dependencies:
-      mongodb-core: 3.1.9
+      mongodb-core: 3.1.11
       safe-buffer: 5.1.2
     dev: false
     engines:
       node: '>=4'
     resolution:
-      integrity: sha512-Uml42GeFxhTGQVml1XQ4cD0o/rp7J2ROy0fdYUcVitoE7vFqEhKH4TYVqRDpQr/bXtCJVxJdNQC1ntRxNREkPQ==
+      integrity: sha512-JJnxDoaObL+U+TLo4A17yGe7vdRK8p8dh1MqxG9V9AFTZz13WoAXSMpT1kELUIyPCNaf0S0gW1EROPhmXVCgwg==
   /ms/0.7.1:
     dev: false
     resolution:
@@ -1172,6 +1255,13 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha1-KzJxhOiZIQEXeyhWP7XnECrNDKk=
+  /node-fetch/1.7.3:
+    dependencies:
+      encoding: 0.1.12
+      is-stream: 1.1.0
+    dev: false
+    resolution:
+      integrity: sha512-NhZ4CsKx7cYm2vSrBAr2PvFOe6sWDf0UYLRqA6svUYg7+/TSfVAu49jYC4BvQ4Sms9SZgdqGBgroqfDhJdTyKQ==
   /node-fetch/2.3.0:
     dev: false
     engines:
@@ -1465,6 +1555,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-c9KkNifSMU/iXT8FFTaBwBMr+rdVcN+H/uNv1o+CuFeTThNZNTOrQ+RgXA1yL/DeLk098duAeRPP3QNPNbhxYQ==
+  /process-nextick-args/1.0.7:
+    dev: false
+    resolution:
+      integrity: sha1-FQ4gt1ZZCtP5EJPyWk8q2L/zC6M=
   /process-nextick-args/2.0.0:
     dev: false
     resolution:
@@ -1591,6 +1685,18 @@ packages:
     dev: false
     resolution:
       integrity: sha1-fPTFTvZI44EwhMY23SB54WbAgdk=
+  /readable-stream/2.2.11:
+    dependencies:
+      core-util-is: 1.0.2
+      inherits: 2.0.3
+      isarray: 1.0.0
+      process-nextick-args: 1.0.7
+      safe-buffer: 5.0.1
+      string_decoder: 1.0.3
+      util-deprecate: 1.0.2
+    dev: false
+    resolution:
+      integrity: sha512-h+8+r3MKEhkiVrwdKL8aWs1oc1VvBu33ueshOvS26RsZQ3Amhx/oO3TKe4lApSV9ueY6as8EAh7mtuFjdlhg9Q==
   /readable-stream/2.3.6:
     dependencies:
       core-util-is: 1.0.2
@@ -1607,6 +1713,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-xYDXfvLPyHUrEySYBg3JeTp6wBw=
+  /repeat-string/1.6.1:
+    dev: false
+    engines:
+      node: '>=0.10'
+    resolution:
+      integrity: sha1-jcrkcOHIirwtYA//Sndihtp15jc=
   /request/2.12.0:
     bundledDependencies:
       - form-data
@@ -1794,7 +1906,7 @@ packages:
       integrity: sha512-sWpjPhIZJtqO77GN+LD8dDsDKcWZ9GCOJNqKzi1tvtjGIzwfoyuRH8S0psunmc6Z5P+qfDqztSbwYR5X/e1UTg==
   /sparse-bitfield/3.0.3:
     dependencies:
-      memory-pager: 1.4.0
+      memory-pager: 1.5.0
     dev: false
     optional: true
     resolution:
@@ -1828,6 +1940,12 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=
+  /steno/0.4.4:
+    dependencies:
+      graceful-fs: 4.1.15
+    dev: false
+    resolution:
+      integrity: sha1-BxEFvfwobmYVwEA8J+nXtdy4Vcs=
   /store/2.0.12:
     dev: false
     resolution:
@@ -1838,6 +1956,13 @@ packages:
     dev: false
     resolution:
       integrity: sha1-w1TQ2HJlsKTfpl2Kx19MXUZ+NqQ=
+  /stream-spigot/3.0.6:
+    dependencies:
+      readable-stream: 2.2.11
+      xtend: 4.0.1
+    dev: false
+    resolution:
+      integrity: sha1-34faJjAiFoKxPZTx72OuVqTXzvo=
   /strict-uri-encode/1.1.0:
     dev: false
     engines:
@@ -1848,6 +1973,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-YuIDvEF2bGwoyfyEMB2rHFMQ+pQ=
+  /string_decoder/1.0.3:
+    dependencies:
+      safe-buffer: 5.1.2
+    dev: false
+    resolution:
+      integrity: sha512-4AH6Z5fzNNBcH+6XDMfA/BTt87skxqJlO0lAh3Dker5zThcAxG6mKz+iGu308UKoPPQ8Dcqx/4JhujzltRa+hQ==
   /string_decoder/1.1.1:
     dependencies:
       safe-buffer: 5.1.2
@@ -1954,6 +2085,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-UIEXBNeYmKptWH6z8ZnqTeS8fV74zG0/eRU9VGkpzz+LIJNs8W/zM/L+7ctCkRrgbNnnR0xxw4bKOr0cW0N0Og==
+  /underscore/1.9.1:
+    dev: false
+    resolution:
+      integrity: sha512-5/4etnCkd9c8gwgowi5/om/mYO5ajCaOgdzj/oW+0eQV9WxKBDZw5+ycmKmeaTXjInS/W0BzpGLo2xR2aBwZdg==
   /universalify/0.1.2:
     dev: false
     engines:
@@ -2031,6 +2166,19 @@ packages:
       '0': node >=0.6.0
     resolution:
       integrity: sha1-OhBcoXBTr1XW4nDB+CiGguGNpAA=
+  /whatwg-fetch/3.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-9GSJUgz1D4MfyKU7KRqwOjXCXTqWdFNvEr7eUBYchQiVc744mqK/MzXPNR2WsPkmkOa4ywfg8C2n8h+13Bey1Q==
+  /wikijs/5.0.0-alpha.1:
+    dependencies:
+      infobox-parser: 3.1.1
+      isomorphic-fetch: 2.2.1
+    dev: false
+    engines:
+      node: '>=0.10.4'
+    resolution:
+      integrity: sha512-eIz1+UzSNHK8k2rGyO4DZvxGu/q2uu4q5ia/4t9wHyvQeRGltog2b9DJ7WCjjr8qgvJSx+F8OMBcitujOvLtUQ==
   /write-file-atomic/1.3.4:
     dependencies:
       graceful-fs: 4.1.15
@@ -2099,6 +2247,7 @@ shrinkwrapVersion: 3
 specifiers:
   bufferutil: ^4.0.1
   common-tags: ^1.8.0
+  cool-ascii-faces: ^1.3.4
   dadjokes-wrapper: ^0.1.4
   discord.js: ^11.4.2
   discord.js-commando: ^0.10.0
@@ -2112,8 +2261,10 @@ specifiers:
   http: ^0.0.0
   imap-simple: ^4.2.0
   json-format: ^1.0.1
+  json-string: ^0.0.1
+  lowdb: ^1.0.0
   moment: ^2.23.0
-  mongodb: ^3.1.10
+  mongodb: ^3.1.11
   node-localstorage: ^1.3.1
   node-schedule: ^1.3.1
   node-superfetch: ^0.1.9
@@ -2127,5 +2278,7 @@ specifiers:
   synchronize: ^2.0.0
   trello: ^0.9.1
   trello-events: ^0.1.6
+  underscore: ^1.9.1
+  wikijs: ^5.0.0-alpha.1
   write-file: ^1.0.0
   xmlhttprequest: ^1.8.0

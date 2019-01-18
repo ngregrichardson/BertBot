@@ -1,12 +1,10 @@
-const commando = require('discord.js-commando');
-
 /* Config */
-const fs = require('fs');
-const config = JSON.parse(fs.readFileSync('configuration.json'));
-var meetings = JSON.parse(fs.readFileSync('commands/meetings/meetings.json'));
-const moment = require('moment');
-const formatJSON = require('json-format');
+const commando = require('discord.js-commando');
 const Discord = require('discord.js');
+const db = require('/app/server.js').db,
+  config = require('/app/server.js').config,
+  meetings = require('/app/server.js').meetings;
+const moment = require('moment');
 
 class Meeting extends commando.Command {
   constructor(client) {
@@ -14,99 +12,95 @@ class Meeting extends commando.Command {
       name: 'meeting',
       group: 'meetings',
       memberName: 'meeting',
-      description: 'Manages meetings **R**',
+      usage: 'meeting <add|remove> <"description"> <day> <month> <start time>',
+      description: 'Manages meetings. **R**',
       args: [{
-        key: 'action',
-        prompt: 'The correct usage of `!meeting` is `!meeting **add|remove** "description" day month time',
-        type: 'string'
-      },
-      {
-        key: 'description',
-        prompt: 'The correct usage of `!meeting` is `!meeting add|remove "**description**" day month time',
-        type: 'string',
-        default: ''
-      },
-      {
-        key: 'day',
-        prompt: 'The correct usage of `!meeting` is `!meeting add|remove "description" **day** month time',
-        type: 'string',
-        default: ''
-      },
-      {
-        key: 'month',
-        prompt: 'The correct usage of `!meeting` is `!meeting add|remove "description" day **month** time',
-        type: 'string',
-        default: ''
-      },
-      {
-        key: 'time',
-        prompt: 'The correct usage of `!meeting` is `!meeting add|remove "description" day month **time**',
-        type: 'string',
-        default: ''
-      }]
+          key: 'action',
+          prompt: 'The correct usage of `!meeting` is `!meeting **add|remove** "description" day month time',
+          type: 'string'
+        },
+        {
+          key: 'description',
+          prompt: 'The correct usage of `!meeting` is `!meeting add|remove "**description**" day month time',
+          type: 'string',
+          default: ''
+        },
+        {
+          key: 'day',
+          prompt: 'The correct usage of `!meeting` is `!meeting add|remove "description" **day** month time',
+          type: 'string',
+          default: ''
+        },
+        {
+          key: 'month',
+          prompt: 'The correct usage of `!meeting` is `!meeting add|remove "description" day **month** time',
+          type: 'string',
+          default: ''
+        },
+        {
+          key: 'time',
+          prompt: 'The correct usage of `!meeting` is `!meeting add|remove "description" day month **time**',
+          type: 'string',
+          default: ''
+        }
+      ]
     });
   }
   hasPermission(message) {
-    if(config.restrictedCommandRoles) return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
+    if (config.restrictedCommandRoles) return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
   }
 
-  async run(message, { action, description, day, month, time }) {
-    if(action == 'add') {
-      if(!meetings.meetings) {
-        fs.writeFile('commands/meetings/meetings.json', JSON.stringify({ "meetings": [] }), function(err) {
-          fs.readFile('commands/meetings/meetings.json', function(err, data){
-            meetings = data;
+  async run(message, {
+    action,
+    description,
+    day,
+    month,
+    time
+  }) {
+    if (action == 'add') { // If we're adding
+      // Create the date
+      var date = moment([moment().year(), moment().month(month).format('M') - 1, parseInt(day), parseInt(time.split(':')[0]), parseInt(time.split(':')[1])]).toObject();
+      var remaining = moment(date).diff(moment(), 'days'); // Get the remaining time
+      date.description = description; // Add the description to the date object
+      meetings[day + '-' + month + '-' + time] = date; // Add the date to the meeting list
+      db.set('meetings', JSON.stringify(meetings)).write(); // Write the updated meeting list to the database
+      message.channel.send('The meeting was added. The bot is now restarting.'); // Confirm the creation
+      setTimeout(function () {
+        process.exit(); // Restart the bot
+      }, 1000);
+    } else if (action == 'remove') { // If we're removing
+      // If there are no meetings, output error
+      if (Object.getOwnPropertyNames(meetings).length == 0) message.channel.send('There is no meeting on that date.');
+      for (var meeting in meetings) { // For every meeting in meetings
+        if (meetings[meeting].date == parseInt(day) && meetings[meeting].months == moment().month(month).format('M') - 1) { // If the month and day match the meeting
+          // Create confirmation embed
+          let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`Are you sure you want to remove this? (yes/no)`).setDescription(`**Upcoming meeting on:** ${moment(meetings[meeting]).format('dddd, MMMM Do, h:mm')}\n\n**Meeting Plans:** ${meetings[meeting].description}`);
+          message.channel.send(embed); // Send the embed
+          var collector = new Discord.MessageCollector(message.channel, m => m.author.id == message.author.id, {
+            time: 10000
+          }); // Listen for response
+          collector.on('collect', message => { // On a response
+            if (message.content.toLowerCase() == "yes") { // If yes
+              delete meetings[meeting]; // Delete the meeting
+              db.set('meetings', JSON.stringify(meetings)).write(); // Write the updated meeting list 
+              message.channel.send('The meeting was removed. The bot is now restarting.'); // Confirm the deletion
+              setTimeout(function () {
+                process.exit(); // Restart the bot
+              }, 1000);
+            } else if (message.content.toLowerCase() == "no") { // If no
+              message.channel.send('The removal process was aborted.'); // Confirm the abort
+              return; // Return
+            } else { // Otherwise
+              message.channel.send('The correct usage is `yes|no`'); // Output error
+            }
           });
-        });
+        } else { // Otherwise
+          message.channel.send('There is no meeting on that date.'); // Output error
+        }
       }
-      var date = moment([ moment().year(), moment().month(month).format('M') - 1, parseInt(day), parseInt(time.split(':')[0]), parseInt(time.split(':')[1])]).toObject();
-      var remaining = moment(date).diff(moment(), 'days');
-      date.description = description;
-      meetings.meetings.push(date);
-      message.channel.send('The meeting was added. The bot is now restarting.');
-      fs.writeFileSync('commands/meetings/meetings.json', JSON.stringify(meetings));
-      setTimeout(function() {
-        process.exit();
-      }, 2000);
-    }else if(action == 'remove') {
-      for(var i = 0; i < meetings.meetings.length; i++) {
-       if(meetings.meetings[i].description == description || meetings.meetings[i].day == parseInt(day) && meetings.meetings[i].month == moment().month(month).format('M') - 1) {
-         let embed = new Discord.RichEmbed().setTimestamp(Date.now()).setColor("#127ABD").setTitle(`Are you sure you want to remove this? (yes/no)`).setDescription(`**Upcoming meeting on:** ${moment(meetings.meetings[i]).format('dddd, MMMM Do, h:mm')}\n\n**Meeting Plans:** ${meetings.meetings[i].description}`);
-         message.channel.send(embed);
-         var collector = new Discord.MessageCollector(message.channel, m => m.author.id == message.author.id, { time: 10000 });
-         collector.on('collect', message => {
-           if(message.content.toLowerCase() == "yes") {
-             meetings.meetings.splice(i - 1, 1);
-             fs.writeFileSync('commands/meetings/meetings.json', JSON.stringify(meetings));
-             message.channel.send('The meeting was removed. The bot is now restarting.');
-             setTimeout(function() {
-               process.exit();
-             }, 2000);
-           }else if(message.content.toLowerCase() == "no") {
-             message.channel.send('The removal process was aborted.');
-             return;
-           }else {
-             message.channel.send('The correct usage is `yes|no`');
-           }
-         });
-       }
-      }
-    }else {
-      message.channel.send('The correct usage of `!meeting` is `!meeting **add|remove** "description" day month time');
+    } else { // Otherwise
+      message.channel.send('The correct usage of `!meeting` is `!meeting **add|remove** "description" day month time'); // Output error
     }
-             
   }
 }
 module.exports = Meeting;
-
-function capitalize(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function removeFromArray(arr, value) {
-
-   return arr.filter(function(ele){
-       return ele != value;
-   });
-
-}

@@ -1,8 +1,5 @@
-const commando = require('discord.js-commando');
-
 /* Config */
-const fs = require('fs');
-const config = JSON.parse(fs.readFileSync('configuration.json'));
+const commando = require('discord.js-commando');
 
 class PID extends commando.Command {
   constructor(client) {
@@ -10,7 +7,8 @@ class PID extends commando.Command {
       name: 'pid',
       group: 'random',
       memberName: 'pid',
-      description: 'Displays 100% correct calculated PID values',
+      usage: 'pid',
+      description: 'Calculates 100% correct calculated PID values.',
       throttling: {
         usages: 1,
         duration: 60
@@ -18,10 +16,10 @@ class PID extends commando.Command {
     });
   }
   async run(message, args) {
-    var p = Math.random();
-    var i = Math.random();
-    var d = Math.random();
-    message.channel.send("Your correct values are:\n\nP: " + p + "\n\nI: " + i + "\n\nD: " + d);
+    var p = Math.random(); // Generate random P value
+    var i = Math.random(); // Generate random I value
+    var d = Math.random(); // Generate random D value
+    message.channel.send("Your correct values are:\n\nP: " + p + "\n\nI: " + i + "\n\nD: " + d); // Display PID values
   }
 }
 module.exports = PID;

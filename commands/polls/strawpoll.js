@@ -1,18 +1,19 @@
+/* Config */
 const commando = require('discord.js-commando');
-const { stripIndents } = require('common-tags');
+const config = require('/app/server.js').config;
+const {
+  stripIndents
+} = require('common-tags');
 const request = require('node-superfetch');
 
-/* Config */
-const fs = require('fs');
-const config = JSON.parse(fs.readFileSync('configuration.json'));
-
-module.exports = class Strawpoll extends commando.Command {
+class Strawpoll extends commando.Command {
   constructor(client) {
     super(client, {
       name: 'strawpoll',
       group: 'polls',
       memberName: 'strawpoll',
-      description: 'Creates a strawpoll **R**',
+      usage: 'strawpoll <"title"> <"option 1"> <"option 2">...',
+      description: 'Creates a strawpoll. **R**',
       throttling: {
         usages: 1,
         duration: 10
@@ -32,24 +33,35 @@ module.exports = class Strawpoll extends commando.Command {
     });
   }
   hasPermission(message) {
-    if(config.restrictedCommandRoles) return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
+    if (config.restrictedCommandRoles) return message.member.roles.some(r => config.restrictedCommandRoles.includes(r.name));
   }
-  async run(message, { title, options }) {
-    if (options.length < 2) {
-      return message.reply('Please provide more than one choice.');
-    }
-    if (options.length > 31) {
-      return message.reply('Please provide thirty or less choices.');
+  async run(message, {
+    title,
+    options
+  }) {
+    if (options.length < 2) { // If there are less than 2 options
+      message.channel.send('Please provide more than one option.'); // Output error
+      return; // Return
+    } else if (options.length > 31) { // If there are more than 30 options
+      message.channel.send('Please provide thirty or less options.'); // Output error
+      return; // Return
     }
     try {
-      const { body } = await request.post('https://www.strawpoll.me/api/v2/polls').set({ 'Content-Type': 'application/json' }).send({ title, options });
-      message.delete();
-      return message.say(stripIndents`
-${body.title}
-http://www.strawpoll.me/${body.id}
-`);
-    } catch (err) {
-      return message.reply(`Oh no, an error occurred: \`${err.message}\`. Try again later!`);
+      // Try to create the strawpoll
+      const {
+        body
+      } = await request.post('https://www.strawpoll.me/api/v2/polls').set({
+        'Content-Type': 'application/json'
+      }).send({
+        title,
+        options
+      });
+      message.channel.send(stripIndents `${body.title}http://www.strawpoll.me/${body.id}`); // Display the strawpoll
+      message.delete(); // Delete the message
+    } catch (err) { // Catch any error
+      message.channel.send(`Oh no, an error occurred: \`${err.message}\`. Try again later!`); // Output error
+      return; // Return
     }
   }
 }
+module.exports = Strawpoll;

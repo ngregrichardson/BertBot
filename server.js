@@ -1,54 +1,91 @@
+/* App setup */
 const express = require('express');
 const app = express();
+
+/* Database setup */
+const _ = require('underscore');
+var low = require('lowdb')
+var FileSync = require('lowdb/adapters/FileSync')
+var adapter = new FileSync('.data/db.json')
+var db = low(adapter)
 const fs = require('fs');
 const bodyParser = require('body-parser');
 
-app.use(bodyParser.urlencoded({extended: false}));
+/* App configuration */
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-app.get('/', function(request, response) {
+/* Database configuration */
+db.defaults({
+  config: {},
+  commands: {},
+  likes: {},
+  meetings: {},
+  count: 0
+}).write();
+
+app.get('/', function (request, response) {
   response.sendFile(__dirname + '/ui/index.html');
 });
 
-app.get('/config', function(request, response) {
-  response.sendFile(__dirname + '/configuration.json');
+app.get('/config', function (request, response) {
+  response.send(JSON.parse(_.keys(db.get('config').value())[0]));
 });
 
-app.get('/settings', function(request, response) {
+app.post("/config", function (request, response) {
+  db.set('config', request.body).write();
+  response.sendStatus(200);
+});
+
+app.get('/settings', function (request, response) {
   response.sendFile(__dirname + '/ui/settings.js');
 });
 
-app.get('/styles', function(request, response) {
+app.get('/meetings', function (request, response) {
+  response.send(JSON.parse(db.get('meetings').value()));
+});
+
+app.post('/meetings', function (request, response) {
+  db.set('meetings', _.keys(request.body)[0]).write();
+  response.sendStatus(200);
+});
+
+app.get('/meetingsui', function (request, response) {
+  response.sendFile(__dirname + '/ui/meetings.html');
+});
+
+app.get('/meetingsjs', function (request, response) {
+  response.sendFile(__dirname + '/ui/meetings.js');
+});
+
+app.get('/styles', function (request, response) {
   response.sendFile(__dirname + '/ui/styles.css');
 });
 
-app.get('/meetings', function(request, response) {
-  response.sendFile(__dirname + '/commands/meetings/meetings.json');
-});
-
-app.post("/restart", function(request, response) {
+app.post("/restart", function (request, response) {
   response.sendFile(__dirname + '/reload/reload.html');
-  setTimeout(()=>{
+  setTimeout(function () {
     process.exit();
-  }, 1000)
-  
+  }, 1000);
 });
 
-app.post("/save", function (request, response) {
-  var data;
-  for(var i in request.body) {
-    data = i;
+const listener = app.listen(process.env.PORT, function () {
+
+});
+
+function checkForMeetings() {
+  if (Object.getOwnPropertyNames(JSON.parse(_.keys(db.get('meetings').value())[0])).length == 0) {
+    return {};
+  } else {
+    return JSON.parse(_.keys(db.get('meetings').value())[0]);
   }
-  fs.writeFile('configuration.json', data, function(err) {  
-    if(err) {
-      response.redirect("/");
-    }else {
-      response.redirect("/");
-    }
-  });
-});
+}
 
-const listener = app.listen(process.env.PORT, function() {
-  
-});
+module.exports = {
+  config: JSON.parse(_.keys(db.get('config').value())[0]),
+  meetings: JSON.parse(db.get('meetings').value()),
+  db: db
+};
