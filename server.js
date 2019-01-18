@@ -20,10 +20,10 @@ app.use(express.static('public'));
 
 /* Database configuration */
 db.defaults({
-  config: {},
+  config: { '{"botName":"BertBot","teamNumber":"4750","discordServerId":"529060705589002260","trelloNotificationsOn":false,"trelloNotificationChannelId":"","trelloPollInterval":"","watchedTrelloBoardIds":"","enabledTrelloNotifications":"","trelloPrefix":"","orderRequestEmailSystemOn":false,"orderRequestBoardId":"","orderPlacedChecklistItemName":"","orderPlacedListName":"","orderRequestedListName":"","swearFilterOn":false,"swearFilterWhitelistedChannelNames":"","modOn":false,"modCommandRoles":["owner"],"meetingNotificationsOn":false,"meetingNotificationChannelId":"","likeCounterOn":false,"blaiseWhitelistedChannelNames":[""],"restrictedCommandRoles":["owner","leader"],"userIDs":{},"contentString":""}': '' },
   commands: {},
   likes: {},
-  meetings: {},
+  meetings: '{}',
   count: 0
 }).write();
 
