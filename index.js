@@ -223,6 +223,8 @@ bot.on('messageReactionAdd', function (messageReaction, user) {
 /*
  ** ====================================
  ** Trello event handlers and functions.
+ ** All credit goes to:
+ ** https://github.com/Angush/trellobot
  ** ====================================
  */
 
