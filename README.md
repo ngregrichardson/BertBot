@@ -101,3 +101,5 @@ Once you are done, make sure to hit *Save* and then once the page reloads, hit *
 6. Alright! You're finally ready to add the bot to your server. Go ahead back to your Discord application and go to the **OAuth2** tab. Here, scroll down to *Scopes* and select *bot*.  Then scroll down some more and select *Administrator*. Now you can follow the generated link and follow it to add the bot to your server!
 ![Step 6](https://i.imgur.com/ZdImqIO.jpg)
 7. Now your bot is all set up! In order for it to stay running 24/7, make sure to set up [UptimeRobot](https://uptimerobot.com) as described [here](https://support.glitch.com/t/how-to-make-a-glitch-project-to-run-constantly/2439/2?u=ngregrichardson). To change any settings, go back to BeʳᵗBot's Configuration page and change whatever you want! Just be sure to hit *Save* and *Restart Bot* when you're done. If you need any help, are getting any errors, or want to chat about the development of the bot, join the BeʳᵗBot Discord from the Configuration page or use !feedback to find the Trello.
+
+[Thanks to Angush for the Trello integration](https://github.com/Angush/trellobot)
