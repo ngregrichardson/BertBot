@@ -60,6 +60,8 @@ var blaiseWhitelistedChannelNames = $("input[name='blaiseWhitelistedChannelNames
 var restrictedCommandRoles = $("input[name='restrictedCommandRoles']");
 var saveButton = $("input[value='Save']");
 var errorSpace = $("#error");
+var configFile = $('#download');
+var fileSelector = $('<input type="file" accept=".json">');
 
 function setup() {
   botName.val(config.botName);
@@ -209,9 +211,8 @@ function changed() {
 
 function save() {
   $.post("/config", format(), function (data, status) {
-    if (status == "200") {
-      error('The configuration was saved. Restarting the bot.');
-    }
+    saveButton.css('color', 'white');
+    saveButton.css('border-color', 'white');
   });
 }
 
@@ -305,6 +306,30 @@ function enabledTrelloNotifications() {
 
 function restart() {
   $.post("/restart", "restart", function (data, status) {});
+}
+
+function upload() {
+  fileSelector.click();
+  fileSelector.on('change', function(event){
+    var reader = new FileReader();
+    reader.onload = function(event) {
+      config = JSON.parse(event.target.result);
+      setup();
+      changed();
+    }
+    reader.readAsText(event.target.files[0]);
+    });
+}
+
+function onReaderLoad(event) {
+  console.log(event.target.result);
+  var obj = JSON.parse(event.target.result);
+}
+
+function download() {
+  $.get('/download', function(data) {
+    console.log(data);
+  });
 }
 
 function meetings() {

@@ -1,5 +1,6 @@
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 var meetings;
+var id
 $.get('/meetings', function (sentMeetings) {
   meetings = sentMeetings;
   if (meetings != undefined) {
@@ -14,7 +15,7 @@ var errorSpace = $('#error');
 
 function setup() {
   var html = '<br>';
-  var id = 0;
+  id = 0;
   for (var meeting in meetings) {
     var minutes;
     if (meetings[meeting].minutes.toString().length == 1) {
@@ -26,6 +27,12 @@ function setup() {
     id++;
   }
   table.html(html);
+}
+
+function add() {
+  id++;
+  table.html(table.html() + '<div class="meeting" id="' + id + '">Description: <input id="description" type="text" value="" onchange="changed()"><br>Day: <input id="date" type="number" value="" onchange="changed()"><br>Month: <input id="month" type="text" value="" onchange="changed()"><br>Time: <input id="time" type="text" value="" onchange="changed()"><br><input type="image" src="https://img.icons8.com/metro/1600/delete.png" onclick="remove(this)"></div><br>');
+  changed();
 }
 
 function remove(deleteButton) {
