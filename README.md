@@ -52,8 +52,28 @@ Setting up BeʳᵗBot is simple. It is a self-hosted bot, so this setup will sho
  ![Step 2](https://i.imgur.com/vE1RAbK.jpg)
  3. Next, lets set up the bot on [Glitch](https://glitch.com). Create an account and then create a new *hello-express* project. In the top left, click on the name of your project (you can rename it if you want) and select *Advanced Options*. Then, after hitting *Grant access*, click *Import from GitHub* and paste in `ngregrichardson/BertBot`. This will import the project into Glitch.
  ![Step 3](https://i.imgur.com/w6CfsDL.jpg)
- 4. Next we can configure the bot to your needs. Click on *Show* and select whatever features you'd like. The required features are highlighted in **red**.
- ![Step 4](https://i.imgur.com/kHl20EQ.jpg)
+ 4. Alright! The next thing we have to set up is out *.env* file. This is where all of our tokens and passwords will be kept. Copy and paste this into *.env* to get started.
+> TOKEN=  
+> KEY=  
+> TTOKEN=  
+> GP=  
+> GFROM=  
+> GTO=  
+> R1=  
+> R2=  
+> TBAKEY=
+
+- TOKEN - The token of your Discord bot (from step 2)
+- KEY - [A Trello API key](https://developers.trello.com/docs/api-introduction)
+- TTOKEN - [A Trello token](https://trello.com/app-key)
+- GP - [A Google app password](https://myaccount.google.com/apppasswords) (only needed if using the order request system
+- GFROM - Gmail address to send order request notification from
+- GTO - Email address to send order request notification to
+- R1 - [Rapid API project name](https://dashboard.rapidapi.com) (create a Rapid API account and create an app)
+- R2 - [Rapid API API key](https://dashboard.rapidapi.com) (found with the Rapid API project name)
+- TBAKEY - [The Blue Alliance API key](https://www.thebluealliance.com/apidocs)
+ 5. Next we can configure the bot to your needs. Click on *Show* and select whatever features you'd like. The required features are highlighted in **red**.
+ ![Step 5](https://i.imgur.com/kHl20EQ.jpg)
 	- Bot Name - The name of your bot as you set in the Discord application
 	- Team Number - The team number of your FRC team
 	- Discord Server ID- The ID of your Discord server. Enable developer mode in Discord and right click on the server name to retrieve.
@@ -78,26 +98,6 @@ Setting up BeʳᵗBot is simple. It is a self-hosted bot, so this setup will sho
 	- Blaise Whitelisted Channel Names - The names of the channels that allow the !blaise command (setting this to allowAll will allow it in all channels)
 	- Restricted Command Roles - The names of the roles that are able to use restricted commands
 Once you are done, make sure to hit *Save* and then once the page reloads, hit *Restart Bot* (don't mind the error page :P, that's in the works. FOr now just keep reloading). You can now close that window.
-5. Alright! The next thing we have to set up is out *.env* file. This is where all of our tokens and passwords will be kept. Copy and paste this into *.env* to get started.
-> TOKEN=  
-> KEY=  
-> TTOKEN=  
-> GP=  
-> GFROM=  
-> GTO=  
-> R1=  
-> R2=  
-> TBAKEY=
-
-- TOKEN - The token of your Discord bot (from step 2)
-- KEY - [A Trello API key](https://developers.trello.com/docs/api-introduction)
-- TTOKEN - [A Trello token](https://trello.com/app-key)
-- GP - [A Google app password](https://myaccount.google.com/apppasswords) (only needed if using the order request system
-- GFROM - Gmail address to send order request notification from
-- GTO - Email address to send order request notification to
-- R1 - [Rapid API project name](https://dashboard.rapidapi.com) (create a Rapid API account and create an app)
-- R2 - [Rapid API API key](https://dashboard.rapidapi.com) (found with the Rapid API project name)
-- TBAKEY - [The Blue Alliance API key](https://www.thebluealliance.com/apidocs)
 6. Alright! You're finally ready to add the bot to your server. Go ahead back to your Discord application and go to the **OAuth2** tab. Here, scroll down to *Scopes* and select *bot*.  Then scroll down some more and select *Administrator*. Now you can follow the generated link and follow it to add the bot to your server!
 ![Step 6](https://i.imgur.com/ZdImqIO.jpg)
 7. Now your bot is all set up! In order for it to stay running 24/7, make sure to set up [UptimeRobot](https://uptimerobot.com) as described [here](https://support.glitch.com/t/how-to-make-a-glitch-project-to-run-constantly/2439/2?u=ngregrichardson). To change any settings, go back to BeʳᵗBot's Configuration page and change whatever you want! Just be sure to hit *Save* and *Restart Bot* when you're done. If you need any help, are getting any errors, or want to chat about the development of the bot, join the BeʳᵗBot Discord from the Configuration page or use !feedback to find the Trello.
